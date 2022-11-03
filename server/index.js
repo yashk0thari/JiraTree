@@ -1,6 +1,10 @@
 // Import Relavent Libraries + Modules:
 const dotenv = require("dotenv");
 
+// Database:
+const DB = require("./src/services/db/dbinit")
+const db = new DB()
+
 // Configure Enviornment File:
 dotenv.config();
 
@@ -8,24 +12,8 @@ dotenv.config();
 const express = require("express");
 const app = express();
 
-// Database Connection:
-function DatabaseConnection () {
-  const { Client } = require("pg");
-  const client = new Client(process.env.DATABASE_URL);
-
-  (async () => {
-    await client.connect();
-    try {
-      const results = await client.query("SELECT NOW()");
-      console.log(results);
-    } catch (err) {
-      console.error("error executing query:", err);
-    } finally {
-      client.end();
-    }
-  })();
-}
-DatabaseConnection()
+// Connect Database:
+db.initializeConnection()
 
 app.get("/", (req, res) => {
     res.send("Hello, World!");

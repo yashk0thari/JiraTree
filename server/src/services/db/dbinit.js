@@ -1,6 +1,10 @@
-// Database Connection: [TODO: Import not working with '.require()']
-const dbFunctions = {
-    DatabaseConnection: function () {
+// Database Connection:
+class DatabaseFunctions {
+    constructor() {
+
+    }
+
+    initializeConnection() {
         const { Client } = require("pg");
         const client = new Client(process.env.DATABASE_URL);
     
@@ -17,3 +21,5 @@ const dbFunctions = {
         })();
     }
 }
+
+module.exports = DatabaseFunctions;
