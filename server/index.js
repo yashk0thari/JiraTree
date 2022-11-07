@@ -2,7 +2,7 @@
 const dotenv = require("dotenv");
 
 // Database:
-const DB = require("./src/services/db/dbinit")
+const DB = require("./src/services/db/db")
 const db = new DB()
 
 // Configure Enviornment File:
@@ -14,6 +14,7 @@ const app = express();
 
 // Connect Database:
 db.initializeConnection()
+db.initializeDatabase()
 
 app.get("/", (req, res) => {
     res.send("Hello, World!");

@@ -1,25 +1,45 @@
-// Database Connection:
-class DatabaseFunctions {
-    constructor() {
-
-    }
-
-    initializeConnection() {
-        const { Client } = require("pg");
-        const client = new Client(process.env.DATABASE_URL);
+const dbinit_functions = {
+    // TEST:
+    select_now: "SELECT NOW();",
     
-        (async () => {
-        await client.connect();
-        try {
-            const results = await client.query("SELECT NOW()");
-            console.log(results);
-        } catch (err) {
-            console.error("error executing query:", err);
-        } finally {
-            client.end();
-        }
-        })();
-    }
+    // INITIALIZE SCHEMAS:
+    init_schemas: `
+        CREATE SCHEMA IF NOT EXISTS jt_user;
+        CREATE SCHEMA IF NOT EXISTS jt_task;
+        CREATE SCHEMA IF NOT EXISTS jt_sprint;
+    `,
+
+    // INITIALIZE TABLES:
+    init_tables: `
+        CREATE TABLE IF NOT EXISTS jt_user.users (
+            user_uid UUID PRIMARY KEY,
+            name STRING,
+            email STRING,
+            password STRING,
+            role STRING
+        );
+
+        CREATE TABLE IF NOT EXISTS jt_sprint.sprints (
+            sprint_uid UUID PRIMARY KEY,
+            sprint_id STRING,
+            status STRING,
+            goal STRING
+        );
+
+        CREATE TABLE IF NOT EXISTS jt_task.tasks (
+            task_uid UUID PRIMARY KEY,
+            task_id STRING,
+            status STRING,
+            description STRING,
+            in_backlog BOOLEAN,
+            user_uid UUID,
+            CONSTRAINT FK_TASK_USER FOREIGN KEY (user_uid)
+                REFERENCES jt_user.users (user_uid),
+            sprint_uid UUID,
+            CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (sprint_uid)
+                REFERENCES jt_sprint.sprints (sprint_uid)
+        );
+    `
 }
 
-module.exports = DatabaseFunctions;
+module.exports = dbinit_functions;
