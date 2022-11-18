@@ -1,6 +1,6 @@
 const dbinit_functions = {
     // TEST:
-    select_now: "SELECT NOW();",
+    select_now: `SELECT NOW();`,
     
     // INITIALIZE SCHEMAS:
     init_schemas: `
@@ -12,7 +12,7 @@ const dbinit_functions = {
     // INITIALIZE TABLES:
     init_tables: `
         CREATE TABLE IF NOT EXISTS jt_user.users (
-            user_uid UUID PRIMARY KEY,
+            user_uid INT PRIMARY KEY DEFAULT unique_rowid(),
             name STRING,
             email STRING,
             password STRING,
@@ -20,22 +20,22 @@ const dbinit_functions = {
         );
 
         CREATE TABLE IF NOT EXISTS jt_sprint.sprints (
-            sprint_uid UUID PRIMARY KEY,
+            sprint_uid INT PRIMARY KEY DEFAULT unique_rowid(),
             sprint_id STRING,
             status STRING,
             goal STRING
         );
 
         CREATE TABLE IF NOT EXISTS jt_task.tasks (
-            task_uid UUID PRIMARY KEY,
+            task_uid INT PRIMARY KEY DEFAULT unique_rowid(),
             task_id STRING,
             status STRING,
             description STRING,
-            in_backlog BOOLEAN,
-            user_uid UUID,
+            in_backlog STRING,
+            user_uid INT,
             CONSTRAINT FK_TASK_USER FOREIGN KEY (user_uid)
                 REFERENCES jt_user.users (user_uid),
-            sprint_uid UUID,
+            sprint_uid INT,
             CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (sprint_uid)
                 REFERENCES jt_sprint.sprints (sprint_uid)
         );
