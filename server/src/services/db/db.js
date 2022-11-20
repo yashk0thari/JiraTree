@@ -13,6 +13,7 @@ class DatabaseFunctions {
         try {
             const results = await client.query(sql_block);
             console.log(results);
+            return results;
         } catch (err) {
             console.error("error executing query:", err);
         } finally {
@@ -31,6 +32,11 @@ class DatabaseFunctions {
 
     insertTask(task_id, description) {
         this.query(`INSERT INTO jt_task.tasks (task_id, status, description, in_backlog, user_uid, sprint_uid) VALUES ('${task_id}', 'NOT STARTED', '${description}', 'TRUE', (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'))`);
+    }
+
+    getTasks(meta_field, value) {
+        const output = this.query(`SELECT * FROM jt_task.tasks WHERE ${meta_field} = '${value}'`);
+        return output;
     }
 }
 

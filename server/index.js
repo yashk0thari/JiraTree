@@ -36,16 +36,31 @@ app.get("/", (req, res) => {
 
 // --- TASK:
 // - GET:
-// ...
+// Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
+app.get("/getTasks/", async (req, res) => {
+    try {
+        const meta_field = (req.body).meta_field;
+        const value = (req.body).value;
+
+        db.getTasks(meta_field, value);
+        res.send("SUCCESSFULLY GOT TASKS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        console.log("Error with Get-Tasks: " + error);
+    }
+})
 
 // - POST:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
-app.post("/addTask/", (req, res) => {
-    const task_id = (req.body).task_id;
-    const description = (req.body).description;
-    
-    db.insertTask(task_id, description);
-    res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");
+app.post("/addTask/", async (req, res) => {
+    try {
+        const task_id = (req.body).task_id;
+        const description = (req.body).description;
+        
+        db.insertTask(task_id, description);
+        res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
+    } catch (error) {
+        console.log("Error with Add-Task: " + error);
+    }
 });
 
 // --- SPRINT:
