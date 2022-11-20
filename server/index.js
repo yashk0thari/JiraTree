@@ -12,6 +12,10 @@ dotenv.config();
 const express = require("express");
 const app = express();
 
+//User Auth
+const bcrypt = require("bcrypt");
+const initializePassport = require('./src/services/passport-config');
+
 // Connect Database:
 db.initializeConnection()
 db.initializeDatabase()
@@ -27,9 +31,39 @@ app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
 
-// GET REQUESTS:
-// USER:
-// ...
+//USER AUTHENTICATION
+
+//Register Users
+
+app.get("/register", async (req, res) => {
+    res.send("Register User!")
+})
+
+const users = []
+app.post("/register", async (req, res) => {
+    
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    try {
+        const hashed_password = await bcrypt.hash(password, 10)
+        const toPush = {
+            id: Date.now().toString(),
+            name: name,
+            email: email,
+            password: hashed_password
+        }
+        users.push(toPush)
+        res.send(toPush)
+
+    } catch {
+        res.send("Encountered an Error!")
+    }
+    console.log(users)
+});
+
+//Login Users
+
 
 // TASK:
 // ...

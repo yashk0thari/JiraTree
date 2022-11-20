@@ -1,0 +1,3 @@
+function initalize(passport) {
+
+}
