@@ -27,21 +27,18 @@ app.get("/", (req, res) => {
     res.send("Hello, World!");
 });
 
-// GET REQUESTS:
-// USER:
+// --- USER:
+// - GET:
 // ...
 
-// TASK:
+// - POST:
 // ...
 
-// SPRINT:
+// --- TASK:
+// - GET:
 // ...
 
-// POST REQUESTS:
-// USER:
-// ...
-
-// TASK:
+// - POST:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
 app.post("/addTask/", (req, res) => {
     const task_id = (req.body).task_id;
@@ -51,5 +48,9 @@ app.post("/addTask/", (req, res) => {
     res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");
 });
 
-// SPRINT:
+// --- SPRINT:
+// - GET:
+// ...
+
+// - POST:
 // ...
