@@ -14,6 +14,7 @@ const app = express();
 
 //User Auth
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 const initializePassport = require('./src/services/passport-config');
 
 // Connect Database:
