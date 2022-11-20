@@ -1,7 +1,7 @@
 const local_strategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 
-function initalize(passport, getUserByEmail) {
+function initalize(passport, getUserByEmail, getUserById) {
     const authenticateUser = async (email, password, done) => {
         //return a user by email or null
         const user = getUserByEmail(email)
@@ -12,6 +12,7 @@ function initalize(passport, getUserByEmail) {
         try {
             if (await bcrypt.compare(password, user.password)) {
                 //actually have an authenticated user
+                return done(null, user)
             } else {
                 //password is incorrect
                 return done(null, false, {message: 'Incorrect Password!'})
@@ -26,18 +27,18 @@ function initalize(passport, getUserByEmail) {
         new local_strategy({
         usernameField: 'email'
         //defaults the password
-    }), authenticateUser
+    }, authenticateUser), 
     );
 
-    //stores the current session of the user
-    passport.serializeUser((user, done) => {
+    //format: done(error, user-data)
 
+    passport.serializeUser((user, done) => {
+        done(null,user.id)
     })
 
-    //removes the user from its current session
     passport.deserializeUser((id, done) => {
-
+        return done(null, getUserById(id))
     })
 }
 
-modules.export = initalize;
+module.exports = initalize;

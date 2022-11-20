@@ -13,16 +13,28 @@ const express = require("express");
 const app = express();
 
 //User Auth
-const bcrypt = require("bcrypt");
-const passport = require("passport");
-const initializePassport = require('./src/services/passport-config');
+const bcrypt = require("bcrypt")
+const passport = require("passport")
+const initializePassport = require('./src/services/passport-config')
+const flash = require("express-flash")
+const session = require("express-session")
 
 // Connect Database:
 db.initializeConnection()
 db.initializeDatabase()
 
+
+//use statements
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(flash());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.listen(process.env.PORT, () => {
     console.log("Running on port: " + process.env.PORT + ".");
@@ -34,7 +46,7 @@ app.get("/", (req, res) => {
 
 //USER AUTHENTICATION
 
-//Register Users
+//REGISTER USERS
 
 app.get("/register", async (req, res) => {
     res.send("Register User!")
@@ -63,7 +75,31 @@ app.post("/register", async (req, res) => {
     console.log(users)
 });
 
-//Login Users
+//LOGIN USER 
+
+initializePassport(
+    passport, 
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id ),
+
+    // return users.find((user) => {
+    //     //find the user with the specific email that we want and then return that user. If none return Null.
+    //     user.email == email;
+    // })
+)
+
+app.get('/login', (req, res) => {
+    res.send("Login Page")
+}) 
+
+//passport authentication middleware
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/', 
+    failureRedirect: '/login', 
+    failureMessage: true,
+    failureFlash: true
+})
+)
 
 
 // TASK:
