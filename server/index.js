@@ -50,7 +50,7 @@ app.get("/register", checkNotAuthenticated, async (req, res) => {
     res.send("Register User!")
 })
 
-app.post("/register", checkNotAuthenticated, async (req, res) => {
+app.post("/register", async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
@@ -66,10 +66,7 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
 
 //LOGIN USER 
 initializePassport(
-    passport,
-    db.getUsers,
-    db.getUserByEmail,
-    db.getUserById
+    passport
     // email => users.find(user => user.email === email),
     // id => users.find(user => user.id === id ),
 )
