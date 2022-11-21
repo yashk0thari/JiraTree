@@ -1,13 +1,14 @@
+const DB = require("../services/db/db")
+const db = new DB()
+
 const local_strategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 
-function initalize(passport, getUsers, getUserByEmail, getUserById) {
+function initalize(passport) {
     const authenticateUser = async (email, password, done) => {
         //return a user by email or null
-        // console.log(email)
-        const user = await getUserByEmail("email", email)
-        // var user = await getUsers("email", email);
-        // user = user.rows[0];
+        var user = await db.getUsers("email", email)
+        user = user.rows[0]
 
         if (user == null) {
             return done(null, false, {message: "No user with that email"})
@@ -40,8 +41,7 @@ function initalize(passport, getUsers, getUserByEmail, getUserById) {
     })
 
     passport.deserializeUser(async (id, done) => {
-        return done(null, await getUserById(id))
-        // return done(null, await getUsers("user_uid", id))
+        return done(null, await db.getUsers("user_uid", id))
     })
 }
 
