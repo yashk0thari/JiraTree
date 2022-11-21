@@ -67,6 +67,7 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
 //LOGIN USER 
 initializePassport(
     passport,
+    db.getUsers,
     db.getUserByEmail,
     db.getUserById
     // email => users.find(user => user.email === email),
