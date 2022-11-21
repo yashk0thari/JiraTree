@@ -16,7 +16,6 @@ const app = express();
 const bcrypt = require("bcrypt")
 const passport = require("passport")
 const initializePassport = require('./src/services/passport-config')
-const flash = require("express-flash")
 const session = require("express-session")
 
 // Connect Database:
@@ -27,7 +26,6 @@ db.initializeDatabase()
 //use statements
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(flash());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -48,27 +46,19 @@ app.get("/", (req, res) => {
 
 //REGISTER USERS
 
-app.get("/register", async (req, res) => {
+app.get("/register", checkNotAuthenticated, async (req, res) => {
     res.send("Register User!")
 })
 
-const users = []
-app.post("/register", async (req, res) => {
-    
+app.post("/register", checkNotAuthenticated, async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    const role = req.body.email;
     try {
         const hashed_password = await bcrypt.hash(password, 10)
-        const toPush = {
-            id: Date.now().toString(),
-            name: name,
-            email: email,
-            password: hashed_password
-        }
-        users.push(toPush)
-        res.send(toPush)
-
+        db.insertUser(name, email, hashed_password, role)
+        res.send('New User Created in Database!')
     } catch {
         res.send("Encountered an Error!")
     }
@@ -76,41 +66,55 @@ app.post("/register", async (req, res) => {
 });
 
 //LOGIN USER 
-
 initializePassport(
-    passport, 
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id ),
-
-    // return users.find((user) => {
-    //     //find the user with the specific email that we want and then return that user. If none return Null.
-    //     user.email == email;
-    // })
+    passport,
+    db.getUserByEmail,
+    db.getUserById
+    // email => users.find(user => user.email === email),
+    // id => users.find(user => user.id === id ),
 )
 
-app.get('/login', (req, res) => {
+app.get('/login', checkNotAuthenticated, (req, res) => {
     res.send("Login Page")
-}) 
+})
 
 //passport authentication middleware
-app.post('/login', passport.authenticate('local', {
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/', 
     failureRedirect: '/login', 
     failureMessage: true,
-    failureFlash: true
 })
 )
 
+//checking authenticated users - middleware
 
-// TASK:
-// ...
+//SAMPLE PAGE - only for authenticated users
+app.get('/authenticated', checkAuthenticated, (req, res) => {
+    res.send("Authenticated!")
+})
 
-// SPRINT:
-// ...
+function checkAuthenticated (req, res, next) {
+    if (req.isAuthenticated()) {
+        //everything works!
+        return next()
+    }
+    else {
+        res.redirect('/login')
+    }
+}
 
-// POST REQUESTS:
-// USER:
-// ...
+function checkNotAuthenticated (req, res, next) {
+    if (req.isAuthenticated()) {
+        res.redirect('/authenticated')
+    }
+    next()
+}
+
+//LOGOUT USER
+// app.delete('/logout', (req, res) => {
+//     req.logOut()
+//     res.redirect('/login')
+// })
 
 // TASK:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}

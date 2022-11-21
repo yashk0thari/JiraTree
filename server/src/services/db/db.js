@@ -84,7 +84,53 @@ class DatabaseFunctions {
         } finally {
             client.end();
         }
-        })();
+        })(); 
+    }
+
+    insertUser(name, email, password, role) {
+        const { Client } = require("pg");
+        const client = new Client(process.env.DATABASE_URL);
+        (async () => {
+            await client.connect();
+            try {
+                const insert_user = await client.query(`INSERT INTO jt_user.users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}');`);
+                console.log(insert_user);
+            } catch (err) {
+                console.error("Error Executing Query, Insert User:", err);
+            } finally {
+                client.end();
+            }
+            })(); 
+    }
+
+    async getUserByEmail(email) {
+        const { Client } = require("pg");
+        const client = new Client(process.env.DATABASE_URL);
+            await client.connect();
+        try {
+            var output = await client.query(`SELECT * FROM jt_user.users WHERE email = '${email}'`)
+            return output.rows[0]
+        } catch (err) {
+            console.error("Error getting User by email!", err);
+        } finally {
+            client.end();
+        }
+
+    }
+
+    async getUserById(user_uid) {
+        const { Client } = require("pg");
+        const client = new Client(process.env.DATABASE_URL);
+
+            await client.connect();
+            try {
+                const output = await client.query(`SELECT * FROM jt_user.users WHERE user_uid = '${user_uid}'`)
+                return output
+            } catch (err) {
+                console.error("Error getting User by email!", err);
+            } finally {
+                client.end();
+            }
     }
 }
 
