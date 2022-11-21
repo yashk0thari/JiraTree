@@ -114,6 +114,25 @@ function checkNotAuthenticated (req, res, next) {
 //     req.logOut()
 //     res.redirect('/login')
 // })
+
+// --- General:
+// - GET:
+// Get All: {"table_name": "<table_name, ex: jt_user.users>"}
+app.get("/getAll/", async (req, res) => {
+    try {
+        const table_name = await (req.body).table_name;
+        const output = await db.getAll(table_name);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        res.send("Error with Get-All: " + error);
+    }
+});
+
+// - POST:
+// ...
+
 // --- USER:
 // - GET:
 // ...
@@ -126,13 +145,14 @@ function checkNotAuthenticated (req, res, next) {
 // Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
 app.get("/getTasks/", async (req, res) => {
     try {
-        const meta_field = (req.body).meta_field;
-        const value = (req.body).value;
+        const meta_field = await (req.body).meta_field;
+        const value = await (req.body).value;
+        const output = await db.getTasks(meta_field, value);
 
-        db.getTasks(meta_field, value);
+        console.log(output.rows);
         res.send("SUCCESSFULLY GOT TASKS ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
-        console.log("Error with Get-Tasks: " + error);
+        res.send("Error with Get-Tasks: " + error);
     }
 })
 
@@ -140,19 +160,43 @@ app.get("/getTasks/", async (req, res) => {
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
 app.post("/addTask/", async (req, res) => {
     try {
-        const task_id = (req.body).task_id;
-        const description = (req.body).description;
-        
-        db.insertTask(task_id, description);
+        const task_id = await (req.body).task_id;
+        const description = await (req.body).description;
+        const output = await db.insertTask(task_id, description);
+
+        console.log(output.rows);
         res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
     } catch (error) {
-        console.log("Error with Add-Task: " + error);
+        res.send("Error with Add-Task: " + error);
     }
 });
 
 // --- SPRINT:
 // - GET:
-// ...
+// Get Sprints: {"meta_field": "<meta_field, ex: sprint_id>", "value": "<value, ex: 0000>"}
+app.get("/getSprints/", async (req, res) => {
+    try {
+        const meta_field = (req.body).meta_field;
+        const value = (req.body).value;
+        const output = await db.getSprints(meta_field, value);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY GOT SPRINTS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        console.log("Error with Get-Sprints: " + error);
+    }
+});
 
 // - POST:
-// ...
+app.post("/addSprint/", async (req, res) => {
+    try {
+        const sprint_id = (req.body).sprint_id;
+        const goal = (req.body).goal;
+        const output = await db.insertSprint(sprint_id, goal);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY ADDED SPRINT TO DATABASE");
+    } catch (error) {
+        console.log("Error with Add-Sprint: " + error);
+    }
+});
