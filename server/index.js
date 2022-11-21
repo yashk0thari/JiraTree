@@ -62,7 +62,6 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
     } catch {
         res.send("Encountered an Error!")
     }
-    console.log(users)
 });
 
 //LOGIN USER 
@@ -79,7 +78,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 //passport authentication middleware
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+app.post('/login', passport.authenticate('local', {
     successRedirect: '/', 
     failureRedirect: '/login', 
     failureMessage: true,
