@@ -58,6 +58,35 @@ class DatabaseFunctions {
         var output = await this.query(`SELECT * FROM ${table_name};`);
         return output;
     }
+
+    async updateTask(task_id, status, description, in_backlog, user_uid, sprint_uid) {
+        var line = ""
+        if (status != "") {
+            line += `status = '${status}', `
+        }
+
+        if (description != "") {
+            line += `description = '${description}', `
+        }
+
+        if (in_backlog != "") {
+            line += `in_backlog = '${in_backlog}', `
+        }
+
+        if (user_uid != "") {
+            line += `user_uid = '${user_uid}', `
+        }
+
+        if (sprint_uid != "") {
+            line += `sprint_uid = '${sprint_uid}', `
+        }
+
+        if (line.slice(-2)[0] === ",") {
+            line = line.substring(0, line.length - 2)
+        }
+        
+        this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_id}';`)
+    }
 }
 
 module.exports = DatabaseFunctions;

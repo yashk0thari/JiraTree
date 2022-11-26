@@ -16,7 +16,8 @@ const app = express();
 const bcrypt = require("bcrypt")
 const passport = require("passport")
 const initializePassport = require('./src/services/passport-config')
-const session = require("express-session")
+const session = require("express-session");
+const { use } = require("passport/lib");
 
 // Connect Database:
 db.initializeConnection()
@@ -160,12 +161,27 @@ app.post("/addTask/", async (req, res) => {
     try {
         const task_id = await (req.body).task_id;
         const description = await (req.body).description;
-        const output = await db.insertTask(task_id, description);
+        await db.insertTask(task_id, description);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
     } catch (error) {
         res.send("Error with Add-Task: " + error);
+    }
+});
+
+// Update Task: 
+app.post("/updateTask/:task_id", async (req, res) => {
+    try {
+        const status = await (req.body).status;
+        const description = await (req.body).description;
+        const in_backlog = await (req.body).in_backlog;
+        const user_uid = await (req.body).user_uid;
+        const sprint_uid = await (req.body).sprint_uid;
+        
+        await db.updateTask(req.params.task_id, status, description, in_backlog, user_uid, sprint_uid);
+        res.send("SUCCESSFULLY UPDATED TASK TO DATABASE!");
+    } catch (error) {
+        res.send("Error with Update-Task: " + error);
     }
 });
 
