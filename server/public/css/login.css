@@ -1,0 +1,248 @@
+body{
+
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden; 
+
+}
+
+a {
+	text-decoration: none;
+	color: #707070;
+}
+
+@font-face {
+  font-family: "SF Pro";
+  src: url("/fonts/SF-Pro-Text-Semibold.otf") format("otf"),
+       url("/fonts/SF-Pro-Text-Light.otf") format("otf"),
+       url("/fonts/SF-Pro-Text-Medium.otf") format("otf");
+}
+
+.navSectionContainer{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.logoContainer{
+
+	height: 50px;
+	width: 200px;
+	margin-top: 60px;
+	margin-left: 100px;	
+
+}
+
+.logoContainer img{
+	height: 25px; 
+	width: 25px;
+	position: relative;
+	top:50%;
+	transform: translateY(-80%);
+}
+
+.logoContainer span{
+
+font-family: 'Lato', sans-serif;
+font-size: 15px;
+position: relative;
+line-height: 50px;
+margin-left: 10%;
+letter-spacing: 2px;
+font-weight: 700;
+color: #707070;
+
+}
+
+
+.contentContainer{
+
+	height: 450px;
+	width: 375px;
+	/*background-color: #eee; */
+	margin-left: 250px;
+	position: absolute;
+
+}
+
+.logIn{
+
+	font-family: SF Pro Text;
+	letter-spacing: 2.12px;
+	color: #272727;
+	opacity: 1;
+	font-weight: 600;
+	font-size: 30px;
+	margin-bottom: 10px;
+}
+
+.mainText{
+
+text-align: left;
+font-family: SF Pro Text;
+line-height: 24px;
+font-weight: 300;
+letter-spacing: 1px;
+color: #000000;
+opacity: 1;
+font-size: 16px;
+width: 350px;
+margin-bottom: 10px;
+
+}
+
+
+
+
+.socialAccount{
+	display: flex;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: 10px;
+
+	
+
+}
+
+.socialHolder{
+	
+	margin-right: 30px;
+	width: 40px;
+	height: 40px;
+	background: #EEEEEE 0% 0% no-repeat padding-box;
+	box-shadow: 0px 3px 6px #00000029;
+	opacity: 1;
+	border-radius: 50%;
+	position: relative;
+
+
+}
+
+.apple{
+
+	height: 18px;
+	width: 15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+.google{
+
+	height: 15px;
+	width: 15px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+.facebook{
+
+	height: 20px;
+	width: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+input{
+
+	height: 40px;
+	width: 100%;
+	background: #FDFDFD 0% 0% no-repeat padding-box;
+	box-shadow: 0px 7px 6px #00000029;
+	border: none;
+	border-radius: 20px;
+	opacity: 1;
+	text-align: center;
+	font-family: SF Pro Text;
+	font-size: 12px;
+	letter-spacing: 1.8px;
+	text-transform: uppercase;
+	opacity: 0.6;
+
+}
+
+
+
+form{
+
+	margin-top: 100px;
+}
+
+input:focus{
+	outline: none;
+}
+
+.submit{
+
+	background: transparent linear-gradient(94deg, #1E1EFECE 0%, #5353F8D0 48%, #7272FF 100%) 0% 0% no-repeat padding-box;
+box-shadow: 0px 7px 6px #00000029;
+border-radius: 30px;
+opacity: 1;
+color: #FFFFFF;
+margin-top: 30px;
+
+}
+
+
+.addSettings p{
+
+	text-align: center;
+}
+
+.forgotPassword{
+
+font-family: 'Lato', sans-serif;
+letter-spacing: 0.6px;
+color: #000000;
+opacity: 1;
+margin-top: 40px;
+font-size: 12px;
+}
+
+.signUp{
+
+font-family: 'Lato', sans-serif;
+letter-spacing: 0.8px;
+color: #6D6DF8;
+opacity: 1;
+font-weight: 600;
+font-size: 14px;
+
+}
+
+.backgroundImage img{
+
+height: 800px;
+width: 700px;
+position: absolute;
+top: 50%;
+transform: translate(90%,-50%);
+
+}
+
+.fieldOne{
+
+	margin-top: 30px;
+}
+
+.submit{
+box-shadow: rgba(0, 0, 0, 0.16) 0px 7px 6px;
+    opacity: 1;
+    color: rgb(255, 255, 255);
+    margin-top: 30px;
+    width: 95%;
+    height: 40px;
+    box-sizing: border-box;
+	border: none;
+    font-family: "SF Pro Text";
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: linear-gradient(94deg, rgba(30, 30, 254, 0.808) 0%, rgba(83, 83, 248, 0.816) 48%, rgb(114, 114, 255) 100%) 0% 0% no-repeat padding-box padding-box transparent;
+}
