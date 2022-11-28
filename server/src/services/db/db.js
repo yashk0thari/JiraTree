@@ -27,8 +27,8 @@ class DatabaseFunctions {
         this.query(this.db_init.init_schemas + "\n" + this.db_init.init_tables);
     }
 
-    insertTask(task_id, description) {
-        this.query(`INSERT INTO jt_task.tasks (task_id, status, description, in_backlog, user_uid, sprint_uid) VALUES ('${task_id}', 'NOT STARTED', '${description}', 'TRUE', (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
+    insertTask(task_name, description) {
+        this.query(`INSERT INTO jt_task.tasks (task_name, status, description, in_backlog, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
     insertSprint(sprint_id, goal) {
@@ -59,7 +59,7 @@ class DatabaseFunctions {
         return output;
     }
 
-    async updateTask(task_id, status, description, in_backlog, user_uid, sprint_uid) {
+    updateTask(task_id, status, description, in_backlog, user_uid, sprint_uid) {
         var line = ""
         if (status != "") {
             line += `status = '${status}', `
@@ -86,6 +86,11 @@ class DatabaseFunctions {
         }
         
         this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_id}';`)
+    }
+
+    async searchTask(contain_string) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE task_name LIKE '%${contain_string}%';`)
+        return output;
     }
 }
 

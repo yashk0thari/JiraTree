@@ -28,7 +28,7 @@ const dbinit_functions = {
 
         CREATE TABLE IF NOT EXISTS jt_task.tasks (
             task_uid INT PRIMARY KEY DEFAULT unique_rowid(),
-            task_id STRING,
+            task_name STRING,
             status STRING,
             description STRING,
             in_backlog STRING,
@@ -39,6 +39,11 @@ const dbinit_functions = {
             CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (sprint_uid)
                 REFERENCES jt_sprint.sprints (sprint_uid)
         );
+    `,
+
+    // Initialize Defaults:
+    defaults: `
+        
     `
 }
 
