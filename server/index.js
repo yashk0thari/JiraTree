@@ -19,6 +19,20 @@ const initializePassport = require('./src/services/passport-config')
 const session = require("express-session");
 const { use } = require("passport/lib");
 
+// EJS
+const path = require('path')
+app.use(express.json())
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.urlencoded({ extended: true }));
+
+const publicDirectoryPath = path.join(__dirname, '../public')
+app.use(express.static(publicDirectoryPath))
+
+app.use(express.static(__dirname + '/public'));
+
 // Connect Database:
 db.initializeConnection()
 db.initializeDatabase()
@@ -39,9 +53,11 @@ app.listen(process.env.PORT, () => {
     console.log("Running on port: " + process.env.PORT + ".");
 });
 
+// Login Page:
 app.get("/", (req, res) => {
-    res.send("Hello, World!");
-});
+    // res.send("Hello, JiraTree :D")
+    res.render("login")
+})
 
 //USER AUTHENTICATION
 
