@@ -155,13 +155,26 @@ app.get("/getTasks/", async (req, res) => {
     }
 })
 
+// Search Tasks: {"search_task": "<search_task, ex: 001>"}
+app.get("/searchTasks/", async (req, res) => {
+    try {
+        const search_task = await (req.body).search_task;
+        const output = await db.searchTask(search_task);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY SEARCHED TASKS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        res.send("Error with Search-Tasks: " + error);
+    }
+})
+
 // - POST:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
 app.post("/addTask/", async (req, res) => {
     try {
-        const task_id = await (req.body).task_id;
+        const task_name = await (req.body).task_name;
         const description = await (req.body).description;
-        await db.insertTask(task_id, description);
+        await db.insertTask(task_name, description);
 
         res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
     } catch (error) {
