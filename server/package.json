@@ -11,6 +11,8 @@
   "author": "Arjun L, Arsh M, Aryan S, Utkarsh L, Yash K",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
     "nodemon": "^2.0.20"
   }

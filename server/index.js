@@ -12,14 +12,235 @@ dotenv.config();
 const express = require("express");
 const app = express();
 
+//User Auth
+const bcrypt = require("bcrypt")
+const passport = require("passport")
+const initializePassport = require('./src/services/passport-config')
+const session = require("express-session");
+const { use } = require("passport/lib");
+
+// EJS
+const path = require('path')
+app.use(express.json())
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.urlencoded({ extended: true }));
+
+const publicDirectoryPath = path.join(__dirname, '../public')
+app.use(express.static(publicDirectoryPath))
+
+app.use(express.static(__dirname + '/public'));
+
 // Connect Database:
 db.initializeConnection()
 db.initializeDatabase()
 
-app.get("/", (req, res) => {
-    res.send("Hello, World!");
-});
+
+//use statements
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.listen(process.env.PORT, () => {
     console.log("Running on port: " + process.env.PORT + ".");
+});
+
+// Login Page:
+app.get("/", (req, res) => {
+    // res.send("Hello, JiraTree :D")
+    res.send("Initial Page")
+})
+
+//USER AUTHENTICATION
+
+//REGISTER USERS
+
+app.get("/register", checkNotAuthenticated, async (req, res) => {
+    res.render("register")
+})
+
+app.post("/register", async (req, res) => {
+
+    let {email, password} = req.body;
+    const role = "default";
+    const name = "default"
+    try {
+        const hashed_password = await bcrypt.hash(password, 10)
+        db.insertUser(name, email, hashed_password, role)
+        res.send('New User Created in Database!')
+    } catch {
+        res.send("Encountered an Error!")
+    }
+});
+
+//LOGIN USER 
+initializePassport(
+    passport
+    // email => users.find(user => user.email === email),
+    // id => users.find(user => user.id === id ),
+)
+
+app.get('/login', checkNotAuthenticated, (req, res) => {
+    res.render("login")
+})
+
+//passport authentication middleware
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/', 
+    failureRedirect: '/login', 
+    failureMessage: true,
+})
+)
+
+//checking authenticated users - middleware
+
+//SAMPLE PAGE - only for authenticated users
+app.get('/authenticated', checkAuthenticated, (req, res) => {
+    res.send("Authenticated!")
+})
+
+function checkAuthenticated (req, res, next) {
+    if (req.isAuthenticated()) {
+        //everything works!
+        return next()
+    }
+    else {
+        res.redirect('/login')
+    }
+}
+
+function checkNotAuthenticated (req, res, next) {
+    if (req.isAuthenticated()) {
+        res.redirect('/authenticated')
+    }
+    next()
+}
+
+//LOGOUT USER
+// app.delete('/logout', (req, res) => {
+//     req.logOut()
+//     res.redirect('/login')
+// })
+
+// --- General:
+// - GET:
+// Get All: {"table_name": "<table_name, ex: jt_user.users>"}
+app.get("/getAll/", async (req, res) => {
+    try {
+        const table_name = await (req.body).table_name;
+        const output = await db.getAll(table_name);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        res.send("Error with Get-All: " + error);
+    }
+});
+
+
+// - POST:
+// ...
+
+// --- USER:
+// - GET:
+// ...
+
+// - POST:
+// ...
+
+// --- TASK:
+// - GET:
+// Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
+app.get("/getTasks/", async (req, res) => {
+    try {
+        const meta_field = await (req.body).meta_field;
+        const value = await (req.body).value;
+        const output = await db.getTasks(meta_field, value);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY GOT TASKS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        res.send("Error with Get-Tasks: " + error);
+    }
+})
+
+// Search Tasks: {"search_task": "<search_task, ex: 001>"}
+app.get("/searchTasks/", async (req, res) => {
+    try {
+        const search_task = await (req.body).search_task;
+        const output = await db.searchTask(search_task);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY SEARCHED TASKS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        res.send("Error with Search-Tasks: " + error);
+    }
+})
+
+// - POST:
+// Add Task: {"task_id": "<task_id>", "description": "<description>"}
+app.post("/addTask/", async (req, res) => {
+    try {
+        const task_name = await (req.body).task_name;
+        const description = await (req.body).description;
+        await db.insertTask(task_name, description);
+
+        res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
+    } catch (error) {
+        res.send("Error with Add-Task: " + error);
+    }
+});
+
+// Update Task: 
+app.post("/updateTask/:task_id", async (req, res) => {
+    try {
+        const status = await (req.body).status;
+        const description = await (req.body).description;
+        const in_backlog = await (req.body).in_backlog;
+        const user_uid = await (req.body).user_uid;
+        const sprint_uid = await (req.body).sprint_uid;
+        
+        await db.updateTask(req.params.task_id, status, description, in_backlog, user_uid, sprint_uid);
+        res.send("SUCCESSFULLY UPDATED TASK TO DATABASE!");
+    } catch (error) {
+        res.send("Error with Update-Task: " + error);
+    }
+});
+
+// --- SPRINT:
+// - GET:
+// Get Sprints: {"meta_field": "<meta_field, ex: sprint_id>", "value": "<value, ex: 0000>"}
+app.get("/getSprints/", async (req, res) => {
+    try {
+        const meta_field = (req.body).meta_field;
+        const value = (req.body).value;
+        const output = await db.getSprints(meta_field, value);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY GOT SPRINTS ACCORDING TO QUERY PARAMETERS");
+    } catch (error) {
+        console.log("Error with Get-Sprints: " + error);
+    }
+});
+
+// - POST:
+app.post("/addSprint/", async (req, res) => {
+    try {
+        const sprint_id = (req.body).sprint_id;
+        const goal = (req.body).goal;
+        const output = await db.insertSprint(sprint_id, goal);
+
+        console.log(output.rows);
+        res.send("SUCCESSFULLY ADDED SPRINT TO DATABASE");
+    } catch (error) {
+        console.log("Error with Add-Sprint: " + error);
+    }
 });
