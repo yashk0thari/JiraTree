@@ -198,10 +198,10 @@ app.get("/createTask/", async (req, res) => {
 app.get("/task/:task_uid", async (req, res) => {
     try {
         const output = await db.getTasks("task_uid", req.params.task_uid);
-
         console.log(output.rows);
+        res.render("viewTask", {output: output.rows})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
-        res.send(output.rows)
+        // res.send(output.rows)
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }
