@@ -246,6 +246,7 @@ app.post("/addSprint/", async (req, res) => {
 });
 
 // - DASHBOARD:
+
 app.get("/dashboard", async (req, res) => {
     res.render("dashboard")
 })
