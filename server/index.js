@@ -244,3 +244,8 @@ app.post("/addSprint/", async (req, res) => {
         console.log("Error with Add-Sprint: " + error);
     }
 });
+
+// - DASHBOARD:
+app.get("/dashboard", async (req, res) => {
+    res.render("dashboard")
+})
