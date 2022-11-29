@@ -185,6 +185,28 @@ app.get("/searchTasks/", async (req, res) => {
     }
 })
 
+// Create Task (Web Page):
+app.get("/createTask/", async (req, res) => {
+    try {
+        const output = await db.getTasks("in_backlog", "TRUE");
+        res.render("addTask", {output: output.rows})
+    } catch (error) {
+        res.send("Error Loading Add Task Web Page")
+    }
+})
+
+app.get("/task/:task_uid", async (req, res) => {
+    try {
+        const output = await db.getTasks("task_uid", req.params.task_uid);
+
+        console.log(output.rows);
+        // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
+        res.send(output.rows)
+    } catch (error) {
+        res.send("Error with Get-All: " + error);
+    }
+});
+
 // - POST:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
 app.post("/addTask/", async (req, res) => {
@@ -193,22 +215,26 @@ app.post("/addTask/", async (req, res) => {
         const description = await (req.body).description;
         await db.insertTask(task_name, description);
 
-        res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
+        // res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
+        // const output = await db.getTasks("in_backlog", "TRUE");
+        // res.render("addTask", {output: output.rows})
+        res.redirect('/createTask/')
     } catch (error) {
         res.send("Error with Add-Task: " + error);
     }
 });
 
 // Update Task: 
-app.post("/updateTask/:task_id", async (req, res) => {
+app.post("/updateTask/:task_uid", async (req, res) => {
     try {
         const status = await (req.body).status;
         const description = await (req.body).description;
         const in_backlog = await (req.body).in_backlog;
         const user_uid = await (req.body).user_uid;
         const sprint_uid = await (req.body).sprint_uid;
+        const task_name = await (req.body).task_name;
         
-        await db.updateTask(req.params.task_id, status, description, in_backlog, user_uid, sprint_uid);
+        await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, user_uid, sprint_uid);
         res.send("SUCCESSFULLY UPDATED TASK TO DATABASE!");
     } catch (error) {
         res.send("Error with Update-Task: " + error);
@@ -249,4 +275,8 @@ app.post("/addSprint/", async (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
     res.render("dashboard")
+})
+
+app.get("/test", async (req, res) => {
+    res.render("test")
 })

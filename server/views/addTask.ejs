@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="navSectionContainer">
+	
+	<div class="logoContainer"> 
+
+		<img src="../img/logo@2x.png">
+		<a href="/"><span>JIRA-TREE</span> </a>
+
+
+	</div>
+
+</div>	
+
+
+<div class="contentContainer">
+	<div class="existLedgerHolder"> 
+		<div class="mainContainer">
+			
+			<p class="existEntries">Existing Tasks in Backlog</p>
+			<p class="mainText">Select a task to view more details</p>
+
+		</div>
+		<div class="hiddenDiv">
+			
+			<table class="mainTable">
+                    <% for (let task of output) { %>
+					<tr>
+						<td class="taskInfo" style="text-align: left;"><%= task.task_name %></td>
+						<td class="entryInfo"> <%= task.description %> </td>
+						<td class="otherInfo"> <a href="/task/<%=task.task_uid%>"> View  </a> </td>
+					</tr>
+                    <% }%>
+			</table>
+		</div>
+	</div>
+
+
+<div class="vl"></div>
+
+
+
+
+<div class="formApplication">
+	
+
+		<div class="mainContainerOne">
+			
+			<p class="addTask">Add a Task</p>
+			<p class="mainTextOne">Create a new task to add to Backlog. Enter the required details below.</p>
+		</div>
+
+
+		<div class="formAppContainer">
+			
+            <form action="/addTask/" method="POST" class = "form" id = "form">
+  				<input type="text" name="task_name" placeholder="Task Name" class="fields" id="task_name"><br><br>
+  				<input type="text" name="description" placeholder="Description" class="fieldOne" id="description"><br><br>
+                <button class="submit" id="submit"> submit </button>
+			</form>
+		</div>
+</div>
+</body>
+</html>
