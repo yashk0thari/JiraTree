@@ -1,7 +1,7 @@
-/* body{
+body{
 
-	margin: 0px;
-	padding: 0px;
+	margin: 10px;
+	padding-right: 100px;
 	
 
 }
@@ -18,6 +18,7 @@
 	display: flex;
 	justify-content: space-between;
 	overflow-x: hidden;
+    position: relative;
 }
 
 .logoContainer{
@@ -35,6 +36,9 @@
 	position: relative;
 	top:50%;
 	transform: translateY(-80%);
+    outline: #000000;
+
+    
 }
 
 .logoContainer span{
@@ -59,6 +63,9 @@ text-transform: uppercase;
 	border-radius: 50%;
 	background-color: #eee;
 	background-size: 45px,45px;
+    outline: black;
+    border-color: #000000;
+    border-width: 3px;
 	
 
 }
@@ -94,7 +101,7 @@ right: 120%;
 .ledgerBlock{
 
 	height: 500px;
-	width: 50%;
+	width: 90%;
 	margin-left: 10%;
 	margin-top: 70px;
 	border-radius: 30px;
@@ -106,24 +113,24 @@ right: 120%;
 
 .ledgerBlockLabel{
 
-	margin-left: 10%;
-	margin-top: 30px;
+	margin-left: 45%;
+	margin-top: 100px;
+    margin-bottom: 200px;
 	position: absolute;
 	font: normal normal 600 13px/18px Lato;
 	letter-spacing: 2px;
 	color: #707070;
 	text-transform: uppercase;
 	opacity: 1;
+    font-size: medium;
+    align-content: center;
+    text-decoration: underline;
+    align-items: center;
 
 }
 
-.addInfoBlock{
 
-	margin-left: 5%;
-	margin-top:50px;
-	width: 40%;
 
-}
 
 .shipmentBlock{
 
@@ -423,243 +430,37 @@ a{
 #map{
 
 	width: 24%;
-	/* height: 205px; */
+	height: 205px;
 	/* position: absolute; */
-	/* border-radius: 30px; */
-	/* top: 480px; */
-	/* left:62%; */
+	border-radius: 30px;
+	top: 480px;
+	left:62%;
 
-/* } */ 
+}
+.Sprints{
+    margin-top: 200px;
+    position: relative;
+    padding-top: 10px;
 
-/*  import google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-*{
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  text-decoration: none;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body{
-  background: rgb(243, 243, 243);
-}
-.header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  padding: 20px;
-  background: #fff;
-}
-.logo{
-  display: flex;
-  align-items: center;
-}
-.logo a{
-  color: #000;
-  font-size: 18px;
-  font-weight: 600;
-  margin: 2rem 8rem 2rem 2rem;
-}
-.search_box{
-  display: flex;
-  align-items: center;
-}
-.search_box input{
-  padding: 9px;
-  width: 250px;
-  background: rgb(228, 228, 228);
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-}
-.search_box i{
-  padding: 0.66rem;
-  cursor: pointer;
-  color: #fff;
-  background: #000;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.header-icons{
-  display: flex;
-  align-items: center;
-}
-.header-icons i{
-  margin-right: 2rem;
-  cursor: pointer;
-}
-.header-icons .account{
-  width: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header-icons .account img{
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-  border-radius: 50%;
-}
-.container{
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Side menubar section */
-nav{
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-}
-.side_navbar{
-  padding: 1px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 300px;
-  height: 800px;
-}
-.side_navbar span{
-  color: gray;
-  margin: 1rem 3rem;
-  font-size: 12px;
-}
-.side_navbar a{
-  width: 100%;
-  padding: 0.8rem 3rem;
-  font-weight: 500;
-  font-size: 15px;
-  color: rgb(100, 100, 100);
-}
-.links{
-  margin-top: 5rem;
-  display: flex;
-  flex-direction: column;
-}
-.links a{
-  font-size: 13px;
-}
-.side_navbar a:hover{
-  background: rgb(235, 235, 235);
-}
-.side_navbar .active{
-  border-left: 2px solid rgb(100, 100, 100);
-}
-
-/* Main Body Section */
-.main-body{
-  width: 70%;
-  padding: 1rem;
-}
-.promo_card{
-  width: 70%;
-  height: auto;
-  color: #fff;
-  margin-top: 10px;
-  border-radius: 8px;
-  padding: 0.5rem 1rem 1rem 3rem;
-  background: rgb(37, 37, 37);
-}
-.promo_card h1, .promo_card span, button{
-  margin: 0px;
-}
-.promo_card button{
-  display: block;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.history_lists{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.row{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1rem 0;
-}
-table{
-  background: #fff;
-  padding: 1rem;
-  text-align: left;
-  border-radius: 10px;
-}
-table td, th{
-  padding: 0.2rem 0.8rem;
-}
-table th{
-  font-size: 15px;
-}
-table td{
-  font-size: 13px;
-  color: rgb(100, 100, 100);
-}
-
-
-
-/* Sidebar Section */
-.sidebar{
-  width: 15%;
-  padding: 2rem 1rem;
-  background: #fff;
-}
-.sidebar h4{
-  margin-bottom: 1.5rem;
-}
-.sidebar .balance{
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.balance .icon{
-  color: #fff;
-  font-size: 20px;
-  border-radius: 6px;
-  margin-right: 1rem;
-  padding: 1rem;
-  background: rgb(37, 37, 37);
-}
-.balance .info h5{
-  font-size: 16px;
-}
-.balance .info span{
-  font-size: 14px;
-  color: rgb(100, 100, 100);
-}
-.balance .info i{
-  margin-right: 2px;
-}
-
-
-.logoContainer{
-
-	height: 50px;
-	width: 50px;
+	height: 500px;
+	width: 100%;
+	margin-top: 70px;
+	border-radius: 30px;
+	border: solid 2px #eee;
 	
 
+
 }
 
-.logoContainer img{
-	height: 10px; 
-	width: 10px;
-	position: relative;
-	top:50%;
-	transform: translateY(-80%);
-}
+.SprintContainer{
+    margin-top: 40%;
+    margin-left: 0;
 
-.logoContainer span{
+	height: 1vh;
+	width: 100%;
+	display: flex;
+    
+    align-self: baseline;
 
-font-family: 'Lato', sans-serif;
-font-size: 15px;
-position: relative;
-line-height: 50px;
-margin-left: 10%;
-letter-spacing: 2px;
-font-weight: 700;
-color: #707070;
+
 }

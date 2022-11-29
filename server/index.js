@@ -249,3 +249,7 @@ app.post("/addSprint/", async (req, res) => {
 app.get("/dashboard", async (req, res) => {
     res.render("dashboard")
 })
+
+app.get("/test", async (req, res) => {
+    res.render("test")
+})
