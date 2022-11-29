@@ -1,5 +1,6 @@
 // Import Relavent Libraries + Modules:
 const dotenv = require("dotenv");
+const date = require('date-and-time');
 
 // Database:
 const DB = require("./src/services/db/db")
@@ -273,8 +274,11 @@ app.post("/addSprint/", async (req, res) => {
 });
 
 // - DASHBOARD:
+
 app.get("/dashboard", async (req, res) => {
-    res.render("dashboard")
+    const tasks_obj = await db.getAll("jt_task.tasks")
+    const allTasks = tasks_obj.rows
+    res.render("dashboard", {tasks: allTasks, date:date})
 })
 
 app.get("/test", async (req, res) => {

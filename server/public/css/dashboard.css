@@ -497,3 +497,13 @@ a{
 
 
 }
+
+.icon {
+	transition: transform .2s; /* Animation */
+	margin-left: 80%;
+}
+.icon:hover {
+	transform: scale(1.2);
+	background-color: lightgray;
+	border-radius: 20%;
+}
