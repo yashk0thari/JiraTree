@@ -199,10 +199,10 @@ app.get("/createTask/", async (req, res) => {
 app.get("/task/:task_uid", async (req, res) => {
     try {
         const output = await db.getTasks("task_uid", req.params.task_uid);
-
         console.log(output.rows);
+        res.render("viewTask", {output: output.rows})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
-        res.send(output.rows)
+        // res.send(output.rows)
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }
@@ -234,8 +234,9 @@ app.post("/updateTask/:task_uid", async (req, res) => {
         const user_uid = await (req.body).user_uid;
         const sprint_uid = await (req.body).sprint_uid;
         const task_name = await (req.body).task_name;
+        const datetime = await (req.body).datetime;
         
-        await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, user_uid, sprint_uid);
+        await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, datetime, user_uid, sprint_uid);
         res.send("SUCCESSFULLY UPDATED TASK TO DATABASE!");
     } catch (error) {
         res.send("Error with Update-Task: " + error);
