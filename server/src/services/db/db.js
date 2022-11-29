@@ -59,8 +59,12 @@ class DatabaseFunctions {
         return output;
     }
 
-    updateTask(task_id, status, description, in_backlog, user_uid, sprint_uid) {
+    updateTask(task_uid, task_name, status, description, in_backlog, user_uid, sprint_uid) {
         var line = ""
+        if (task_name != "") {
+            line += `task_name = '${task_name}', `
+        }
+
         if (status != "") {
             line += `status = '${status}', `
         }
@@ -85,7 +89,7 @@ class DatabaseFunctions {
             line = line.substring(0, line.length - 2)
         }
         
-        this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_id}';`)
+        this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_uid}';`)
     }
 
     async searchTask(contain_string) {
