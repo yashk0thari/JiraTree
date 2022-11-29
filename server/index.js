@@ -216,6 +216,8 @@ app.post("/addTask/", async (req, res) => {
         await db.insertTask(task_name, description);
 
         // res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
+        // const output = await db.getTasks("in_backlog", "TRUE");
+        // res.render("addTask", {output: output.rows})
         res.redirect('/createTask/')
     } catch (error) {
         res.send("Error with Add-Task: " + error);
