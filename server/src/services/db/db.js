@@ -19,20 +19,20 @@ class DatabaseFunctions {
         }
     }
 
-    initializeConnection() {
-        this.query(this.db_init.select_now);
+    async initializeConnection() {
+        await this.query(this.db_init.select_now);
     }
 
-    initializeDatabase() {
-        this.query(this.db_init.init_schemas + "\n" + this.db_init.init_tables);
+    async initializeDatabase() {
+        await this.query(this.db_init.init_schemas + "\n" + this.db_init.init_tables);
     }
 
-    insertTask(task_name, description) {
-        this.query(`INSERT INTO jt_task.tasks (task_name, status, description, in_backlog, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
+    async insertTask(task_name, description) {
+        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, in_backlog, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
-    insertSprint(sprint_id, goal) {
-        this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}');`);
+    async insertSprint(sprint_id, goal) {
+        await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}');`);
     }
 
     async getTasks(meta_field, value) {
@@ -45,8 +45,8 @@ class DatabaseFunctions {
         return output;
     }
 
-    insertUser(name, email, password, role) {
-        this.query(`INSERT INTO jt_user.users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}');`);
+    async insertUser(name, email, password, role) {
+        await this.query(`INSERT INTO jt_user.users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}');`);
     }
 
     async getUsers(meta_field, value) {
@@ -59,8 +59,12 @@ class DatabaseFunctions {
         return output;
     }
 
-    updateTask(task_id, status, description, in_backlog, user_uid, sprint_uid) {
+    async updateTask(task_uid, task_name, status, description, in_backlog, user_uid, sprint_uid) {
         var line = ""
+        if (task_name != "") {
+            line += `task_name = '${task_name}', `
+        }
+
         if (status != "") {
             line += `status = '${status}', `
         }
@@ -85,7 +89,7 @@ class DatabaseFunctions {
             line = line.substring(0, line.length - 2)
         }
         
-        this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_id}';`)
+        await this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_id = '${task_uid}';`)
     }
 
     async searchTask(contain_string) {
