@@ -56,7 +56,7 @@ app.listen(process.env.PORT, () => {
 // Login Page:
 app.get("/", (req, res) => {
     // res.send("Hello, JiraTree :D")
-    res.render("login")
+    res.send("Initial Page")
 })
 
 //USER AUTHENTICATION
@@ -64,14 +64,14 @@ app.get("/", (req, res) => {
 //REGISTER USERS
 
 app.get("/register", checkNotAuthenticated, async (req, res) => {
-    res.send("Register User!")
+    res.render("register")
 })
 
 app.post("/register", async (req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
-    const role = req.body.email;
+
+    let {email, password} = req.body;
+    const role = "default";
+    const name = "default"
     try {
         const hashed_password = await bcrypt.hash(password, 10)
         db.insertUser(name, email, hashed_password, role)
@@ -89,7 +89,7 @@ initializePassport(
 )
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-    res.send("Login Page")
+    res.render("login")
 })
 
 //passport authentication middleware
@@ -144,6 +144,7 @@ app.get("/getAll/", async (req, res) => {
         res.send("Error with Get-All: " + error);
     }
 });
+
 
 // - POST:
 // ...
