@@ -31,8 +31,8 @@ class DatabaseFunctions {
         await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, in_backlog, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
-    async insertSprint(sprint_id, goal) {
-        await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}');`);
+    async insertSprint(sprint_id, goal, prev_sprint) {
+        await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal, prev_sprint) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}', '${prev_sprint}');`);
     }
 
     async getTasks(meta_field, value) {

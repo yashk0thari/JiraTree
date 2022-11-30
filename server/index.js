@@ -49,15 +49,25 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-
+// app.use(function(req,res,next){
+//     res.locals.currentUser = req.user;
+//     next();
+//   })
+  
 app.listen(process.env.PORT, () => {
     console.log("Running on port: " + process.env.PORT + ".");
 });
 
-// Login Page:
+//send to dashboard
 app.get("/", (req, res) => {
     // res.send("Hello, JiraTree :D")
-    res.send("Initial Page")
+
+    if (req.isAuthenticated) {
+        return res.redirect('/dashboard')
+    }
+    else {
+        return res.redirect('/login')
+    }
 })
 
 //USER AUTHENTICATION
@@ -89,7 +99,7 @@ initializePassport(
     // id => users.find(user => user.id === id ),
 )
 
-app.get('/login', checkNotAuthenticated, (req, res) => {
+app.get('/login', (req, res) => {
     res.render("login")
 })
 
@@ -126,10 +136,12 @@ function checkNotAuthenticated (req, res, next) {
 }
 
 //LOGOUT USER
-// app.delete('/logout', (req, res) => {
-//     req.logOut()
-//     res.redirect('/login')
-// })
+app.post('/logout', function(req, res, next){
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/login');
+      });
+  });
 
 // --- General:
 // - GET:
@@ -264,9 +276,9 @@ app.post("/addSprint/", async (req, res) => {
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
-        const output = await db.insertSprint(sprint_id, goal);
+        const prev_sprint = (req.body).prev_sprint;
+        const output = await db.insertSprint(sprint_id, goal, prev_sprint);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY ADDED SPRINT TO DATABASE");
     } catch (error) {
         console.log("Error with Add-Sprint: " + error);
@@ -276,9 +288,26 @@ app.post("/addSprint/", async (req, res) => {
 // - DASHBOARD:
 
 app.get("/dashboard", async (req, res) => {
-    const tasks_obj = await db.getAll("jt_task.tasks")
-    const allTasks = tasks_obj.rows
-    res.render("dashboard", {tasks: allTasks, date:date})
+    const tasks_obj = await db.getTasks("in_backlog", "TRUE")
+    const backlogTasks = tasks_obj.rows
+
+    const sprints_obj = await db.getAll("jt_sprint.sprints")
+    const allSprints = sprints_obj.rows
+
+    var sprint_tasks = {}
+
+    let name = "Not Logged In"
+    if (req.user) {
+        name = req.user.rows[0].name;
+    }
+
+
+    for (let sprint of allSprints) {
+        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
+        sprint_tasks[sprint.sprint_uid] = tasks.rows
+    }
+
+    res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 
 app.get("/test", async (req, res) => {
