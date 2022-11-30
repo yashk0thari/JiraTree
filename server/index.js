@@ -86,7 +86,7 @@ app.post("/register", async (req, res) => {
     try {
         const hashed_password = await bcrypt.hash(password, 10)
         db.insertUser(name, email, hashed_password, role)
-        res.send('New User Created in Database!')
+        res.redirect('/login')
     } catch {
         res.send("Encountered an Error!")
     }
@@ -151,7 +151,6 @@ app.get("/getAll/", async (req, res) => {
         const table_name = await (req.body).table_name;
         const output = await db.getAll(table_name);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         res.send("Error with Get-All: " + error);
@@ -178,7 +177,6 @@ app.get("/getTasks/", async (req, res) => {
         const value = await (req.body).value;
         const output = await db.getTasks(meta_field, value);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT TASKS ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         res.send("Error with Get-Tasks: " + error);
@@ -216,13 +214,21 @@ app.get("/task/:task_uid/", async (req, res) => {
         // console.log(output.rows);
         const update = req.query.update;
 
+        //Get Sprint Object with Foreign Key
         const sprint_uid = output.rows[0].sprint_uid;
         const sprint = await db.getSprints("sprint_uid", sprint_uid);
-        console.log(sprint)
         const goal = sprint.rows[0].goal;
-        res.render("viewTask", {output: output.rows, update: update, goal: goal})
-        // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
-        // res.send(output.rows)
+        
+        //Get all sprints
+        const sprint_objs = await db.getAll("jt_sprint.sprints");
+        const sprints = sprint_objs.rows
+
+        //Get User Object with Foreign Key
+        const user_uid = output.rows[0].user_uid;
+        const user = await db.getUsers("user_uid", user_uid);
+        const username = user.rows[0].name;
+
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, username: username, sprints: sprints})
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }
@@ -249,21 +255,10 @@ app.post("/addTask/", async (req, res) => {
 //Still needs testing
 
 app.post("/updateTask/:task_uid", async (req, res) => {
-    console.log(req.body);
     try {
-        const status = await (req.body).status;
-        const description = await (req.body).description;
-        const user_uid = await (req.body).user_uid;
-        const sprint_uid = await (req.body).sprint_uid;
-        const task_name = await (req.body).task_name;
-        const deadline = await (req.body).deadline;
+        let {status, description, user_uid, sprint_uid, task_name, deadline} = req.body;
 
-        console.log(status)
-        console.log(description)
-        console.log(user_uid)
-        console.log(sprint_uid)
-        console.log(task_name)
-        console.log(deadline)
+        console.log(sprint_uid);
         
         await db.updateTask(req.params.task_uid, task_name, status, description, deadline, user_uid, sprint_uid);
         res.redirect(`/task/${req.params.task_uid}?update=False`);
@@ -282,7 +277,6 @@ app.get("/getSprints/", async (req, res) => {
         const value = (req.body).value;
         const output = await db.getSprints(meta_field, value);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT SPRINTS ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         console.log("Error with Get-Sprints: " + error);

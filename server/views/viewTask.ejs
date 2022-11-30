@@ -27,7 +27,7 @@
 		<div class="mainContainer">
 			
 			<!-- <p class="existEntries">Task ID: <%= output[0].task_uid %></p> -->
-			<p class="mainText">Task ID: <%= output[0].task_uid %></p>
+			<p class="mainText"> <span style = "color: #6C63FF"> Task ID: </span> <%= output[0].task_uid %></p>
 
 		</div>
 		<div class="hiddenDiv">
@@ -42,13 +42,18 @@
                         <td class="entryInfo"> <%= "Sprint Assigned To: " %> </td>
 						<td class="taskInfo" style="text-align: left;"> <%= task_info.sprint_uid %></td>
 					</tr>
-                    <tr>
-                        <td class="entryInfo"> <%= "User Assigned To: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= task_info.user_uid %></td>
-					</tr>
+                    
                     <tr>
                         <td class="entryInfo"> <%= "Sprint Assigned Goal: " %> </td>
 						<td class="taskInfo" style="text-align: left;"> <%=goal%></td>
+					</tr>
+					<tr>
+                        <td class="entryInfo"> <%= "User Assigned To: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.user_uid %></td>
+					</tr>
+					<tr>
+                        <td class="entryInfo"> <%= "User Name Assigned To: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= username %></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Created on: " %> </td>
@@ -89,10 +94,16 @@ if (update == "True") {
 		<!-- test this! -->
 		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
             <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
-            <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"><br><br>
+			<select name="sprint_uid" id="sprint_uid">
+				<% for (let sprint of sprints) { %>
+    				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+				<% }%>
+  			</select>
+			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
+				<br><br>
             <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br>
             <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="status"><br><br>
-            <input type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="fieldOne" id="deadline"><br><br>
+            <input style = "text-decoration: none;" type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="fieldOne" id="deadline"><br><br>
             <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
 			<button class="submit" id="submit"> submit </button>
 		</form>
