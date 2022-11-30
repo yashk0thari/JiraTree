@@ -284,3 +284,6 @@ app.get("/dashboard", async (req, res) => {
 app.get("/test", async (req, res) => {
     res.render("test")
 })
+app.get("/profile", async (req, res) => {
+    res.render("profile")
+})
