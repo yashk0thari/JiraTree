@@ -21,7 +21,8 @@ const session = require("express-session");
 const { use } = require("passport/lib");
 
 // EJS
-const path = require('path')
+const path = require('path');
+const { stat } = require("fs");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -200,7 +201,7 @@ app.get("/searchTasks/", async (req, res) => {
 // Create Task (Web Page):
 app.get("/createTask/", async (req, res) => {
     try {
-        const output = await db.getTasks("in_backlog", "TRUE");
+        const output = await db.getTasks("sprint_uid", "814754907646558210");
         res.render("addTask", {output: output.rows})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
@@ -214,7 +215,12 @@ app.get("/task/:task_uid/", async (req, res) => {
         const output = await db.getTasks("task_uid", req.params.task_uid);
         // console.log(output.rows);
         const update = req.query.update;
-        res.render("viewTask", {output: output.rows, update: update})
+
+        const sprint_uid = output.rows[0].sprint_uid;
+        const sprint = await db.getSprints("sprint_uid", sprint_uid);
+        console.log(sprint)
+        const goal = sprint.rows[0].goal;
+        res.render("viewTask", {output: output.rows, update: update, goal: goal})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
         // res.send(output.rows)
     } catch (error) {
@@ -241,17 +247,25 @@ app.post("/addTask/", async (req, res) => {
 
 // Update Task: 
 //Still needs testing
+
 app.post("/updateTask/:task_uid", async (req, res) => {
+    console.log(req.body);
     try {
         const status = await (req.body).status;
         const description = await (req.body).description;
-        const in_backlog = await (req.body).in_backlog;
         const user_uid = await (req.body).user_uid;
         const sprint_uid = await (req.body).sprint_uid;
         const task_name = await (req.body).task_name;
-        const datetime = await (req.body).datetime;
+        const deadline = await (req.body).deadline;
+
+        console.log(status)
+        console.log(description)
+        console.log(user_uid)
+        console.log(sprint_uid)
+        console.log(task_name)
+        console.log(deadline)
         
-        await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, datetime, user_uid, sprint_uid);
+        await db.updateTask(req.params.task_uid, task_name, status, description, deadline, user_uid, sprint_uid);
         res.redirect(`/task/${req.params.task_uid}?update=False`);
     } catch (error) {
         res.redirect(`/task/${req.params.task_uid}?update=False`);
@@ -318,7 +332,7 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 // - DASHBOARD:
 
 app.get("/dashboard", async (req, res) => {
-    const tasks_obj = await db.getTasks("in_backlog", "TRUE")
+    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
     const backlogTasks = tasks_obj.rows
 
     const sprints_obj = await db.getAll("jt_sprint.sprints")
