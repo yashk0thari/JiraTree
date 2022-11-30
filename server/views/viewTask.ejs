@@ -87,24 +87,24 @@ if (update == "True") {
 	<div class="mainContainerOne">
 		<p class="addTask">Update Task</p>
 	</div>
-
-
 	<div class="formAppContainer">
 		
 		<!-- test this! -->
 		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
             <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
-			<select name="sprint_uid" id="sprint_uid">
+			<div class="DContainer">
+			<select name="sprint_uid" id="sprint_uid" class="select-dropdown">
 				<% for (let sprint of sprints) { %>
     				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
 				<% }%>
   			</select>
 			  <br><br>
-			<select name="user_uid" id="user_uid">
+			<select name="user_uid" id="user_uid" class="select-dropdown">
 				<% for (let user of users) { %>
     				<option value="<%=user.user_uid%>"><%=user.email%></option>
 				<% }%>
   			</select>
+		</div>
 			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
 				<br><br>
 			  <!-- <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br> -->
