@@ -28,7 +28,7 @@ class DatabaseFunctions {
     }
 
     async insertTask(task_name, description) {
-        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
+        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
     async insertSprint(sprint_id, goal, prev_sprint) {
@@ -57,6 +57,14 @@ class DatabaseFunctions {
     async getAll(table_name) {
         var output = await this.query(`SELECT * FROM ${table_name};`);
         return output;
+    }
+
+    async deleteTask(task_uid) {
+        await this.query(`DELETE FROM jt_task.tasks WHERE task_uid = '${task_uid}'`)
+    }
+
+    async deleteSprint(sprint_uid) {
+        await this.query(`DELETE FROM jt_sprint.sprints WHERE sprint_uid = '${sprint_uid}'`)
     }
 
     async updateSprint(sprint_uid, sprint_id, status, goal, prev_sprint) {

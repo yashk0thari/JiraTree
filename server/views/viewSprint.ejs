@@ -80,6 +80,9 @@ if (update == "True") {
 			<!-- Add dateTime field for assigned Date/Time -->
 			<button class="submit" id="submit"> submit </button>
 		</form>
+		<form action="/deleteSprint/<%=output[0].sprint_uid%>" method="POST" id = "form">
+			<button class="delete" id="delete"> delete </button>
+		</form>
 	</div>
 </div>
 <% } %>

@@ -266,6 +266,16 @@ app.post("/updateTask/:task_uid", async (req, res) => {
     }
 });
 
+// Delete Task:
+app.post("/deleteTask/:task_uid", async (req, res) => {
+    try {
+        await db.deleteTask(req.params.task_uid);
+        res.redirect(`/dashboard`);
+    } catch (error) {
+        res.send("Error with Delete-Task: " + error);
+    }
+})
+
 // --- SPRINT:
 // - GET:
 // Get Sprints: {"meta_field": "<meta_field, ex: sprint_id>", "value": "<value, ex: 0000>"}
@@ -306,6 +316,16 @@ app.post("/updateSprint/:sprint_uid", async (req, res) => {
     } catch (error) {
         res.redirect(`/sprint/${req.params.sprint_uid}?update=False`);
         // res.send("Error with Update-Sprint: " + error);
+    }
+})
+
+// Delete Sprint:
+app.post("/deleteSprint/:sprint_uid", async (req, res) => {
+    try {
+        await db.deleteSprint(req.params.sprint_uid);
+        res.redirect(`/dashboard`);
+    } catch (error) {
+        res.send("Error with Delete-Sprint: " + error);
     }
 })
 
