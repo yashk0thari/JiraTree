@@ -58,7 +58,7 @@
 						<td class="dateInfo"><%=date.format(task.datetime, 'MMM DD YYYY')%></td>
 						<td class="otherInfo"><%=task.task_name%></td>
 						<td class="otherInfo"><%=task.status%></td>
-						<td class="otherInfo"> <a href="/task/<%=task.task_uid%>"> View </a></td>
+						<td class="otherInfo"> <a href="/task/<%=task.task_uid%>?update=False"> View </a></td>
 					</tr>
                     <% } %>
                     </tr>
@@ -74,8 +74,14 @@
 
     <div class="SprintContainer">
         <div class="ledgerBlockLabel"> Sprints </div>
-    
+		
     <div class="sprintParent">
+		<a href="/createSprint">
+			<span class="material-symbols-outlined icon">
+				add
+			</span>
+		</a> 
+
 		<% 
 			for (let sprint of sprints) { 
 				if (sprint.sprint_uid != 814754907646558210) {

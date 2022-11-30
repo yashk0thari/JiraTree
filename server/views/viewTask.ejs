@@ -7,20 +7,16 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 </head>
 
 <body>
 
 <div class="navSectionContainer">
-	
 	<div class="logoContainer"> 
-
 		<img src="../img/logo@2x.png">
 		<a href="/"><span>JIRA-TREE</span> </a>
-
-
 	</div>
 
 </div>	
@@ -65,34 +61,38 @@
                     <% }%>
 			</table>
 		</div>
-        <form action="/addTask/" method="POST" class = "form" id = "form">
-          <button class="submit" id="submit"> submit </button>
-      </form>
-        <button class="submit" id="submit"> update </button>
+		<a href ="/task/<%=output[0].task_uid%>?update=True"> <button class="submit" id="submit"> Update </button> </a>
 	</div>
-
 
 <div class="vl"></div>
 
-
-<!-- <div class="formApplication">
+<% 
+if (update == "True") {
+%>
+<div class="formApplication update_form">
 	
+	<div class="mainContainerOne">
+		
+		<p class="addTask">Update This Task</p>
+		<p class="mainTextOne">Update This Current Task</p>
+	</div>
 
-		<div class="mainContainerOne">
-			
-			<p class="addTask">Add a Task</p>
-			<p class="mainTextOne">Create a new task to add to Backlog. Enter the required details below.</p>
-		</div>
+
+	<div class="formAppContainer">
+		
+		<!-- test this! -->
+		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
+			  <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
+			  <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
+			  <input type="text" name="assigned" placeholder="Assigned To" class="fieldOne" id="description"><br><br>
+			  <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="description"><br><br>
+			<!-- Add dateTime field for assigned Date/Time -->
+			<button class="submit" id="submit"> submit </button>
+		</form>
+	</div>
+</div>
+<% } %>
 
 
-		<div class="formAppContainer">
-			
-            <form action="/addTask/" method="POST" class = "form" id = "form">
-  				<input type="text" name="task_name" placeholder="Task Name" class="fields" id="task_name"><br><br>
-  				<input type="text" name="description" placeholder="Description" class="fieldOne" id="description"><br><br>
-                <button class="submit" id="submit"> submit </button>
-			</form>
-		</div>
-</div> -->
 </body>
 </html>

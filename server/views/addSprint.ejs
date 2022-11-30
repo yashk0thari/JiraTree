@@ -30,18 +30,19 @@
 	<div class="existLedgerHolder"> 
 		<div class="mainContainer">
 			
-			<p class="existEntries">Existing Tasks in Backlog</p>
-			<p class="mainText">Select a task to view more details</p>
+			<p class="existEntries">All Sprints that are in progress</p>
+			<p class="mainText">Select a Sprint to learn more details</p>
 
 		</div>
 		<div class="hiddenDiv">
 			
 			<table class="mainTable">
-                    <% for (let task of output) { %>
+                    <% for (let sprint of in_progress) { %>
 					<tr>
-						<td class="taskInfo" style="text-align: left;"><%= task.task_name %></td>
-						<td class="entryInfo"> <%= task.description %> </td>
-						<td class="otherInfo"> <a href="/task/<%=task.task_uid%>?update=False"> View  </a> </td>
+						<td class="taskInfo" style="text-align: left;"><%=sprint.goal%></td>
+						<td class="entryInfo"> <%= sprint.status%> </td>
+                        <td class="entryInfo"> <%= sprint.sprint_id%> </td>
+                        <td class="otherInfo"> <a href="/sprint/<%=sprint.sprint_uid%>?update=False">View</a></td>
 					</tr>
                     <% }%>
 			</table>
@@ -59,16 +60,17 @@
 
 		<div class="mainContainerOne">
 			
-			<p class="addTask">Add a Task</p>
-			<p class="mainTextOne">Create a new task to add to Backlog. Enter the required details below.</p>
+			<p class="addTask">Add a Sprint</p>
+			<p class="mainTextOne">Create a new Sprint. Enter the required details below.</p>
 		</div>
 
 
 		<div class="formAppContainer">
 			
-            <form action="/addTask/" method="POST" class = "form" id = "form">
-  				<input type="text" name="task_name" placeholder="Task Name" class="fields" id="task_name"><br><br>
-  				<input type="text" name="description" placeholder="Description" class="fieldOne" id="description"><br><br>
+            <form action="/addSprint/" method="POST" class = "form" id = "form">
+                <input type="text" name="sprint_id" placeholder="Sprint Id" class="fieldOne" id="sprint_id"><br><br>
+  				<input type="text" name="goal" placeholder="Sprint Goal" class="fields" id="goal"><br><br>
+  				<input type="text" name="prev_sprint" placeholder="Previous Sprint" class="fieldOne" id="prev_sprint"><br><br>
                 <button class="submit" id="submit"> submit </button>
 			</form>
 		</div>
