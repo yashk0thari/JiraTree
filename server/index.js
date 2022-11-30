@@ -221,14 +221,18 @@ app.get("/task/:task_uid/", async (req, res) => {
         
         //Get all sprints
         const sprint_objs = await db.getAll("jt_sprint.sprints");
-        const sprints = sprint_objs.rows
+        const sprints = sprint_objs.rows;
+
+        //Get all Users
+        const user_objs = await db.getAll("jt_user.users");
+        const users = user_objs.rows;
 
         //Get User Object with Foreign Key
         const user_uid = output.rows[0].user_uid;
         const user = await db.getUsers("user_uid", user_uid);
         const username = user.rows[0].name;
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, username: username, sprints: sprints})
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, username: username, sprints: sprints, users: users})
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }

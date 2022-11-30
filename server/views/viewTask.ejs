@@ -99,9 +99,15 @@ if (update == "True") {
     				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
 				<% }%>
   			</select>
+			  <br><br>
+			<select name="user_uid" id="user_uid">
+				<% for (let user of users) { %>
+    				<option value="<%=user.user_uid%>"><%=user.email%></option>
+				<% }%>
+  			</select>
 			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
 				<br><br>
-            <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br>
+			  <!-- <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br> -->
             <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="status"><br><br>
             <input style = "text-decoration: none;" type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="fieldOne" id="deadline"><br><br>
             <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
