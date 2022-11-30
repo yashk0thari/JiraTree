@@ -43,6 +43,10 @@
 						<td class="taskInfo" style="text-align: left;"> <%= task_info.sprint_uid %></td>
 					</tr>
                     <tr>
+                        <td class="entryInfo"> <%= "User Assigned To: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.user_uid %></td>
+					</tr>
+                    <tr>
                         <td class="entryInfo"> <%= "Sprint Assigned Goal: " %> </td>
 						<td class="taskInfo" style="text-align: left;"> <%=goal%></td>
 					</tr>
@@ -56,7 +60,7 @@
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Task Deadline: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= "TODO:" %></td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.deadline %></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Description: " %> </td>
@@ -76,9 +80,7 @@ if (update == "True") {
 <div class="formApplication update_form">
 	
 	<div class="mainContainerOne">
-		
-		<p class="addTask">Update This Task</p>
-		<p class="mainTextOne">Update This Current Task</p>
+		<p class="addTask">Update Task</p>
 	</div>
 
 
@@ -86,11 +88,12 @@ if (update == "True") {
 		
 		<!-- test this! -->
 		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
-			  <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
-			  <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
-			  <input type="text" name="sprint_uid" placeholder="Assigned To" class="fieldOne" id="description"><br><br>
-			  <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="description"><br><br>
-			<!-- Add dateTime field for assigned Date/Time -->
+            <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
+            <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"><br><br>
+            <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br>
+            <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="status"><br><br>
+            <input type="text" name="deadline" placeholder="Change Task Deadline" class="fieldOne" id="deadline"><br><br>
+            <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
 			<button class="submit" id="submit"> submit </button>
 		</form>
 	</div>
