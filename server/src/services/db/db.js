@@ -59,6 +59,31 @@ class DatabaseFunctions {
         return output;
     }
 
+    async updateSprint(sprint_uid, sprint_id, status, goal, prev_sprint) {
+        var line = ""
+        if (sprint_id != "") {
+            line += `sprint_id = '${sprint_id}', `   
+        }
+
+        if (status != "") {
+            line += `status = '${status}', `   
+        }
+
+        if (goal != "") {
+            line += `goal = '${goal}', `   
+        }
+
+        if (prev_sprint != "") {
+            line += `prev_sprint = '${prev_sprint}', `
+        }
+
+        if (line.slice(-2)[0] === ",") {
+            line = line.substring(0, line.length - 2)
+        }
+        console.log(`UPDATE jt_sprint.sprints SET ${line} WHERE sprint_uid = '${sprint_uid}';`)
+        await this.query(`UPDATE jt_sprint.sprints SET ${line} WHERE sprint_uid = '${sprint_uid}';`)
+    }
+
     async updateTask(task_uid, task_name, status, description, deadline, user_uid, sprint_uid) {
         var line = ""
         if (task_name != "") {

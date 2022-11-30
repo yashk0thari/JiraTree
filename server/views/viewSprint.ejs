@@ -72,11 +72,11 @@ if (update == "True") {
 
 	<div class="formAppContainer">
 		
-		<form action="/updateSprint/" method="POST" class = "form" id = "form">
-			  <input type="text" name="task_name" placeholder="Change Sprint Name" class="fields" id="task_name"><br><br>
-			  <input type="text" name="description" placeholder="Change Sprint Goal" class="fieldOne" id="description"><br><br>
-			  <input type="text" name="assigned" placeholder="Change Previous Sprint" class="fieldOne" id="description"><br><br>
-			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="description"><br><br>
+		<form action="/updateSprint/<%=output[0].sprint_uid%>" method="POST" class = "form" id = "form">
+			  <input type="text" name="sprint_id" placeholder="Change Sprint ID" class="fields" id="sprint_id"><br><br>
+			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="status"><br><br>
+			  <input type="text" name="goal" placeholder="Change Sprint Goal" class="fieldOne" id="goal"><br><br>
+			  <input type="text" name="prev_sprint" placeholder="Change Previous Sprint" class="fieldOne" id="prev_sprint"><br><br>
 			<!-- Add dateTime field for assigned Date/Time -->
 			<button class="submit" id="submit"> submit </button>
 		</form>

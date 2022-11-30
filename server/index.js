@@ -252,8 +252,6 @@ app.post("/addTask/", async (req, res) => {
 });
 
 // Update Task: 
-//Still needs testing
-
 app.post("/updateTask/:task_uid", async (req, res) => {
     try {
         let {status, description, user_uid, sprint_uid, task_name, deadline} = req.body;
@@ -296,6 +294,20 @@ app.post("/addSprint/", async (req, res) => {
         console.log("Error with Add-Sprint: " + error);
     }
 });
+
+// Update Sprint:
+app.post("/updateSprint/:sprint_uid", async (req, res) => {
+    try {
+
+        let {sprint_id, status, goal, prev_sprint} = req.body;
+
+        await db.updateSprint(req.params.sprint_uid, sprint_id, status, goal, prev_sprint);
+        res.redirect(`/sprint/${req.params.sprint_uid}?update=False`);
+    } catch (error) {
+        res.redirect(`/sprint/${req.params.sprint_uid}?update=False`);
+        // res.send("Error with Update-Sprint: " + error);
+    }
+})
 
 //Add a Sprint (web page)
 app.get("/createSprint/", async (req, res) => {
