@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="navSectionContainer">
+	<div class="logoContainer"> 
+		<img src="../img/logo@2x.png">
+		<a href="/"><span>JIRA-TREE</span> </a>
+	</div>
+
+</div>	
+
+
+<div class="contentContainer">
+	<div class="existLedgerHolder"> 
+		<div class="mainContainer">
+			
+			<!-- <p class="existEntries">Task ID: <%= output[0].task_uid %></p> -->
+			<p class="mainText"> <span style = "color: #6C63FF"> Sprint </span> ID: <%= output[0].sprint_uid %></p>
+
+		</div>
+		<div class="hiddenDiv">
+			
+			<table class="mainTable">
+                    <% for (let sprint_info of output) { %>
+					<tr>
+                        <td class="entryInfo"> <%= "Sprint ID: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.sprint_id %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Status: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.status %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Goal: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.goal %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Previous Sprint: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= JSON.stringify(sprint_info.prev_sprint)%></td>
+					</tr>
+                    <% }%>
+			</table>
+		</div>
+		<a href ="/sprint/<%=output[0].sprint_uid%>?update=True"> <button class="submit" id="submit"> Update </button> </a>
+	</div>
+
+<div class="vl"></div>
+
+<% 
+if (update == "True") {
+%>
+<div class="formApplication update_form">
+	
+	<div class="mainContainerOne">
+		
+		<p class="addTask">Update This Sprint</p>
+		<p class="mainTextOne">Update This Current Sprint</p>
+	</div>
+
+
+	<div class="formAppContainer">
+		
+		<form action="/updateSprint/" method="POST" class = "form" id = "form">
+			  <input type="text" name="task_name" placeholder="Change Sprint Name" class="fields" id="task_name"><br><br>
+			  <input type="text" name="description" placeholder="Change Sprint Goal" class="fieldOne" id="description"><br><br>
+			  <input type="text" name="assigned" placeholder="Change Previous Sprint" class="fieldOne" id="description"><br><br>
+			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="description"><br><br>
+			<!-- Add dateTime field for assigned Date/Time -->
+			<button class="submit" id="submit"> submit </button>
+		</form>
+	</div>
+</div>
+<% } %>
+
+
+</body>
+</html>

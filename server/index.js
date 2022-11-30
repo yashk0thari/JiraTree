@@ -80,9 +80,8 @@ app.get("/register", checkNotAuthenticated, async (req, res) => {
 
 app.post("/register", async (req, res) => {
 
-    let {email, password} = req.body;
+    let {name, email, password} = req.body;
     const role = "default";
-    const name = "default"
     try {
         const hashed_password = await bcrypt.hash(password, 10)
         db.insertUser(name, email, hashed_password, role)
@@ -132,7 +131,6 @@ function checkNotAuthenticated (req, res, next) {
     if (req.isAuthenticated()) {
         res.redirect('/dashboard');
     }
-    
     return next()
 }
 
@@ -209,11 +207,14 @@ app.get("/createTask/", async (req, res) => {
     }
 })
 
-app.get("/task/:task_uid", async (req, res) => {
+//Get Task by specific Id
+app.get("/task/:task_uid/", async (req, res) => {
+
     try {
         const output = await db.getTasks("task_uid", req.params.task_uid);
-        console.log(output.rows);
-        res.render("viewTask", {output: output.rows})
+        // console.log(output.rows);
+        const update = req.query.update;
+        res.render("viewTask", {output: output.rows, update: update})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
         // res.send(output.rows)
     } catch (error) {
@@ -239,6 +240,7 @@ app.post("/addTask/", async (req, res) => {
 });
 
 // Update Task: 
+//Still needs testing
 app.post("/updateTask/:task_uid", async (req, res) => {
     try {
         const status = await (req.body).status;
@@ -250,9 +252,10 @@ app.post("/updateTask/:task_uid", async (req, res) => {
         const datetime = await (req.body).datetime;
         
         await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, datetime, user_uid, sprint_uid);
-        res.send("SUCCESSFULLY UPDATED TASK TO DATABASE!");
+        res.redirect(`/task/${req.params.task_uid}?update=False`);
     } catch (error) {
-        res.send("Error with Update-Task: " + error);
+        res.redirect(`/task/${req.params.task_uid}?update=False`);
+        // res.send("Error with Update-Task: " + error);
     }
 });
 
@@ -278,13 +281,39 @@ app.post("/addSprint/", async (req, res) => {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
         const prev_sprint = (req.body).prev_sprint;
-        const output = await db.insertSprint(sprint_id, goal, prev_sprint);
+        await db.insertSprint(sprint_id, goal, prev_sprint);
 
-        res.send("SUCCESSFULLY ADDED SPRINT TO DATABASE");
+        res.redirect("/createSprint");
     } catch (error) {
         console.log("Error with Add-Sprint: " + error);
     }
 });
+
+//Add a Sprint (web page)
+app.get("/createSprint/", async (req, res) => {
+    try {
+        const in_progress = await db.getSprints("status", "IN PROGRESS");
+        res.render("addSprint", {in_progress: in_progress.rows})
+    } catch (error) {
+        res.send("Error Loading Add Task Web Page")
+    }
+})
+
+//Get Sprint By Id
+app.get("/sprint/:sprint_uid/", async (req, res) => {
+
+    try {
+        const output = await db.getSprints("sprint_uid", req.params.sprint_uid);
+        // console.log(output.rows);
+        const update = req.query.update;
+        res.render("viewSprint", {output: output.rows, update: update})
+        // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
+        // res.send(output.rows)
+    } catch (error) {
+        res.send("Error with Get-All: " + error);
+    }
+});
+
 
 // - DASHBOARD:
 
@@ -301,7 +330,6 @@ app.get("/dashboard", async (req, res) => {
     if (req.user) {
         name = req.user.rows[0].name;
     }
-
 
     for (let sprint of allSprints) {
         tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
