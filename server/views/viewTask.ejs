@@ -39,8 +39,12 @@
 						<td class="taskInfo" style="text-align: left;"> <%= task_info.task_name %></td>
 					</tr>
                     <tr>
-                        <td class="entryInfo"> <%= "Assigned: " %> </td>
+                        <td class="entryInfo"> <%= "Sprint Assigned To: " %> </td>
 						<td class="taskInfo" style="text-align: left;"> <%= task_info.sprint_uid %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Sprint Assigned Goal: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%=goal%></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Created on: " %> </td>
@@ -84,7 +88,7 @@ if (update == "True") {
 		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
 			  <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
 			  <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
-			  <input type="text" name="assigned" placeholder="Assigned To" class="fieldOne" id="description"><br><br>
+			  <input type="text" name="sprint_uid" placeholder="Assigned To" class="fieldOne" id="description"><br><br>
 			  <input type="text" name="status" placeholder="Change Task Status" class="fieldOne" id="description"><br><br>
 			<!-- Add dateTime field for assigned Date/Time -->
 			<button class="submit" id="submit"> submit </button>

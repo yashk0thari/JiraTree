@@ -214,7 +214,12 @@ app.get("/task/:task_uid/", async (req, res) => {
         const output = await db.getTasks("task_uid", req.params.task_uid);
         // console.log(output.rows);
         const update = req.query.update;
-        res.render("viewTask", {output: output.rows, update: update})
+
+        const sprint_uid = output.rows[0].sprint_uid;
+        const sprint = await db.getSprints("sprint_uid", sprint_uid);
+        console.log(sprint)
+        const goal = sprint.rows[0].goal;
+        res.render("viewTask", {output: output.rows, update: update, goal: goal})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
         // res.send(output.rows)
     } catch (error) {
@@ -241,7 +246,9 @@ app.post("/addTask/", async (req, res) => {
 
 // Update Task: 
 //Still needs testing
+
 app.post("/updateTask/:task_uid", async (req, res) => {
+    console.log(req.body);
     try {
         const status = await (req.body).status;
         const description = await (req.body).description;
