@@ -133,7 +133,7 @@ function checkNotAuthenticated (req, res, next) {
         res.redirect('/dashboard');
     }
     
-    res.redirect('/login')
+    return next()
 }
 
 //LOGOUT USER
