@@ -62,7 +62,7 @@ app.listen(process.env.PORT, () => {
 app.get("/", (req, res) => {
     // res.send("Hello, JiraTree :D")
 
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
         return res.redirect('/dashboard')
     }
     else {
@@ -130,9 +130,10 @@ function checkAuthenticated (req, res, next) {
 
 function checkNotAuthenticated (req, res, next) {
     if (req.isAuthenticated()) {
-        res.redirect('/authenticated')
+        res.redirect('/dashboard');
     }
-    next()
+    
+    res.redirect('/login')
 }
 
 //LOGOUT USER
