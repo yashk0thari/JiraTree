@@ -21,7 +21,8 @@ const session = require("express-session");
 const { use } = require("passport/lib");
 
 // EJS
-const path = require('path')
+const path = require('path');
+const { stat } = require("fs");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -85,7 +86,7 @@ app.post("/register", async (req, res) => {
     try {
         const hashed_password = await bcrypt.hash(password, 10)
         db.insertUser(name, email, hashed_password, role)
-        res.send('New User Created in Database!')
+        res.redirect('/login')
     } catch {
         res.send("Encountered an Error!")
     }
@@ -150,7 +151,6 @@ app.get("/getAll/", async (req, res) => {
         const table_name = await (req.body).table_name;
         const output = await db.getAll(table_name);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         res.send("Error with Get-All: " + error);
@@ -177,7 +177,6 @@ app.get("/getTasks/", async (req, res) => {
         const value = await (req.body).value;
         const output = await db.getTasks(meta_field, value);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT TASKS ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         res.send("Error with Get-Tasks: " + error);
@@ -200,7 +199,7 @@ app.get("/searchTasks/", async (req, res) => {
 // Create Task (Web Page):
 app.get("/createTask/", async (req, res) => {
     try {
-        const output = await db.getTasks("in_backlog", "TRUE");
+        const output = await db.getTasks("sprint_uid", "814754907646558210");
         res.render("addTask", {output: output.rows})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
@@ -214,9 +213,22 @@ app.get("/task/:task_uid/", async (req, res) => {
         const output = await db.getTasks("task_uid", req.params.task_uid);
         // console.log(output.rows);
         const update = req.query.update;
-        res.render("viewTask", {output: output.rows, update: update})
-        // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
-        // res.send(output.rows)
+
+        //Get Sprint Object with Foreign Key
+        const sprint_uid = output.rows[0].sprint_uid;
+        const sprint = await db.getSprints("sprint_uid", sprint_uid);
+        const goal = sprint.rows[0].goal;
+        
+        //Get all sprints
+        const sprint_objs = await db.getAll("jt_sprint.sprints");
+        const sprints = sprint_objs.rows
+
+        //Get User Object with Foreign Key
+        const user_uid = output.rows[0].user_uid;
+        const user = await db.getUsers("user_uid", user_uid);
+        const username = user.rows[0].name;
+
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, username: username, sprints: sprints})
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }
@@ -243,15 +255,11 @@ app.post("/addTask/", async (req, res) => {
 //Still needs testing
 app.post("/updateTask/:task_uid", async (req, res) => {
     try {
-        const status = await (req.body).status;
-        const description = await (req.body).description;
-        const in_backlog = await (req.body).in_backlog;
-        const user_uid = await (req.body).user_uid;
-        const sprint_uid = await (req.body).sprint_uid;
-        const task_name = await (req.body).task_name;
-        const datetime = await (req.body).datetime;
+        let {status, description, user_uid, sprint_uid, task_name, deadline} = req.body;
+
+        console.log(sprint_uid);
         
-        await db.updateTask(req.params.task_uid, task_name, status, description, in_backlog, datetime, user_uid, sprint_uid);
+        await db.updateTask(req.params.task_uid, task_name, status, description, deadline, user_uid, sprint_uid);
         res.redirect(`/task/${req.params.task_uid}?update=False`);
     } catch (error) {
         res.redirect(`/task/${req.params.task_uid}?update=False`);
@@ -268,7 +276,6 @@ app.get("/getSprints/", async (req, res) => {
         const value = (req.body).value;
         const output = await db.getSprints(meta_field, value);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY GOT SPRINTS ACCORDING TO QUERY PARAMETERS");
     } catch (error) {
         console.log("Error with Get-Sprints: " + error);
@@ -317,10 +324,8 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 
 // - DASHBOARD:
 
-app.get("/dashboard", async (req, res) => 
-{
-
-    const tasks_obj = await db.getTasks("in_backlog", "TRUE")
+app.get("/dashboard", async (req, res) => {
+    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
     const backlogTasks = tasks_obj.rows
 
     const sprints_obj = await db.getAll("jt_sprint.sprints")

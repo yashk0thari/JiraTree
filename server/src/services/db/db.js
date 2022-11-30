@@ -28,7 +28,7 @@ class DatabaseFunctions {
     }
 
     async insertTask(task_name, description) {
-        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, in_backlog, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
+        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
     async insertSprint(sprint_id, goal, prev_sprint) {
@@ -59,7 +59,7 @@ class DatabaseFunctions {
         return output;
     }
 
-    async updateTask(task_uid, task_name, status, description, in_backlog, datetime, user_uid, sprint_uid) {
+    async updateTask(task_uid, task_name, status, description, deadline, user_uid, sprint_uid) {
         var line = ""
         if (task_name != "") {
             line += `task_name = '${task_name}', `
@@ -73,12 +73,8 @@ class DatabaseFunctions {
             line += `description = '${description}', `
         }
 
-        if (in_backlog != "") {
-            line += `in_backlog = '${in_backlog}', `
-        }
-
-        if (datetime != "") {
-            line += `datetime = '${datetime}', `
+        if (deadline != "") {
+            line += `deadline = '${deadline}', `
         }
 
         if (user_uid != "") {

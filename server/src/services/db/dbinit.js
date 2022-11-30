@@ -32,14 +32,14 @@ const dbinit_functions = {
             task_name STRING,
             status STRING,
             description STRING,
-            in_backlog STRING,
             datetime TIMESTAMP,
             user_uid INT,
             CONSTRAINT FK_TASK_USER FOREIGN KEY (user_uid)
                 REFERENCES jt_user.users (user_uid),
             sprint_uid INT,
             CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (sprint_uid)
-                REFERENCES jt_sprint.sprints (sprint_uid)
+                REFERENCES jt_sprint.sprints (sprint_uid),
+            deadline TIMESTAMP DEFAULT NULL
         );
     `,
 
