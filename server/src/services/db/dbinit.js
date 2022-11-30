@@ -23,7 +23,8 @@ const dbinit_functions = {
             sprint_uid INT PRIMARY KEY DEFAULT unique_rowid(),
             sprint_id STRING,
             status STRING,
-            goal STRING
+            goal STRING,
+            prev_sprint INT
         );
 
         CREATE TABLE IF NOT EXISTS jt_task.tasks (

@@ -264,9 +264,9 @@ app.post("/addSprint/", async (req, res) => {
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
-        const output = await db.insertSprint(sprint_id, goal);
+        const prev_sprint = (req.body).prev_sprint;
+        const output = await db.insertSprint(sprint_id, goal, prev_sprint);
 
-        console.log(output.rows);
         res.send("SUCCESSFULLY ADDED SPRINT TO DATABASE");
     } catch (error) {
         console.log("Error with Add-Sprint: " + error);
@@ -276,9 +276,20 @@ app.post("/addSprint/", async (req, res) => {
 // - DASHBOARD:
 
 app.get("/dashboard", async (req, res) => {
-    const tasks_obj = await db.getAll("jt_task.tasks")
-    const allTasks = tasks_obj.rows
-    res.render("dashboard", {tasks: allTasks, date:date})
+    const tasks_obj = await db.getTasks("in_backlog", "TRUE")
+    const backlogTasks = tasks_obj.rows
+
+    const sprints_obj = await db.getAll("jt_sprint.sprints")
+    const allSprints = sprints_obj.rows
+
+    var sprint_tasks = {}
+
+    for (let sprint of allSprints) {
+        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
+        sprint_tasks[sprint.sprint_uid] = tasks.rows
+    }
+
+    res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks})
 })
 
 app.get("/test", async (req, res) => {
