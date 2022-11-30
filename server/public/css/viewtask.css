@@ -1,0 +1,359 @@
+@font-face {
+    font-family: "SF Pro Text";
+    src: url("/fonts/SF-Pro-Text-Semibold.otf") format("otf"),
+         url("/fonts/SF-Pro-Text-Light.otf") format("otf"),
+         url("/fonts/SF-Pro-Text-Medium.otf") format("otf");
+}
+  
+.navSectionContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logoContainer{
+    height: 50px;
+    width: 200px;
+    margin-top: 60px;
+    margin-left: 100px;	
+
+}
+
+.logoContainer img{
+    height: 25px; 
+    width: 25px;
+    position: relative;
+    top:50%;
+    transform: translateY(-80%);
+}
+
+.logoContainer span{
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    position: relative;
+    line-height: 50px;
+    margin-left: 10%;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: #707070;
+    text-transform: uppercase;
+}
+
+
+.contentContainer{
+    display: flex;
+    width: 100%;
+}
+
+
+.existLedgerHolder{
+    width: 30%;
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 15%;
+}
+
+
+.existEntries{
+    font-family: SF Pro Text ;
+    letter-spacing: 2.12px;
+    color: #272727;
+    opacity: 1;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.mainText{
+    text-align: left;
+    font-family: SF Pro Text;
+    line-height: 24px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #000000;
+    opacity: 1;
+    font-size: 12px;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.existLedgerHolder{
+    width: 35%;
+    height: 400px;
+}
+
+.hiddenDiv{
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+
+.mainTable{
+    width: 90%;
+    height: 40%;
+    text-align: center;
+    border-collapse: collapse; 
+    position: relative;
+}
+
+
+tr{
+    border-bottom: solid 1px rgba(112, 112, 112, 0.3);
+    margin-bottom: 300px;
+}
+
+td{
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+.taskInfo{
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+
+.dateInfo{
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #7E7E7E;
+}
+
+.entryInfo{
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #7E7E7E;
+}
+
+.otherInfo{
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #5757F6;
+}
+
+.vl{
+    border-left: 1px solid rgba(112, 112, 112, 0.3);
+    height: 475px;
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translate(-50%,-50%);
+}
+
+.formApplication{
+    margin-left: 20px;
+}
+
+.mainContainerOne{
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 50px;
+}
+
+.addTask{
+    font-family: SF Pro Text;
+    letter-spacing: 2.12px;
+    color: #272727;
+    opacity: 1;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.mainTextOne{
+    text-align: left;
+    font-family: SF Pro Text;
+    line-height: 24px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: #000000;
+    opacity: 1;
+    font-size: 12px;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+
+.formAppContainer{
+    width: 400px;
+    height: 500px;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: -70px;
+}
+
+input{
+    height: 40px;
+    width: 95%;
+    background-color: transparent;
+    outline: 0;
+    opacity: 1;
+    text-align: center;
+    font-family: SF Pro Text;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    border-collapse: collapse;
+    z-index: 100000;
+    border: rgba(112,112,112,0.6);
+    border-bottom: solid;
+    border-radius: 5px;
+    text-decoration-color: #000000;
+    
+}
+
+
+input[type="text"]{
+    box-sizing: border-box;
+    border: none;
+    border-bottom: solid 1px rgba(112,112,112,0.6);
+}
+
+input[type="button"]{
+    box-sizing: border-box;
+    border: none;
+}
+
+input[type="submit"]{
+    box-sizing: border-box;
+    border: none;
+}
+
+
+.form{
+    margin-top: 175px;
+}
+
+.formOne{
+    margin-top: 175px;
+    display: none;
+}
+
+
+
+input:focus{
+    outline: none;
+}
+
+.submit{
+    background: transparent linear-gradient(94deg, #1E1EFECE 0%, #5353F8D0 48%, #7272FF 100%) 0% 0% no-repeat padding-box;
+    box-shadow: 0px 7px 6px #00000029;
+    opacity: 1;
+    color: #FFFFFF;
+    margin-top: 30px;
+    border:none;
+    width: 95%;
+    height: 40px;
+    box-sizing: border-box;
+    font-family: SF Pro Text;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.circleContainer{
+    width: 100%;
+    height: 30px;
+    margin-top: 30px;
+}
+
+.circleHolder{
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.circleOne{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #9D9D9D;
+    position: relative;
+}
+
+.circleTwo{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #D6D6D6;
+    position: relative;
+    margin-left: 10px;
+}
+
+a{
+    text-decoration: none;
+    color: #5353F8D0;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }  
+
+.update_form {
+    animation: fadeIn 2s;
+}
+.container {
+    width: 500px;
+    margin: 50px auto 0;
+    text-align: center;
+    
+  }
+  
+  .select-dropdown,
+  .select-dropdown * {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    box-sizing: border-box;
+    height: 40px;
+    text-align: center;
+  }
+  .select-dropdown {
+    position: relative;
+    background-color: #ffffff;
+    border: #ffffff;
+    border-bottom: solid;
+    width: 95%;
+  }
+  .select-dropdown select {
+    font-size: 1rem;
+    font-weight: normal;
+    max-width: 100%;
+    padding: 8px 24px 8px 10px;
+    border: none;
+    background-color: transparent;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    appearance: none;
+  }
+  .select-dropdown select:active, .select-dropdown select:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  .select-dropdown:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    width: 0;
+    height: 0;
+    margin-top: -2px;
+    border-top: 5px solid #aaa;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+  }
+ .DContainer{
+display: flex; 
+justify-content: space-around;
+align-items: center;
+flex-direction: column;
+}

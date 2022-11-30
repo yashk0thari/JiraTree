@@ -2,7 +2,7 @@
 <html>
 <head>
 	
-    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+    <link rel="stylesheet" type="text/css" href="../css/viewtask.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
 </head>
 
 <body>
+	
 
 <div class="navSectionContainer">
 	<div class="logoContainer"> 
@@ -94,17 +95,19 @@ if (update == "True") {
 		<!-- test this! -->
 		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
             <input type="text" name="task_name" placeholder="Change Task Name" class="fields" id="task_name"><br><br>
-			<select name="sprint_uid" id="sprint_uid">
+			<div class="DContainer">
+			<select name="sprint_uid" id="sprint_uid" class="select-dropdown">
 				<% for (let sprint of sprints) { %>
     				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
 				<% }%>
   			</select>
 			  <br><br>
-			<select name="user_uid" id="user_uid">
+			<select name="user_uid" id="user_uid" class="select-dropdown">
 				<% for (let user of users) { %>
     				<option value="<%=user.user_uid%>"><%=user.email%></option>
 				<% }%>
   			</select>
+			  </div>
 			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
 				<br><br>
 			  <!-- <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br> -->
@@ -113,9 +116,6 @@ if (update == "True") {
             <input type="text" name="description" placeholder="Change Task Description" class="fieldOne" id="description"><br><br>
 			<button class="submit" id="submit"> submit </button>
 		</form>
-        <form action="/deleteTask/<%=output[0].task_uid%>" method="POST" id = "form">
-            <button class="delete" id="delete"> delete </button>
-        </form>
 	</div>
 </div>
 <% } %>
