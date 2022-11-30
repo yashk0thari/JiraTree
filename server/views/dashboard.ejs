@@ -76,13 +76,27 @@
         <div class="ledgerBlockLabel"> Sprints </div>
     
     <div class="sprintParent">
-        <div class="sprintFlex">
-		</div>
-        <div class="sprintFlex"></div>
-        <div class="sprintFlex"></div>
-        <div class="sprintFlex"></div>
-		
-        </div>
+		<% 
+			for (let sprint of sprints) { 
+				if (sprint.sprint_uid != 814754907646558210) {
+		%>
+			<div class="sprintFlex">
+				<% 
+					sprint_tasks_array = sprint_tasks[sprint.sprint_uid]
+				%>
+				<% for (let task of sprint_tasks_array) { %>
+					<div>
+						<p>
+							<%= 
+								// TODO: add code to display task object inside sprint object here!
+								task.task_name 
+							%>
+						</p>
+					</div>
+					<% } %>
+			</div>
+			<% }} %>
+    </div>
         
     </div>
 
