@@ -317,7 +317,9 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 
 // - DASHBOARD:
 
-app.get("/dashboard", async (req, res) => {
+app.get("/dashboard", async (req, res) => 
+{
+
     const tasks_obj = await db.getTasks("in_backlog", "TRUE")
     const backlogTasks = tasks_obj.rows
 
@@ -344,4 +346,8 @@ app.get("/test", async (req, res) => {
 })
 app.get("/profile", async (req, res) => {
     res.render("profile")
+})
+
+app.get("/dashboard", async (req, res) => {
+    res.render("dashboard")
 })
