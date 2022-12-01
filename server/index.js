@@ -65,7 +65,7 @@ app.get("/", (req, res) => {
     // res.send("Hello, JiraTree :D")
 
     if (req.isAuthenticated()) {
-        return res.redirect('/dashboard')
+        return res.redirect('/project')
     }
     else {
         return res.redirect('/login')
