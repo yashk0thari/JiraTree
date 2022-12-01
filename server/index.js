@@ -255,7 +255,11 @@ app.get("/searchTasks/", async (req, res) => {
 // Create Task (Web Page):
 app.get("/createTask/:project_uid", async (req, res) => {
     try {
-        const output = await db.getTasks("sprint_uid", "814754907646558210");
+        const backlogSprintObj = await db.getBacklog(req.params.project_uid);
+        const backlogSprint = backlogSprintObj.rows[0];
+        const backlogSprintId = backlogSprint.sprint_uid;
+
+        const output = await db.getTasks("sprint_uid", backlogSprintId);
         res.render("addTask", {output: output.rows, project_uid:req.params.project_uid})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
@@ -263,10 +267,9 @@ app.get("/createTask/:project_uid", async (req, res) => {
 })
 
 //Get Task by specific Id
-app.get("/task/:task_uid/", async (req, res) => {
-
-    try {
-        const output = await db.getTasks("task_uid", req.params.task_uid);
+app.get("/task/:task_uid", async (req, res) => {
+        
+    const output = await db.getTasks("task_uid", req.params.task_uid);
         const update = req.query.update;
 
         //Get Sprint Object with Foreign Key
@@ -286,13 +289,9 @@ app.get("/task/:task_uid/", async (req, res) => {
         //Get User Object with Foreign Key
         const user_uid = output.rows[0].user_uid;
         const user = await db.getUsers("user_uid", user_uid);
-        const username = user.rows[0].name;
-        
+        const username = user.rows[0].name;        
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date})
-    } catch (error) {
-        res.send("Error with Get-All: " + error);
-    }
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date});
 });
 
 // - POST:
@@ -301,7 +300,6 @@ app.post("/addTask/:project_uid", async (req, res) => {
     try {
         const task_name = await (req.body).task_name;
         const description = await (req.body).description;
-        console.log(req.body);
         await db.insertTask(task_name, description, req.params.project_uid);
 
         // res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
@@ -331,7 +329,7 @@ app.post("/updateTask/:task_uid", async (req, res) => {
 app.post("/deleteTask/:task_uid", async (req, res) => {
     try {
         await db.deleteTask(req.params.task_uid);
-        res.redirect(`/dashboard`);
+        res.redirect(`/project`);
     } catch (error) {
         res.send("Error with Delete-Task: " + error);
     }
@@ -384,7 +382,7 @@ app.post("/updateSprint/:sprint_uid", async (req, res) => {
 app.post("/deleteSprint/:sprint_uid", async (req, res) => {
     try {
         await db.deleteSprint(req.params.sprint_uid);
-        res.redirect(`/dashboard`);
+        res.redirect(`/project`);
     } catch (error) {
         res.send("Error with Delete-Sprint: " + error);
     }
@@ -393,7 +391,11 @@ app.post("/deleteSprint/:sprint_uid", async (req, res) => {
 //Add a Sprint (web page)
 app.get("/createSprint/:project_uid", async (req, res) => {
     try {
-        const in_progress = await db.getSprints("status", "IN PROGRESS");
+        const backlogSprintObj = await db.getBacklog(req.params.project_uid);
+        const backlogSprint = backlogSprintObj.rows[0];
+        const backlogSprintId = backlogSprint.sprint_uid;
+
+        const in_progress = await db.getSprintsInProgress(req.params.project_uid);
         res.render("addSprint", {in_progress: in_progress.rows, project_uid: req.params.project_uid})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
@@ -438,7 +440,6 @@ app.get("/dashboard/:project_uid", async (req, res) => {
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
     const backlogSprint = backlogSprintObj.rows[0];
     const backlogSprintId = backlogSprint.sprint_uid;
-    console.log(backlogSprint);
 
     //Get all the Tasks in that Backlog Sprint
     const tasksObj = await db.getTasks("sprint_uid", backlogSprintId);
@@ -447,14 +448,15 @@ app.get("/dashboard/:project_uid", async (req, res) => {
     //Get Usernames by task
     usernames_by_task = []
     for (let task of backlogTasks) {
-        user = await db.getUsers("user_uid", task.user_uid)
-        usernames_by_task.push(user.rows[0].name)
+        try {
+            user = await db.getUsers("user_uid", task.user_uid)
+            usernames_by_task.push(user.rows[0].name)
+        } catch {
+            usernames_by_task.push("UNASSIGNED");
+        }
     }
 
-
-
-
-    const sprints_obj = await db.getAll("jt_sprint.sprints")
+    const sprints_obj = await db.getSprintsOfProject(req.params.project_uid)
     const allSprints = sprints_obj.rows
 
     var sprint_tasks = {}

@@ -78,7 +78,7 @@ if (update == "True") {
 			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="status"><br><br>
 			  <input type="text" name="goal" placeholder="Change Sprint Goal" class="fieldOne" id="goal"><br><br>
 			  <select  name="prev_sprint" id="sprint_uid" class="select-dropdown ">
-				<option  disabled selected>Select Previous Sprint:</option>
+				<option value = "" selected>Select Previous Sprint:</option>
 				<% for (let sprint of sprints) { %>
 					<!-- Can't have the current Sprint UID -->
 					<% if (sprint.sprint_uid != output[0].sprint_uid) { %>

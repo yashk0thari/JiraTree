@@ -36,7 +36,6 @@ class DatabaseFunctions {
     }
 
     async getBacklog(project_uid) {
-        console.log("Here")
        var output =  await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'TRUE';`);
        return output;
     }
@@ -59,6 +58,17 @@ class DatabaseFunctions {
         return output;
     }
 
+    async getSprintsInProgress(project_uid) {
+        var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND status = 'IN PROGRESS';`);
+        return output;
+    }
+
+    async getSprintsOfProject(project_uid) {
+        console.log(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'FALSE';`)
+        var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'FALSE';`);
+        return output;
+    }
+
     async insertUser(name, email, password, role) {
         await this.query(`INSERT INTO jt_user.users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}');`);
     }
@@ -76,6 +86,39 @@ class DatabaseFunctions {
     async getDateNotBacklog() {
         var output = await this.query(`SELECT datetime FROM jt_task.tasks WHERE sprint_uid != 814754907646558210;`);
         return output;
+    }
+
+    async deleteTask(task_uid) {
+        await this.query(`DELETE FROM jt_task.tasks WHERE task_uid = '${task_uid}'`)
+    }
+
+    async deleteSprint(sprint_uid) {
+        await this.query(`DELETE FROM jt_sprint.sprints WHERE sprint_uid = '${sprint_uid}'`)
+    }
+
+    async updateSprint(sprint_uid, sprint_id, status, goal, prev_sprint) {
+        var line = ""
+        if (sprint_id != "") {
+            line += `sprint_id = '${sprint_id}', `
+        }
+
+        if (status != "") {
+            line += `status = '${status}', `
+        }
+
+        if (goal != "") {
+            line += `goal = '${goal}', `
+        }
+
+        if (prev_sprint != "") {
+            line += `prev_sprint = '${prev_sprint}', `
+        }
+
+        if (line.slice(-2)[0] === ",") {
+            line = line.substring(0, line.length - 2)
+        }
+        
+        await this.query(`UPDATE jt_sprint.sprints SET ${line} WHERE sprint_uid = '${sprint_uid}';`)
     }
 
     async updateTask(task_uid, task_name, status, description, deadline, user_uid, sprint_uid) {
