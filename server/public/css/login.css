@@ -26,6 +26,7 @@ a {
 
 .logoContainer{
 
+	color: black; 
 	height: 50px;
 	width: 200px;
 	margin-top: 60px;
@@ -50,7 +51,7 @@ line-height: 50px;
 margin-left: 10%;
 letter-spacing: 2px;
 font-weight: 700;
-color: #707070;
+color: black;
 
 }
 

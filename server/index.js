@@ -211,7 +211,6 @@ app.get("/task/:task_uid/", async (req, res) => {
 
     try {
         const output = await db.getTasks("task_uid", req.params.task_uid);
-        // console.log(output.rows);
         const update = req.query.update;
 
         //Get Sprint Object with Foreign Key
@@ -262,7 +261,6 @@ app.post("/updateTask/:task_uid", async (req, res) => {
     try {
         let {status, description, user_uid, sprint_uid, task_name, deadline} = req.body;
 
-        console.log(sprint_uid);
         
         await db.updateTask(req.params.task_uid, task_name, status, description, deadline, user_uid, sprint_uid);
         res.redirect(`/task/${req.params.task_uid}?update=False`);
