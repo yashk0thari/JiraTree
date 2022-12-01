@@ -214,12 +214,11 @@ app.post("/getProject", async (req, res) => {
 
         for (let project of output.rows) {
             if (project.project_uid == project_uid) {
-                return res.redirect("/dashboard")
+                return res.redirect(`/dashboard/${project_uid}`)
             }
         }
 
         return res.redirect("/project?error=invalidProjectKey")
-
     } catch (error) {
         res.send("Error with getting project_uid: " + error)
     }
