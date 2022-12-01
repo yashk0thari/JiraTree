@@ -154,8 +154,8 @@ class DatabaseFunctions {
         await this.query(`UPDATE jt_task.tasks SET ${line} WHERE task_uid = '${task_uid}';`)
     }
 
-    async searchTask(contain_string) {
-        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE task_name LIKE '%${contain_string}%';`)
+    async searchTask(contain_string, project_uid, sprint_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE task_name LIKE '%${contain_string}%' AND project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
         return output;
     }
 }
