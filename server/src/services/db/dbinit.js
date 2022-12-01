@@ -7,6 +7,7 @@ const dbinit_functions = {
         CREATE SCHEMA IF NOT EXISTS jt_user;
         CREATE SCHEMA IF NOT EXISTS jt_task;
         CREATE SCHEMA IF NOT EXISTS jt_sprint;
+        CREATE SCHEMA IF NOT EXISTS jt_project;
     `,
 
     // INITIALIZE TABLES:
@@ -24,7 +25,10 @@ const dbinit_functions = {
             sprint_id STRING,
             status STRING,
             goal STRING,
-            prev_sprint INT
+            prev_sprint INT,
+            project_uid INT,
+            CONSTRAINT FK_TASK_PROJECT FOREIGN KEY (project_uid)
+                REFERENCES jt_project.projects (project_uid)
         );
 
         CREATE TABLE IF NOT EXISTS jt_task.tasks (
@@ -39,7 +43,14 @@ const dbinit_functions = {
             sprint_uid INT,
             CONSTRAINT FK_TASK_SPRINT FOREIGN KEY (sprint_uid)
                 REFERENCES jt_sprint.sprints (sprint_uid),
+            project_uid INT,
+            CONSTRAINT FK_TASK_PROJECT FOREIGN KEY (project_uid)
+                REFERENCES jt_project.projects (project_uid),
             deadline TIMESTAMP DEFAULT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS jt_project.projects (
+            project_uid INT PRIMARY KEY DEFAULT unique_rowid()
         );
     `,
 

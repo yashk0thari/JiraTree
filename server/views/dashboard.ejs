@@ -3,7 +3,7 @@
 
 <head>
 	
-	<link rel="stylesheet" type="text/css" href="./css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 	
 		<div class="logoContainer"> 
 
-			<img src="./img/logo@2x.png">
+			<img src="../img/logo@2x.png">
 			<span>JIRA-TREE</span>
 
 		</div>
@@ -28,7 +28,7 @@
 			<form method = "POST" class="form" action = '/logout'>
 				<button> Logout </button>
 			</form>
-			<div class="img" style="background-image: url('./img/signup.png');" ></div>
+			<div class="img" style="background-image: url('../img/signup.png');" ></div>
 		
 		</div>
 
@@ -46,7 +46,7 @@
 			<table class="mainTable">
                 
                 <!-- add a new task button -->
-                <a href="/createTask">
+                <a href="/createTask/<%=project_uid %>">
                     <span class="material-symbols-outlined icon">
                         add
                     </span>
@@ -76,7 +76,7 @@
         <div class="ledgerBlockLabel"> Sprints </div>
 		
     <div class="sprintParent">
-		<a href="/createSprint">
+		<a href="/createSprint/<%= project_uid %>">
 			<span class="material-symbols-outlined icon">
 				add
 			</span>

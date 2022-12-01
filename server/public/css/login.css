@@ -94,6 +94,20 @@ margin-bottom: 10px;
 
 }
 
+.mainTextError {
+
+	text-align: left;
+	font-family: SF Pro Text;
+	line-height: 24px;
+	font-weight: 300;
+	letter-spacing: 1px;
+	color: #f99185;
+	opacity: 1;
+	font-size: 16px;
+	width: 350px;
+	margin-bottom: 10px;
+}
+
 
 
 
@@ -172,9 +186,12 @@ input{
 
 
 
-form{
+.form{
+	margin-top: 100px;
+}
 
-	margin-top: 50px;
+.addProjectForm{
+	margin-top: 0px;
 }
 
 input:focus{
@@ -217,6 +234,19 @@ opacity: 1;
 font-weight: 600;
 font-size: 14px;
 
+}
+
+.addProject{
+	font-family: 'Lato', sans-serif;
+	background-color: #FFFFFF;
+	letter-spacing: 0.8px;
+	color: #6D6DF8;
+	font-weight: 600;
+	font-size: 14px;
+	outline: none; 
+	border: 0px;
+	margin-left: 135px;
+	margin-top: 10px;
 }
 
 .backgroundImage img{

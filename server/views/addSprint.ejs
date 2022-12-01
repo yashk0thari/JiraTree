@@ -67,7 +67,7 @@
 
 		<div class="formAppContainer">
 			
-            <form action="/addSprint/" method="POST" class = "form" id = "form">
+            <form action="/addSprint/<%= project_uid %>" method="POST" class = "form" id = "form">
                 <input type="text" name="sprint_id" placeholder="Sprint Id" class="fieldOne" id="sprint_id"><br><br>
   				<input type="text" name="goal" placeholder="Sprint Goal" class="fields" id="goal"><br><br>
   				<input type="text" name="prev_sprint" placeholder="Previous Sprint" class="fieldOne" id="prev_sprint"><br><br>
