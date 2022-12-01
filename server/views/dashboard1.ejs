@@ -54,6 +54,11 @@
 		<div class="mainBodyHolderOne">
 			
 			<p class="headingTitle">Sprints Progress</p>
+            <a href="/createSprint/<%= project_uid %>">
+                <span class="material-symbols-outlined icon">
+                    add
+                </span>
+            </a> 
 
 			<div class="mainSprintHolder">
 
@@ -99,6 +104,13 @@
 		<div class="mainBodyHolderTwo">
 			
 			<p class="headingTitleOne">Backlog</p>
+
+            <!-- add a new task button -->
+                <a href="/createTask/<%=project_uid %>">
+                    <span class="material-symbols-outlined icon">
+                        add
+                    </span>
+                </a> 
 
 			<table class="tableMain">
 				

@@ -65,7 +65,7 @@ app.get("/", (req, res) => {
     // res.send("Hello, JiraTree :D")
 
     if (req.isAuthenticated()) {
-        return res.redirect('/dashboard')
+        return res.redirect('/project')
     }
     else {
         return res.redirect('/login')
@@ -85,6 +85,7 @@ app.post("/register", async (req, res) => {
 
     let {name, email, password} = req.body;
     const role = "default";
+
     try {
         const users = await db.getUsers("email", email);
         if (users.rows.length > 0){
@@ -484,6 +485,10 @@ app.get("/dashboard1", async (req, res) => {
 
 
     res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
+})
+
+app.get("/calendar", async (req, res) => {
+    
 })
 
 

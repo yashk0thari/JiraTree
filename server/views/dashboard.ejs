@@ -1,120 +1,212 @@
 <!DOCTYPE html>
-
-
+<html>
 <head>
-	
-	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="../css/jira.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 </head>
-
 <body>
+	<div class="navBar">
+		<div class="logoHolder">
+			<img src="../img/logo.png">
+			<span>JiraTree</span>
+		</div>
+	<div class="navigationBar">
+			<ul class="mainNav">
+			<li class="cool-link"><a href="Index.html">Home</a></li>
+			<li class="cool-link"><a href="Instructions.html">Projects</a></li>
+			<li class="cool-link"><a href="#">Chats</a></li>
+			<li class="cool-link"><a href="#">Calender</a></li>
+			<li class="cool-link"><a href="#">Reports</a></li>
+			</ul>
+	</div>
 
-	<div class="navSectionContainer">
-	
-		<div class="logoContainer"> 
-
-			<img src="../img/logo@2x.png">
-			<span>JIRA-TREE</span>
+	<div class="iconHolder">
+		
+		<div class="iconOne">
+			
+			<img src="../img/settings.png">
 
 		</div>
 
-		<div class="logoContainerOne">
+		<div class="iconOne">
+			
+			<img src="../img/active.png">
 
-			<span><%= username %> </span> 
-			<form method = "POST" class="form" action = '/logout'>
-				<button> Logout </button>
-			</form>
-			<div class="img" style="background-image: url('../img/signup.png');" ></div>
-		
+		</div>
+
+		<div class="iconOne">
+			
+			<img src="../img/profile-user.png">
+
 		</div>
 
 	</div>
-    </body>
-    
-    
-	<div class="contentContainer"> 
 
-		<label class="ledgerBlockLabel">BACKLOG</label>
-        
-		<div class="ledgerBlock">
-			<div class="hidderDiv">
 
-			<table class="mainTable">
-                
-                <!-- add a new task button -->
-                <a href="/createTask/<%=project_uid %>">
+	</div>
+
+
+
+<div class="mainBody">
+	
+	<div class="mainBodyOne">
+
+		
+		<div class="mainBodyHolderOne">
+			
+			<p class="headingTitle">Sprints Progress
+				<a href="/createSprint/<%= project_uid %>">
+					<span class="material-symbols-outlined icon">
+						add
+					</span>
+				</a> 
+			</p>
+            
+
+			<div class="mainSprintHolder">
+
+                <% 
+                for (let sprint of sprints) { 
+                    if (sprint.sprint_uid != 814754907646558210) {
+                %>
+
+				<div class="sprintOne">
+
+					<p class="sprintHeading"> <%=sprint.goal%></p>
+
+					<form action="/action_page.php">
+
+						<div class="mainItem">
+
+                                    <% 
+					            sprint_tasks_array = sprint_tasks[sprint.sprint_uid]
+				                    %>
+				                <% for (let task of sprint_tasks_array) { %>
+
+						    <div class="item">
+  						        <div class="itemText">
+  						            <input type="checkbox">
+  						            <label for="vehicle1"> 
+                                        <%=task.task_name%>
+                                    </label>
+  						        </div>
+  						    </div>
+                            <% } %>
+  						</div>
+					</form>
+
+				</div>
+
+                <% }} %>
+
+			</div>
+
+
+		</div>
+		
+		<div class="mainBodyHolderTwo">
+			
+			<p class="headingTitleOne">Backlog
+				<a href="/createTask/<%=project_uid %>">
                     <span class="material-symbols-outlined icon">
                         add
                     </span>
                 </a> 
+			</p>
 
-				<!-- from tr to tr used to illustrate implementation of loop -->
-                <% for(let task of tasks) { %>
-					<tr>
-						<td class="dateInfo"><%=date.format(task.datetime, 'MMM DD YYYY')%></td>
-						<td class="otherInfo"><%=task.task_name%></td>
-						<td class="otherInfo"><%=task.status%></td>
-						<td class="otherInfo"> <a href="/task/<%=task.task_uid%>?update=False"> View </a></td>
-					</tr>
+            <!-- add a new task button -->
+               
+
+			<table class="tableMain">
+				
+				<tr class="mainHeader">
+					<td>Task Name</td>
+					<td>Due Date</td>
+					<td>Status</td>
+					<td>User Assigned</td>
+					<td>View Task</td>
+				</tr>
+            <% var i = 0 %>
+            <% for(let task of tasks) { %>
+
+				<tr class="contentHeader">
+					
+					<td class="oneTest">
+						
+						<div class="iconMain one">
+							<img src=".../img/programming.png">
+							<span><p class="onetwo"><%=task.task_name%></p></span>
+						</div>
+					</td>
+					<td><%=date.format(task.datetime, 'MMM DD YYYY')%></td>
+
+                    <% if (task.status == "NOT STARTED") { %>
+                    <td>
+
+                        <div class="status o">
+
+                        <span><%=task.status%></span>
+
+                        </div>
+
+                    </td>
+                    <% } else if (task.status == "COMPLETE") {  %>
+                        <td>
+
+                            <div class="status t">
+
+                                <span><%=task.status%></span>
+
+                            </div>
+
+                        </td>
+                    <% } else { %>
+
+                        <td>
+                            <div class="status t">
+                                <span><%=task.status%></span>
+                            </div>
+                        </td>
+
                     <% } %>
-                    </tr>
+
+
+                   
+
+					<td>
+					    <%=users[i]%>
+					</td>
+					
+					<td>
+						<a href="/task/<%=task.task_uid%>?update=False"> View </a>
+					</td>
+
+                </tr>
+                <% i += 1 %>
+            <% } %>
+
 			</table>
 
-		</div>
-        
-            
-        </div>
-		</div>		
-		</div>
-	</div>	
 
-    <div class="SprintContainer">
-        <div class="ledgerBlockLabel"> Sprints </div>
+
+
+		</div>
+
+
+	</div>
+
+
+	<div class="mainBodyTwo">
 		
-    <div class="sprintParent">
-		<a href="/createSprint/<%= project_uid %>">
-			<span class="material-symbols-outlined icon">
-				add
-			</span>
-		</a> 
 
-		<% 
-			for (let sprint of sprints) { 
-				if (sprint.sprint_uid != 814754907646558210) {
-		%>
-			<div class="sprintFlex">
-				<% 
-					sprint_tasks_array = sprint_tasks[sprint.sprint_uid]
-				%>
-				<% for (let task of sprint_tasks_array) { %>
-					<div>
-						<p>
-							<%= 
-								// TODO: add code to display task object inside sprint object here!
-								task.task_name 
-							%>
-						</p>
-					</div>
-					<% } %>
-			</div>
-			<% }} %>
-    </div>
-        
-    </div>
-
-    </div>
-
-    
+	</div>
 
 
-  
-      
-
+</div>
 
 </body>
-
 </html>
