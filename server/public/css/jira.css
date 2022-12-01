@@ -94,6 +94,13 @@ margin-left: 10px;
   margin-left: 10px;
 }
 
+.iconOne button {
+  background-color: transparent;
+  border: none; 
+  padding: 0px;
+  margin: none;
+}
+
 .hr{
 
   margin-top: 59px;
@@ -145,6 +152,7 @@ margin-left: 10px;
 
 .headingTitle{
 
+  display: flex;
   font-family: Montserrat;
   font-size: 15px;
   margin-top: 100px;
@@ -152,6 +160,11 @@ margin-left: 10px;
   color: #050E1B;
   margin-left: 100px;
 
+}
+
+.plus {
+  margin-top: 11px;
+  margin-left: 11px; 
 }
 
 
@@ -246,6 +259,7 @@ text-transform: uppercase;
 
 .headingTitleOne{
 
+  display: flex;
   font-family: Montserrat;
   font-size: 15px;
   margin-top: 30px;

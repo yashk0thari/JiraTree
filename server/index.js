@@ -501,8 +501,7 @@ app.get("/dashboard1", async (req, res) => {
         user = await db.getUsers("user_uid", task.user_uid)
         usernames_by_task.push(user.rows[0].name)
     }
-
-
+    
     res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 

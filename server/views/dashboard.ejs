@@ -25,11 +25,10 @@
 	</div>
 
 	<div class="iconHolder">
-		
 		<div class="iconOne">
-			
-			<img src="../img/settings.png">
-
+			<form method = "POST" class="form" action = '/logout'>
+				<button> <img src="../img/logout.png"> </button>
+			</form>
 		</div>
 
 		<div class="iconOne">
@@ -58,13 +57,15 @@
 		
 		<div class="mainBodyHolderOne">
 			
-			<p class="headingTitle">Sprints Progress
+			<div class = "headingTitle">
+				<p>Sprints Progress
+				</p>
 				<a href="/createSprint/<%= project_uid %>">
-					<span class="material-symbols-outlined icon">
+					<span class="material-symbols-outlined icon plus">
 						add
 					</span>
 				</a> 
-			</p>
+			</div>
             
 
 			<div class="mainSprintHolder">
@@ -109,13 +110,15 @@
 		
 		<div class="mainBodyHolderTwo">
 			
-			<p class="headingTitleOne">Backlog
+			<div class="headingTitleOne" >
+				<p>Backlog
+				</p>
 				<a href="/createTask/<%=project_uid %>">
-                    <span class="material-symbols-outlined icon">
+                    <span class="material-symbols-outlined icon plus">
                         add
                     </span>
                 </a> 
-			</p>
+				</div>
 
             <!-- add a new task button -->
                
