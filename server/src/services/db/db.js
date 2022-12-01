@@ -28,7 +28,7 @@ class DatabaseFunctions {
     }
 
     async insertTask(task_name, description) {
-        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
+        await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', 'TRUE', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE sprint_id = '0000'));`);
     }
 
     async insertSprint(sprint_id, goal, prev_sprint) {
@@ -59,37 +59,9 @@ class DatabaseFunctions {
         return output;
     }
 
-    async deleteTask(task_uid) {
-        await this.query(`DELETE FROM jt_task.tasks WHERE task_uid = '${task_uid}'`)
-    }
-
-    async deleteSprint(sprint_uid) {
-        await this.query(`DELETE FROM jt_sprint.sprints WHERE sprint_uid = '${sprint_uid}'`)
-    }
-
-    async updateSprint(sprint_uid, sprint_id, status, goal, prev_sprint) {
-        var line = ""
-        if (sprint_id != "") {
-            line += `sprint_id = '${sprint_id}', `   
-        }
-
-        if (status != "") {
-            line += `status = '${status}', `   
-        }
-
-        if (goal != "") {
-            line += `goal = '${goal}', `   
-        }
-
-        if (prev_sprint != "") {
-            line += `prev_sprint = '${prev_sprint}', `
-        }
-
-        if (line.slice(-2)[0] === ",") {
-            line = line.substring(0, line.length - 2)
-        }
-        console.log(`UPDATE jt_sprint.sprints SET ${line} WHERE sprint_uid = '${sprint_uid}';`)
-        await this.query(`UPDATE jt_sprint.sprints SET ${line} WHERE sprint_uid = '${sprint_uid}';`)
+    async getDateNotBacklog() {
+        var output = await this.query(`SELECT datetime FROM jt_task.tasks WHERE sprint_uid != 814754907646558210;`);
+        return output;
     }
 
     async updateTask(task_uid, task_name, status, description, deadline, user_uid, sprint_uid) {
