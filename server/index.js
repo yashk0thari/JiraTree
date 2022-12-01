@@ -193,8 +193,14 @@ app.get("/project/", async (req, res) => {
 // Create Project: 
 app.post("/addProject/", async (req, res) => {
     try {
-        const output = await db.insertProject()
-        res.send(output)
+        await db.insertProject()
+        const output = await db.getAll("jt_project.projects")
+        const num_projects = (output.rows).length
+        const current = output.rows[num_projects - 1]
+
+        await db.insertBacklog(current.project_uid)
+
+        res.redirect(`/dashboard/${current.project_uid}`)
     } catch (error) {
         res.send("Error with Create-Project: " + error);
     }
@@ -247,10 +253,10 @@ app.get("/searchTasks/", async (req, res) => {
 })
 
 // Create Task (Web Page):
-app.get("/createTask/", async (req, res) => {
+app.get("/createTask/:project_uid", async (req, res) => {
     try {
         const output = await db.getTasks("sprint_uid", "814754907646558210");
-        res.render("addTask", {output: output.rows})
+        res.render("addTask", {output: output.rows, project_uid:req.params.project_uid})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
     }
@@ -291,16 +297,17 @@ app.get("/task/:task_uid/", async (req, res) => {
 
 // - POST:
 // Add Task: {"task_id": "<task_id>", "description": "<description>"}
-app.post("/addTask/", async (req, res) => {
+app.post("/addTask/:project_uid", async (req, res) => {
     try {
         const task_name = await (req.body).task_name;
         const description = await (req.body).description;
-        await db.insertTask(task_name, description);
+        console.log(req.body);
+        await db.insertTask(task_name, description, req.params.project_uid);
 
         // res.send("SUCCESSFULLY ADDED TASK TO DATABASE!");   
         // const output = await db.getTasks("in_backlog", "TRUE");
         // res.render("addTask", {output: output.rows})
-        res.redirect('/createTask/')
+        res.redirect(`/createTask/${req.params.project_uid}`)
     } catch (error) {
         res.send("Error with Add-Task: " + error);
     }
@@ -346,14 +353,14 @@ app.get("/getSprints/", async (req, res) => {
 });
 
 // - POST:
-app.post("/addSprint/", async (req, res) => {
+app.post("/addSprint/:project_uid", async (req, res) => {
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
         const prev_sprint = (req.body).prev_sprint;
-        await db.insertSprint(sprint_id, goal, prev_sprint);
+        await db.insertSprint(sprint_id, goal, prev_sprint, req.params.project_uid);
 
-        res.redirect("/createSprint");
+        res.redirect(`/createSprint/${req.params.project_uid}`);
     } catch (error) {
         console.log("Error with Add-Sprint: " + error);
     }
@@ -384,10 +391,10 @@ app.post("/deleteSprint/:sprint_uid", async (req, res) => {
 })
 
 //Add a Sprint (web page)
-app.get("/createSprint/", async (req, res) => {
+app.get("/createSprint/:project_uid", async (req, res) => {
     try {
         const in_progress = await db.getSprints("status", "IN PROGRESS");
-        res.render("addSprint", {in_progress: in_progress.rows})
+        res.render("addSprint", {in_progress: in_progress.rows, project_uid: req.params.project_uid})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
     }
@@ -425,7 +432,7 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 
 // - DASHBOARD:
 
-app.get("/dashboard", async (req, res) => {
+app.get("/dashboard/:project_uid", async (req, res) => {
     const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
     const backlogTasks = tasks_obj.rows
 
@@ -444,7 +451,7 @@ app.get("/dashboard", async (req, res) => {
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
+    res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid})
 })
 
 //TEMPORARY TEST

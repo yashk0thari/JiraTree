@@ -66,7 +66,7 @@
 
 		<div class="formAppContainer">
 			
-            <form action="/addTask/" method="POST" class = "form" id = "form">
+            <form action="/addTask/<%=project_uid%>" method="POST" class = "form" id = "form">
   				<input type="text" name="task_name" placeholder="Task Name" class="fields" id="task_name"><br><br>
   				<input type="text" name="description" placeholder="Description" class="fieldOne" id="description"><br><br>
                 <button class="submit" id="submit"> submit </button>
