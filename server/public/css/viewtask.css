@@ -202,7 +202,7 @@ input{
     opacity: 0.6;
     border-collapse: collapse;
     z-index: 100000;
-    border: rgba(112,112,112,0.6);
+    border: rgba(0, 0, 0, 0.6);
     border-bottom: solid;
     border-radius: 5px;
     text-decoration-color: #000000;
@@ -213,7 +213,7 @@ input{
 input[type="text"]{
     box-sizing: border-box;
     border: none;
-    border-bottom: solid 1px rgba(112,112,112,0.6);
+    border-bottom: solid 1px rgba(0, 0, 0, 0.6);
 }
 
 input[type="button"]{

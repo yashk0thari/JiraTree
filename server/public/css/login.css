@@ -74,7 +74,9 @@ color: #707070;
 	font-weight: 600;
 	font-size: 30px;
 	margin-bottom: 10px;
+	margin-top: 5 0%;
 }
+
 
 .mainText{
 
@@ -171,7 +173,7 @@ input{
 
 form{
 
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 input:focus{
