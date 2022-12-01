@@ -1,0 +1,439 @@
+body{
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.navBar{
+
+  display: flex;
+  width: 100%;
+  height: 40px;
+
+  
+
+}
+
+.logoHolder{
+
+  display: flex;
+  margin-top: 40px;
+  margin-left: 50px;
+
+}
+
+.logoHolder img{
+
+  height: 40px;
+  width: 65px;
+}
+
+.logoHolder span{
+
+  font-size: 17px;
+  font-family: Poligon;
+  font-weight: 600;
+  margin-top: 13px;
+  letter-spacing: 1.5px;
+}
+
+.navigationBar{
+
+  width: 100%;
+  transform: translateX(-30px);
+
+}
+
+.mainNav{
+
+  margin-top: 55px;
+  margin-left: 300px;
+
+}
+
+.mainNav li {
+
+  list-style: none;
+  font-family: 'Montserrat';
+  font-size: 13px;
+  float: left;
+  margin-right: 45px;
+
+
+
+}
+
+.mainNav li a {
+
+text-decoration: none;
+color: #4B4B4B;
+
+
+
+}
+
+.iconHolder{
+  display: flex;
+  margin-right: 100px;
+  margin-top: 55px;
+
+}
+
+.iconOne img{
+
+height: 20px;
+width: 20px;
+margin-left: 10px;
+
+
+}
+
+.iconOne{
+
+  margin-left: 10px;
+}
+
+.hr{
+
+  margin-top: 59px;
+  opacity: 0.2;
+}
+
+
+.mainBody{
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+}
+
+.mainBodyOne{
+  width: 60%;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.mainBodyTwo{
+  width: 30%;
+  height: 30px;
+
+}
+
+.mainBodyHolderOne{
+  width: 100%;
+  height: 60%;
+  position: relative;
+
+
+
+
+
+
+}
+
+.mainBodyHolderTwo{
+  width: 100%;
+  height: 40%;
+ 
+
+}
+
+
+
+.headingTitle{
+
+  font-family: Montserrat;
+  font-size: 15px;
+  margin-top: 100px;
+  font-weight: 600;
+  color: #050E1B;
+  margin-left: 100px;
+
+}
+
+
+.mainSprintHolder{
+  display: flex;
+  width: 800px;
+  height: 40px;
+  position: absolute;
+  margin-left: 100px;
+  margin-top: 5px;
+
+
+  
+
+
+  
+}
+
+.sprintOne{
+
+  margin-right: 20px;
+  width: 175px;
+  height: 225px;
+  border: 1.5px solid rgba(209, 209, 209,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+
+
+
+}
+
+.item{
+
+  width: 90%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+}
+
+.item input{
+  margin-left: 20px;
+  margin-top: 10px;
+
+}
+.itemText{
+
+  font-family: Poligon;
+  font-size: 15px;
+
+}
+
+.itemImage img{
+
+height: 20px;
+width: 20px;
+margin-top: 7px;
+margin-right: 4px;
+
+
+}
+
+.item label{
+
+  margin-left: 5px;
+  position: absolute;
+  transform: translate(5px,9px);
+
+}
+
+.mainItem{
+
+  position: relative;
+top: 40%;
+transform: translateY(-50%);
+}
+
+.sprintHeading{
+
+font-family: Poligon;
+font-size: 12px;
+opacity: 0.4;
+margin-left: 15px;
+margin-top: 30px;
+text-transform: uppercase;
+
+}
+
+
+.headingTitleOne{
+
+  font-family: Montserrat;
+  font-size: 15px;
+  margin-top: 30px;
+  font-weight: 600;
+  color: #050E1B;
+  margin-left: 100px;
+}
+
+.tableMain{
+
+  margin-top: 30px;
+  margin-left: 100px;
+  width: 90%;
+  border-collapse: collapse;
+  border: 1px solid rgba(209, 209, 209,0.4);
+
+}
+
+.mainHeader{
+
+  background-color: #F3F3F3;
+  opacity: 0.7;
+  height: 45px;
+
+}
+
+.mainHeader td{
+
+    border:none;
+    border-collapse: collapse;
+    padding-left: 25px;
+    font-family: Poligon;
+    opacity: 0.8;
+
+}
+
+.contentHeader{
+
+  background-color: #FFFFFF;
+  height: 50px;
+
+}
+
+.contentHeader td{
+
+    border-bottom: solid 1px rgba(0,0,0,0.2);
+    border-collapse: collapse;
+    padding-left: 25px;
+    font-family: Poligon;
+    opacity: 0.8;
+    font-size: 14px;
+
+}
+
+
+.iconMain{
+
+  height: 40px;
+  width: 42px;
+  border-radius: 50%; 
+  display: flex;
+}
+
+.one{
+  background-color: #E5ECF7;
+}
+
+.two{
+  background-color: #FFE9D7;
+}
+
+.three{
+
+  background-color:#EAE8FD;
+}
+
+.iconMain img{
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.iconMain span{
+
+  margin-left: 35px;
+  margin-top: -5px;
+
+}
+
+.status{
+
+  height: 30px;
+  width: 70%;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+    text-align: center;
+    border-radius: 20px;
+
+}
+
+.o{
+
+  background-color: #FDEFA6;
+}
+
+.t{
+
+background-color: #F2F2F8;
+
+}
+
+.o{
+
+  background-color: #FDEFA6;
+}
+
+.s{
+  background-color: #E8F4FF;
+}
+
+
+
+.status span{
+
+  position: relative;
+  top: 25%;
+  
+
+}
+
+.o span{
+
+  background-color: #FDEFA6;
+  color: #D89D36;
+}
+
+.t span{
+
+background-color: #F2F2F8;
+color: #7D8A9E;
+
+}
+
+.s span{
+
+color: #44A2F8;
+
+}
+
+
+.imageHolder img{
+
+  height: 30px;
+  width: 65px;
+}
+
+
+.container {
+  width: 90%;
+  text-align: center;
+}
+
+.progress {
+  padding: 2px;
+  background-color: #EDEDED;
+  border-radius: 6px;
+  
+}
+
+.progress-bar { 
+  height: 6px;
+  background-color: #146BEB;  
+  border-radius: 4px; 
+  transition: 0.4s linear;  
+  transition-property: width, background-color;    
+}
+
+.progress-striped .progress-bar {   
+  background-color: #146BEB; 
+  width: 60%; 
+  
+}
+
+.onetwo{
+  width: 200px;
+}

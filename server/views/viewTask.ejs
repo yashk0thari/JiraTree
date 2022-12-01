@@ -61,7 +61,7 @@
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Task Deadline: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= date.format(task_info.deadline, 'MMM DD YYYY') %></td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.deadline %></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Description: " %> </td>
@@ -90,14 +90,14 @@ if (update == "True") {
             <input type="text" name="task_name" placeholder="Change Task Name" class="select-dropdown" id="task_name"><br><br>
 			
 			<select name="sprint_uid" id="sprint_uid" class="select-dropdown">
-				<option  disabled selected>Select Sprint Id:</option>
+				<option value = "" selected>Select Sprint Id:</option>
 				<% for (let sprint of sprints) { %>
     				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
 				<% }%>
   			</select>
 			  <br><br>
 			<select name="user_uid" id="user_uid" class="select-dropdown">
-				<option  disabled selected>Select User:</option>
+				<option  value = "" selected>Select User:</option>
 				<% for (let user of users) { %>
     				<option value="<%=user.user_uid%>"><%=user.email%></option>
 				<% }%>
