@@ -19,6 +19,7 @@ const passport = require("passport")
 const initializePassport = require('./src/services/passport-config')
 const session = require("express-session");
 const { use } = require("passport/lib");
+const emailCheck = require("email-check");
 
 // EJS
 const path = require('path');
@@ -76,7 +77,8 @@ app.get("/", (req, res) => {
 //REGISTER USERS
 
 app.get("/register", checkNotAuthenticated, async (req, res) => {
-    res.render("register")
+    const error = req.query.error;
+    res.render("register", {error: error})
 })
 
 app.post("/register", async (req, res) => {
@@ -84,6 +86,10 @@ app.post("/register", async (req, res) => {
     let {name, email, password} = req.body;
     const role = "default";
     try {
+        const users = await db.getUsers("email", email);
+        if (users.rows.length > 0){
+            return res.redirect("/register?error=True")
+        }
         const hashed_password = await bcrypt.hash(password, 10)
         db.insertUser(name, email, hashed_password, role)
         res.redirect('/login')
