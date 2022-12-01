@@ -35,6 +35,10 @@ class DatabaseFunctions {
         await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal, prev_sprint) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}', '${prev_sprint}');`);
     }
 
+    async insertProject() {
+        await this.query(`INSERT INTO jt_project.projects (project_uid) VALUES (unique_rowid());`)
+    }
+
     async getTasks(meta_field, value) {
         var output = await this.query(`SELECT * FROM jt_task.tasks WHERE ${meta_field} = '${value}';`);
         return output;

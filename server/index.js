@@ -174,6 +174,50 @@ app.get("/getAll/", async (req, res) => {
 // - POST:
 // ...
 
+// --- PROJECT:
+// - GET:
+// Create Project (Web Page):
+app.get("/project/", async (req, res) => {
+    var error = "";
+    if (req.query.error == "invalidProjectKey") {
+        error = "Invalid Project Key Entered, Try Again!"
+    }
+    try {
+        res.render("project", {error: error})
+    } catch (error) {
+        res.send("Error with loading Project Page: " + error);
+    }
+})
+
+// - POST:
+// Create Project: 
+app.post("/addProject/", async (req, res) => {
+    try {
+        const output = await db.insertProject()
+        res.send(output)
+    } catch (error) {
+        res.send("Error with Create-Project: " + error);
+    }
+})
+
+app.post("/getProject", async (req, res) => {
+    try {
+        const project_uid = await req.body.project_uid
+        const output = await db.getAll("jt_project.projects")
+
+        for (let project of output.rows) {
+            if (project.project_uid == project_uid) {
+                return res.redirect("/dashboard")
+            }
+        }
+
+        return res.redirect("/project?error=invalidProjectKey")
+
+    } catch (error) {
+        res.send("Error with getting project_uid: " + error)
+    }
+})
+
 // --- TASK:
 // - GET:
 // Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
