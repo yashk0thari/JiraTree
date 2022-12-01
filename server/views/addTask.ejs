@@ -39,7 +39,7 @@
 					<tr>
 						<td class="taskInfo" style="text-align: left;"><%= task.task_name %></td>
 						<td class="entryInfo"> <%= task.description %> </td>
-						<td class="otherInfo"> <a href="/task/<%= task.task_uid %>?update=False/"> View  </a> </td>
+						<td class="otherInfo"> <a href="/task/<%= task.task_uid %>?project_uid=<%=project_uid%>&update=False"> View  </a> </td>
 					</tr>
                     <% }%>
 			</table>

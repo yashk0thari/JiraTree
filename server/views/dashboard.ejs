@@ -6,6 +6,20 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+	<!-- Load d3.js -->
+	<script src="https://d3js.org/d3.v4.js"></script>
+
+	<!-- Color scale -->
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+
+
+
+
 
 </head>
 <body>
@@ -15,13 +29,17 @@
 			<span>JiraTree</span>
 		</div>
 	<div class="navigationBar">
-			<ul class="mainNav">
+		<div class="mainNav">
+			<p class="cool-link"> Your Project Id: <span id = "p-id"> <%= project_uid %> </span></p>
+		</div>
+			
+			<!-- <ul class="mainNav">
 			<li class="cool-link"><a href="Index.html">Home</a></li>
 			<li class="cool-link"><a href="Instructions.html">Projects</a></li>
 			<li class="cool-link"><a href="#">Chats</a></li>
 			<li class="cool-link"><a href="#">Calender</a></li>
 			<li class="cool-link"><a href="#">Reports</a></li>
-			</ul>
+			</ul> -->
 	</div>
 
 	<div class="iconHolder">
@@ -118,6 +136,16 @@
                         add
                     </span>
                 </a> 
+
+				<div class = "search">
+				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
+  					<input type="text" id = "search" placeholder="Filter Tasks.." name="search">
+ 					<button type="submit"><i class="fa fa-search"></i></button>
+				</form>
+				<a href="/dashboard/<%=project_uid%>">Reset_Filters</a>
+				</div>
+
+
 				</div>
 
             <!-- add a new task button -->
@@ -184,7 +212,7 @@
 					</td>
 					
 					<td>
-						<a href="/task/<%=task.task_uid%>?update=False"> View </a>
+						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
 					</td>
 
                 </tr>
@@ -193,22 +221,21 @@
 
 			</table>
 
-
-
-
 		</div>
 
-
+		
 	</div>
 
 
 	<div class="mainBodyTwo">
-		
-
+		<!-- Create a div where the graph will take place -->
+	<!-- <div id="my_dataviz"></div> -->
 	</div>
 
 
 </div>
 
 </body>
+<script src="../js/charts.js"></script>
+
 </html>

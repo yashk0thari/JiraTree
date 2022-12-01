@@ -48,8 +48,19 @@ body{
 .mainNav{
 
   margin-top: 55px;
-  margin-left: 300px;
+  margin-left: 500px;
 
+}
+
+.mainNav p {
+  list-style: none;
+  font-family: 'Montserrat';
+  font-size: 14px;
+  float: left;
+}
+
+#p-id {
+  color: #6C63FF;
 }
 
 .mainNav li {
@@ -124,9 +135,17 @@ margin-left: 10px;
 }
 
 .mainBodyTwo{
+  position: relative;
   width: 30%;
-  height: 30px;
+  height: 1000px;
 
+}
+
+mainBodyTwo #my_dataviz{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .mainBodyHolderOne{
@@ -266,6 +285,7 @@ text-transform: uppercase;
   font-weight: 600;
   color: #050E1B;
   margin-left: 100px;
+  
 }
 
 .tableMain{
@@ -451,3 +471,34 @@ color: #44A2F8;
 .onetwo{
   width: 200px;
 }
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+.search {
+  display: flex;
+
+}
+

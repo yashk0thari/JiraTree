@@ -240,13 +240,13 @@ app.get("/getTasks/", async (req, res) => {
 })
 
 // Search Tasks: {"search_task": "<search_task, ex: 001>"}
-app.get("/searchTasks/", async (req, res) => {
+app.post("/searchTasks/:project_uid", async (req, res) => {
     try {
-        const search_task = await (req.body).search_task;
-        const output = await db.searchTask(search_task);
 
-        console.log(output.rows);
-        res.send("SUCCESSFULLY SEARCHED TASKS ACCORDING TO QUERY PARAMETERS");
+
+        // logic - get sprint that's the backlog sprint, only those ones are to be filtered and displayed really
+        const project_uid = req.params.project_uid;
+        return res.redirect(`/dashboard/${project_uid}?filter=${req.body.search}`)
     } catch (error) {
         res.send("Error with Search-Tasks: " + error);
     }
@@ -269,8 +269,13 @@ app.get("/createTask/:project_uid", async (req, res) => {
 //Get Task by specific Id
 app.get("/task/:task_uid", async (req, res) => {
         
+
+
+    console.log(req.query)
+    const project_uid = req.query.project_uid;
     const output = await db.getTasks("task_uid", req.params.task_uid);
         const update = req.query.update;
+
 
         //Get Sprint Object with Foreign Key
         const sprint_uid = output.rows[0].sprint_uid;
@@ -278,8 +283,9 @@ app.get("/task/:task_uid", async (req, res) => {
         const goal = sprint.rows[0].goal;
         const sprint_id = sprint.rows[0].sprint_id;
         
-        //Get all sprints
-        const sprint_objs = await db.getAll("jt_sprint.sprints");
+        //Get all sprints of that Project
+        const sprint_objs = await db.getSprintsOfProject(project_uid);
+        console.log(sprint_objs);
         const sprints = sprint_objs.rows;
 
         //Get all Users
@@ -291,7 +297,7 @@ app.get("/task/:task_uid", async (req, res) => {
         const user = await db.getUsers("user_uid", user_uid);
         const username = user.rows[0].name;        
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date});
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date, project_uid: project_uid});
 });
 
 // - POST:
@@ -443,7 +449,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
 
     //Get all the Tasks in that Backlog Sprint
     const tasksObj = await db.getTasks("sprint_uid", backlogSprintId);
-    const backlogTasks = tasksObj.rows;
+    var backlogTasks = tasksObj.rows;
 
     //Get Usernames by task
     usernames_by_task = []
@@ -455,7 +461,19 @@ app.get("/dashboard/:project_uid", async (req, res) => {
             usernames_by_task.push("UNASSIGNED");
         }
     }
+    //Search Feature Query
+    try {
+        if (req.query.filter) {
+            console.log(req.query);
+            const search_task = req.query.filter;
+            const output = await db.searchTask(search_task, req.params.project_uid, backlogSprintId);
+            backlogTasks = output.rows;
+        }
+    } catch (error) {
+        console.log(error)
+    }
 
+    //Get all Sprints of the current object
     const sprints_obj = await db.getSprintsOfProject(req.params.project_uid)
     const allSprints = sprints_obj.rows
 
@@ -466,6 +484,8 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         name = req.user.rows[0].name;
     }
 
+
+    //Get all Tasks associated with the Sprint
     for (let sprint of allSprints) {
         tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
         sprint_tasks[sprint.sprint_uid] = tasks.rows
