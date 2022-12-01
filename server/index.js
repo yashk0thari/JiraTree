@@ -218,6 +218,7 @@ app.get("/task/:task_uid/", async (req, res) => {
         const sprint_uid = output.rows[0].sprint_uid;
         const sprint = await db.getSprints("sprint_uid", sprint_uid);
         const goal = sprint.rows[0].goal;
+        const sprint_id = sprint.rows[0].sprint_id;
         
         //Get all sprints
         const sprint_objs = await db.getAll("jt_sprint.sprints");
@@ -231,8 +232,9 @@ app.get("/task/:task_uid/", async (req, res) => {
         const user_uid = output.rows[0].user_uid;
         const user = await db.getUsers("user_uid", user_uid);
         const username = user.rows[0].name;
+        
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, username: username, sprints: sprints, users: users})
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date})
     } catch (error) {
         res.send("Error with Get-All: " + error);
     }
@@ -349,8 +351,22 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
     try {
         const output = await db.getSprints("sprint_uid", req.params.sprint_uid);
         // console.log(output.rows);
+
+        //Get all sprints
+        const sprint_objs = await db.getAll("jt_sprint.sprints");
+        const sprints = sprint_objs.rows;
+
+        //Get Previous Sprint
+        let prev_sprint = null;
+        try {
+            const prev_sprint_obj = await db.getSprints("sprint_uid", output.rows[0].prev_sprint);
+            prev_sprint = prev_sprint_obj.rows[0].sprint_id;
+        } catch {
+            prev_sprint = null;
+        }
+        
         const update = req.query.update;
-        res.render("viewSprint", {output: output.rows, update: update})
+        res.render("viewSprint", {output: output.rows, update: update, sprints: sprints, prev_sprint: prev_sprint})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
         // res.send(output.rows)
     } catch (error) {

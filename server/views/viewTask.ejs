@@ -2,7 +2,8 @@
 <html>
 <head>
 	
-    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+    <link rel="stylesheet" type="text/css" href="../css/viewtask.css">
+	<link rel="stylesheet" type="text/css" href="../css/addTask.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,25 +40,20 @@
 						<td class="taskInfo" style="text-align: left;"> <%= task_info.task_name %></td>
 					</tr>
                     <tr>
-                        <td class="entryInfo"> <%= "Sprint Assigned To: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= task_info.sprint_uid %></td>
+                        <td class="entryInfo"> <%= "Sprint Assigned to ID: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_id %></td>
 					</tr>
-                    
                     <tr>
                         <td class="entryInfo"> <%= "Sprint Assigned Goal: " %> </td>
 						<td class="taskInfo" style="text-align: left;"> <%=goal%></td>
 					</tr>
 					<tr>
-                        <td class="entryInfo"> <%= "User Assigned To: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= task_info.user_uid %></td>
-					</tr>
-					<tr>
                         <td class="entryInfo"> <%= "User Name Assigned To: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= username %></td>
+						<td class="taskInfo" style="text-align: left; text-transform: capitalize;"> <%= username %></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Created on: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= task_info.datetime %></td>
+						<td class="taskInfo" style="text-align: left;"> <%= date.format(task_info.datetime, 'MMM DD YYYY') %></td>
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Task Status: " %> </td>

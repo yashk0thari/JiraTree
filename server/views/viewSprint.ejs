@@ -3,6 +3,7 @@
 <head>
 	
     <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<!-- <link rel="stylesheet" type="text/css" href="../css/viewTask.css"> -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -48,7 +49,7 @@
 					</tr>
                     <tr>
                         <td class="entryInfo"> <%= "Previous Sprint: " %> </td>
-						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.prev_sprint%></td>
+						<td class="taskInfo" style="text-align: left;"> <%=prev_sprint%></td>
 					</tr>
                     <% }%>
 			</table>
@@ -76,7 +77,16 @@ if (update == "True") {
 			  <input type="text" name="sprint_id" placeholder="Change Sprint ID" class="fields" id="sprint_id"><br><br>
 			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="status"><br><br>
 			  <input type="text" name="goal" placeholder="Change Sprint Goal" class="fieldOne" id="goal"><br><br>
-			  <input type="text" name="prev_sprint" placeholder="Change Previous Sprint" class="fieldOne" id="prev_sprint"><br><br>
+			  <select name="prev_sprint" id="sprint_uid" class="select-dropdown">
+				<% for (let sprint of sprints) { %>
+					<!-- Can't have the current Sprint UID -->
+					<% if (sprint.sprint_uid != output[0].sprint_uid) { %>
+    				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+					<% }%>
+				<% }%>
+  			</select>
+			<!--   <input type="text" name="prev_sprint" placeholder="Change Previous Sprint" class="fieldOne" id="prev_sprint"> -->
+			<br><br>
 			<!-- Add dateTime field for assigned Date/Time -->
 			<button class="submit" id="submit"> submit </button>
 		</form>
