@@ -397,6 +397,39 @@ app.get("/dashboard", async (req, res) => {
     res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 
+//TEMPORARY TEST
+
+app.get("/dashboard1", async (req, res) => {
+    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
+    const backlogTasks = tasks_obj.rows
+
+    const sprints_obj = await db.getAll("jt_sprint.sprints")
+    const allSprints = sprints_obj.rows
+
+    var sprint_tasks = {}
+
+    let name = "Not Logged In"
+    if (req.user) {
+        name = req.user.rows[0].name;
+    }
+
+    usernames_by_task = []
+
+    for (let sprint of allSprints) {
+        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
+        sprint_tasks[sprint.sprint_uid] = tasks.rows
+    }
+
+    for (let task of backlogTasks) {
+        user = await db.getUsers("user_uid", task.user_uid)
+        usernames_by_task.push(user.rows[0].name)
+    }
+
+
+    res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
+})
+
+
 app.get("/test", async (req, res) => {
     res.render("test")
 })
