@@ -35,6 +35,12 @@ class DatabaseFunctions {
         await this.query(`INSERT INTO jt_task.tasks (task_name, status, description, datetime, user_uid, sprint_uid, project_uid) VALUES ('${task_name}', 'NOT STARTED', '${description}', CURRENT_TIMESTAMP, (SELECT user_uid FROM jt_user.users WHERE name = 'UNASSIGNED'), (SELECT sprint_uid FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'TRUE'), '${project_uid}');`);
     }
 
+    async getBacklog(project_uid) {
+        console.log("Here")
+       var output =  await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'TRUE';`);
+       return output;
+    }
+
     async insertSprint(sprint_id, goal, prev_sprint, project_uid) {
         await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal, prev_sprint, project_uid) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}', '${prev_sprint}', '${project_uid}');`);
     }

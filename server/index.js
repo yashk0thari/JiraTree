@@ -434,8 +434,26 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 // - DASHBOARD:
 
 app.get("/dashboard/:project_uid", async (req, res) => {
-    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
-    const backlogTasks = tasks_obj.rows
+
+    //Get the Backlog Sprint:
+    const backlogSprintObj = await db.getBacklog(req.params.project_uid);
+    const backlogSprint = backlogSprintObj.rows[0];
+    const backlogSprintId = backlogSprint.sprint_uid;
+    console.log(backlogSprint);
+
+    //Get all the Tasks in that Backlog Sprint
+    const tasksObj = await db.getTasks("sprint_uid", backlogSprintId);
+    const backlogTasks = tasksObj.rows;
+
+    //Get Usernames by task
+    usernames_by_task = []
+    for (let task of backlogTasks) {
+        user = await db.getUsers("user_uid", task.user_uid)
+        usernames_by_task.push(user.rows[0].name)
+    }
+
+
+
 
     const sprints_obj = await db.getAll("jt_sprint.sprints")
     const allSprints = sprints_obj.rows
@@ -452,7 +470,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid})
 })
 
 //TEMPORARY TEST
