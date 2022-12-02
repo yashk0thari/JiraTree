@@ -86,7 +86,7 @@ if (update == "True") {
 	<div class="formAppContainer">
 		
 		<!-- test this! -->
-		<form action="/updateTask/<%=output[0].task_uid%>" method="POST" class = "form" id = "form">
+		<form action="/updateTask/<%=output[0].task_uid%>?project_uid=<%=project_uid%>" method="POST" class = "form" id = "form">
             <input type="text" name="task_name" placeholder="Change Task Name" class="select-dropdown" id="task_name"><br><br>
 			
 			<select name="sprint_uid" id="sprint_uid" class="select-dropdown">

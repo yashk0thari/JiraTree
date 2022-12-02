@@ -285,7 +285,7 @@ app.get("/task/:task_uid", async (req, res) => {
         
         //Get all sprints of that Project
         const sprint_objs = await db.getSprintsOfProject(project_uid);
-        console.log(sprint_objs);
+        console.log("XXXX >>>> " + project_uid);
         const sprints = sprint_objs.rows;
 
         //Get all Users
@@ -324,9 +324,9 @@ app.post("/updateTask/:task_uid", async (req, res) => {
 
         
         await db.updateTask(req.params.task_uid, task_name, status, description, deadline, user_uid, sprint_uid);
-        res.redirect(`/task/${req.params.task_uid}?update=False`);
+        res.redirect(`/task/${req.params.task_uid}?project_uid=${req.query.project_uid}&update=False`);
     } catch (error) {
-        res.redirect(`/task/${req.params.task_uid}?update=False`);
+        res.redirect(`/task/${req.params.task_uid}?project_uid=${req.query.project_uid}&update=False`);
         // res.send("Error with Update-Task: " + error);
     }
 });
