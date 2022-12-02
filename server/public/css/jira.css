@@ -525,7 +525,7 @@ left: -550px;
 
   background-color: transparent;
   border: none;
-  font-size: 12px;
+  font-size: 10px;
   position: absolute;
   top: 20px;
   left: -80px;
@@ -536,9 +536,46 @@ left: -550px;
 
   background-color: transparent;
   border: none;
-  font-size: 12px;
+  font-size: 10px;
   position: absolute;
   top: 20px;
   left: -140px;
 
+}
+
+.itemText a{
+
+  margin-left: 20px;
+  
+
+}
+
+.itemText a:link{
+  text-decoration: none;
+  color: #050E1B;
+  opacity: 0.6;
+
+}
+
+.itemText a:visited{
+  text-decoration: none;
+  color: #050E1B;
+  opacity: 0.6;
+
+}
+
+.reference a:link{
+  text-decoration: none;
+  color: #146BEB;
+
+}
+
+.reference a:visited{
+  text-decoration: none;
+  color: #146BEB;
+
+}
+
+.itemText p{
+  color: #146BEB;
 }
