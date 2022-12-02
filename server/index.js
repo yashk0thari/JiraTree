@@ -428,7 +428,7 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
         }
         
         const update = req.query.update;
-        res.render("viewSprint", {output: output.rows, update: update, sprints: sprints, prev_sprint: prev_sprint})
+        res.render("viewSprint", {output: output.rows, update: update, sprints: sprints, prev_sprint: prev_sprint, project_uid:req.query.project_uid})
         // res.send("SUCCESSFULLY GOT ALL ENTRIES FROM DATABASE ACCORDING TO QUERY PARAMETERS");
         // res.send(output.rows)
     } catch (error) {

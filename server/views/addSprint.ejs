@@ -42,7 +42,7 @@
 						<td class="taskInfo" style="text-align: left;"><%=sprint.goal%></td>
 						<td class="entryInfo"> <%= sprint.status%> </td>
                         <td class="entryInfo"> <%= sprint.sprint_id%> </td>
-                        <td class="otherInfo"> <a href="/sprint/<%=sprint.sprint_uid%>?update=False">View</a></td>
+                        <td class="otherInfo"> <a href="/sprint/<%=sprint.sprint_uid%>?project_uid=<%=project_uid%>&update=False">View</a></td>
 					</tr>
                     <% }%>
 			</table>
