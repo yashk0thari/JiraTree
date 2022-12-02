@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="./css/login.css">
+	<link rel="stylesheet" type="text/css" href="../css/login.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 
     <style>
     </style>
@@ -25,12 +26,17 @@
 		<div class="mainContainer">
 			<p class="logIn">Register</p>
 			<p class="mainText">Register as a New User</p>
+			<% if (error == "True") { %>
+				<p style = "color: red" class="mainText"> User Aldready Exists </p>
+			<% } %>
 		</div>
         
 		<div class="fieldHolder">
 				<form method = "POST" class="form" action = '/register'>
-  					<input type="text" name="email" placeholder="E-mail" class="fields"><br>
-  					<input type="password" name="password" placeholder="Password" class="fieldOne"><br><br>
+					<input type="text" name="name" placeholder="Name" class="fields"><br><br>
+  					<input type="text" name="email" placeholder="E-mail" class="fields"><br><br>
+  					<input type="password" name="password" placeholder="Password" class="fields"><br>
+					<br>
 					<button class="submit">submit</button>
   					<!-- <input type="submit" value="Log In" class="submit"> -->
 				</form> 
@@ -42,13 +48,6 @@
 		<div class="backgroundImage">
 			<img src="./img/backgroundImage@2x.png">
 		</div>
-
-
 	</div>
-
-
-
-
-
 </body>
 </html>

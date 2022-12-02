@@ -26,6 +26,7 @@ a {
 
 .logoContainer{
 
+	color: black; 
 	height: 50px;
 	width: 200px;
 	margin-top: 60px;
@@ -50,7 +51,7 @@ line-height: 50px;
 margin-left: 10%;
 letter-spacing: 2px;
 font-weight: 700;
-color: #707070;
+color: black;
 
 }
 
@@ -74,7 +75,9 @@ color: #707070;
 	font-weight: 600;
 	font-size: 30px;
 	margin-bottom: 10px;
+	margin-top: 5 0%;
 }
+
 
 .mainText{
 
@@ -89,6 +92,20 @@ font-size: 16px;
 width: 350px;
 margin-bottom: 10px;
 
+}
+
+.mainTextError {
+
+	text-align: left;
+	font-family: SF Pro Text;
+	line-height: 24px;
+	font-weight: 300;
+	letter-spacing: 1px;
+	color: #f99185;
+	opacity: 1;
+	font-size: 16px;
+	width: 350px;
+	margin-bottom: 10px;
 }
 
 
@@ -169,9 +186,12 @@ input{
 
 
 
-form{
-
+.form{
 	margin-top: 100px;
+}
+
+.addProjectForm{
+	margin-top: 0px;
 }
 
 input:focus{
@@ -214,6 +234,19 @@ opacity: 1;
 font-weight: 600;
 font-size: 14px;
 
+}
+
+.addProject{
+	font-family: 'Lato', sans-serif;
+	background-color: #FFFFFF;
+	letter-spacing: 0.8px;
+	color: #6D6DF8;
+	font-weight: 600;
+	font-size: 14px;
+	outline: none; 
+	border: 0px;
+	margin-left: 135px;
+	margin-top: 10px;
 }
 
 .backgroundImage img{

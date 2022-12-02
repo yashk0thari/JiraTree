@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<!-- <link rel="stylesheet" type="text/css" href="../css/viewTask.css"> -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="navSectionContainer">
+	<div class="logoContainer"> 
+		<img src="../img/logo@2x.png">
+		<a href="/dashboard/<%=project_uid%>"><span>JIRA-TREE</span> </a>
+	</div>
+
+</div>	
+
+
+<div class="contentContainer">
+	<div class="existLedgerHolder"> 
+		<div class="mainContainer">
+			
+			<!-- <p class="existEntries">Task ID: <%= output[0].task_uid %></p> -->
+			<p class="mainText"> <span style = "color: #6C63FF"> Sprint </span> ID: <%= output[0].sprint_uid %></p>
+
+		</div>
+		<div class="hiddenDiv">
+			
+			<table class="mainTable">
+                    <% for (let sprint_info of output) { %>
+					<tr>
+                        <td class="entryInfo"> <%= "Sprint ID: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.sprint_id %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Status: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.status %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Goal: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_info.goal %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Previous Sprint: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%=prev_sprint%></td>
+					</tr>
+                    <% }%>
+			</table>
+		</div>
+		<a href ="/sprint/<%=output[0].sprint_uid%>?project_uid=<%=project_uid%>&update=True"> <button class="submit" id="submit"> Update </button> </a>
+	</div>
+
+<div class="vl"></div>
+
+<% 
+if (update == "True") {
+%>
+<div class="formApplication update_form">
+	
+	<div class="mainContainerOne">
+		
+		<p class="addTask">Update This Sprint</p>
+		<p class="mainTextOne">Update This Current Sprint</p>
+	</div>
+
+
+	<div class="formAppContainer">
+		
+		<form action="/updateSprint/<%=output[0].sprint_uid%>?project_uid=<%=project_uid%>" method="POST" class = "form" id = "form">
+			  <input type="text" name="sprint_id" placeholder="Change Sprint ID" class="fields" id="sprint_id"><br><br>
+			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="status"><br><br>
+			  <input type="text" name="goal" placeholder="Change Sprint Goal" class="fieldOne" id="goal"><br><br>
+			  <select  name="prev_sprint" id="sprint_uid" class="select-dropdown ">
+				<option value = "" selected>Select Previous Sprint:</option>
+				<% for (let sprint of sprints) { %>
+					<!-- Can't have the current Sprint UID -->
+					<% if (sprint.sprint_uid != output[0].sprint_uid) { %>
+    				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+					<% }%>
+				<% }%>
+  			</select>
+			<!--   <input type="text" name="prev_sprint" placeholder="Change Previous Sprint" class="fieldOne" id="prev_sprint"> -->
+			<br><br>
+			<!-- Add dateTime field for assigned Date/Time -->
+			<button class="submit" id="submit"> submit </button>
+		</form>
+		<form action="/deleteSprint/<%=output[0].sprint_uid%>?project_uid=<%=project_uid%>" method="POST" id = "form">
+			<button class="delete" id="delete"> delete </button>
+		</form>
+	</div>
+</div>
+<% } %>
+
+
+</body>
+</html>

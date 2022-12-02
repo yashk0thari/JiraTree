@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="navSectionContainer">
+	
+	<div class="logoContainer"> 
+
+		<img src="../img/logo@2x.png">
+		<a href="/dashboard/<%=project_uid%>"><span>JIRA-TREE</span> </a>
+
+
+	</div>
+
+</div>	
+
+
+<div class="contentContainer">
+	<div class="existLedgerHolder"> 
+		<div class="mainContainer">
+			
+			<p class="existEntries">All Sprints that are in progress</p>
+			<p class="mainText">Select a Sprint to learn more details</p>
+
+		</div>
+		<div class="hiddenDiv">
+			
+			<table class="mainTable">
+                    <% for (let sprint of in_progress) { %>
+					<tr>
+						<td class="taskInfo" style="text-align: left;"><%=sprint.goal%></td>
+						<td class="entryInfo"> <%= sprint.status%> </td>
+                        <td class="entryInfo"> <%= sprint.sprint_id%> </td>
+                        <td class="otherInfo"> <a href="/sprint/<%=sprint.sprint_uid%>?project_uid=<%=project_uid%>&update=False">View</a></td>
+					</tr>
+                    <% }%>
+			</table>
+		</div>
+	</div>
+
+
+<div class="vl"></div>
+
+
+
+
+<div class="formApplication">
+	
+
+		<div class="mainContainerOne">
+			
+			<p class="addTask">Add a Sprint</p>
+			<p class="mainTextOne">Create a new Sprint. Enter the required details below.</p>
+		</div>
+
+
+		<div class="formAppContainer">
+            <form action="/addSprint/<%= project_uid %>" method="POST" class = "form" id = "form">
+                <input type="text" name="sprint_id" placeholder="Sprint Id" class="fieldOne" id="sprint_id"><br><br>
+  				<input type="text" name="goal" placeholder="Sprint Goal" class="fields" id="goal"><br><br>
+				  <select name="prev_sprint" id="sprint_uid" class="select-dropdown">
+					<% for (let sprint of sprints) { %>
+						<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+					<% }%>
+				  </select>
+				  <br><br>
+					<button class="submit" id="submit"> submit </button>
+			</form>
+		</div>
+</div>
+</body>
+</html>

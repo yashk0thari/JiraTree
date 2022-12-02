@@ -1,111 +1,251 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-	
-	<link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+	<link rel="stylesheet" type="text/css" href="../css/jira.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-</head>
+	<!-- Load d3.js -->
+	<script src="https://d3js.org/d3.v4.js"></script>
 
-<body>
-
-	<div class="navSectionContainer">
+	<!-- Color scale -->
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 	
-		<div class="logoContainer"> 
-			<img src="./img/logo@2x.png">
-		<span> <a href = "/">JIRA-TREE</a> </span>
-
+</head>
+<body>
+	<div class="navBar">
+		<div class="logoHolder">
+			<img src="../img/logo.png">
+			<span>JiraTree</span>
+		</div>
+	<div class="navigationBar">
+		<div class="mainNav">
+			<p class="cool-link"> Your Project Id: <span id = "p-id"> <%= project_uid %> </span></p>
+		</div>
 			
+			<!-- <ul class="mainNav">
+			<li class="cool-link"><a href="Index.html">Home</a></li>
+			<li class="cool-link"><a href="Instructions.html">Projects</a></li>
+			<li class="cool-link"><a href="#">Chats</a></li>
+			<li class="cool-link"><a href="#">Calender</a></li>
+			<li class="cool-link"><a href="#">Reports</a></li>
+			</ul> -->
+	</div>
 
+	<div class="iconHolder">
+		<div class="iconOne">
+			<form method = "POST" class="form" action = '/logout'>
+				<button> <img src="../img/logout.png"> </button>
+			</form>
+		</div>
+
+		<div class="iconOne">
+			
+			<img src="../img/active.png">
 
 		</div>
 
-		<div class="logoContainerOne">
-
-			<span>Arjun Loomba</span> 
-			<div class="img" style="background-image: url('./img/signup.png');"></div>
+		<div class="iconOne">
 			
-
+			<img src="../img/profile-user.png">
 
 		</div>
 
 	</div>
 
+
+	</div>
+
+
+
+<div class="mainBody">
 	
+	<div class="mainBodyOne">
+
+		
+		<div class="mainBodyHolderOne">
+			
+			<div class = "headingTitle">
+				<p>Sprints Progress
+				</p>
+				<a href="/createSprint/<%= project_uid %>">
+					<span class="material-symbols-outlined icon plus">
+						add
+					</span>
+				</a> 
+			</div>
+            
+
+			<div class="mainSprintHolder">
+
+                <% 
+                for (let sprint of sprints) { 
+                %>
+
+				<div class="sprintOne">
+
+					<p class="sprintHeading"> <%=sprint.goal%></p>
+
+					<form action="/action_page.php">
+
+						<div class="mainItem">
+
+                                    <% 
+					            sprint_tasks_array = sprint_tasks[sprint.sprint_uid]
+				                    %>
+				                <% for (let task of sprint_tasks_array) { %>
+
+						    <div class="item">
+  						        <div class="itemText">
+  						            <input type="checkbox">
+  						            <label for="vehicle1"> 
+                                        <%=task.task_name%>
+                                    </label>
+  						        </div>
+  						    </div>
+                            <% } %>
+  						</div>
+					</form>
+
+				</div>
+
+                <% } %>
+
+			</div>
 
 
-</body>
-
-</html> -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Admin Dashboard | By Code Info</title>
-  <link rel="stylesheet" href="../css/dashboard.css" />
-  <!-- Font Awesome Cdn Link -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-</head>
-<body>
-  <header class="header">
-    <div class="logo">
-		<div class="LogoContiner">
-        <img src="./img/logo@2x.png" width="30" height="30">
-		<span> <a href = "/">JIRA-TREE</a> </span>
 		</div>
-      <center>
-      <div class="search_box">
-        <input type="text" placeholder="Search Tasks">
-        <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
-      </div>
-	</center>
+		
+		<div class="mainBodyHolderTwo">
+			
+			<div class="headingTitleOne" >
+				<p>Backlog
+				</p>
+				<a href="/createTask/<%=project_uid %>">
+                    <span class="material-symbols-outlined icon plus">
+                        add
+                    </span>
+                </a> 
 
-    </div>
+				<div class = "search">
+				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
+  					<input type="text" id = "search" placeholder="Filter Tasks.." name="search">
+ 					<button type="submit"><i class="fa fa-search"></i></button>
+				</form>
+				<a href="/dashboard/<%=project_uid%>">Reset_Filters</a>
+				</div>
 
-    <div class="header-icons">
-      <i class="fas fa-bell"></i>
-      <div class="account">
-        <img src="../img/signup.png" alt="">
-        <h4>Arjun Raj Loomba</h4>
-      </div>
-    </div>
-  </header>
-  <div class="container">
-    <nav>
-      <div class="side_navbar">
-        <span>Main Menu</span>
-        <a href="#" class="active">Dashboard</a>
-        <a href="#">Profile</a>
-        <a href="#">Groups</a>
-        <a href="#">Application</a>
-        <a href="#">Sprints</a>
-        
 
-        <div class="links">
-          
-        </div>
-      </div>
-    </nav>
+				</div>
 
-    <div class="main-body">
-      <h2>Dashboard</h2>
-      <div class="promo_card">
-        <h1>Welcome to JiraTree</h1>
-        <span>Add a task or check your Sprints</span>
-		<center>
-        <button>Add Sprints</button>
-		</center>
-      </div>
+            <!-- add a new task button -->
+               
 
-      
+			<table class="tableMain">
+				
+				<tr class="mainHeader">
+					<td>Task Name</td>
+					<td>Due Date</td>
+					<td>Status</td>
+					<td>User Assigned</td>
+					<td>View Task</td>
+				</tr>
+            <% var i = 0 %>
+            <% for(let task of tasks) { %>
 
-     
-      </div>
-    </div>
+				<tr class="contentHeader">
+					
+					<td class="oneTest">
+						
+						<div class="iconMain one">
+							<img src="../img/programming.png">
+							<span><p class="onetwo"><%=task.task_name%></p></span>
+						</div>
+					</td>
+					<td><%=date.format(task.datetime, 'MMM DD YYYY')%></td>
 
-  </div>
+                    <% if (task.status == "NOT STARTED") { %>
+                    <td>
+
+                        <div class="status o">
+
+                        <span><%=task.status%></span>
+
+                        </div>
+
+                    </td>
+                    <% } else if (task.status == "COMPLETE") {  %>
+                        <td>
+
+                            <div class="status t">
+
+                                <span><%=task.status%></span>
+
+                            </div>
+
+                        </td>
+                    <% } else { %>
+
+                        <td>
+                            <div class="status t">
+                                <span><%=task.status%></span>
+                            </div>
+                        </td>
+
+                    <% } %>
+
+
+                   
+
+					<td>
+					    <%=users[i]%>
+					</td>
+					
+					<td>
+						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
+					</td>
+
+                </tr>
+                <% i += 1 %>
+            <% } %>
+
+			</table>
+
+		</div>
+
+		
+	</div>
+
+
+	<div class="mainBodyTwo">
+		<!-- Create a div where the graph will take place, I say no -->
+		<table class="tableMain">
+				
+			<tr class="mainHeader">
+				<td>Tasks Assigned To You</td>
+			</tr>
+
+			<% for (let task of userTasks) { %>
+				<tr class="contentHeader">
+					<td>
+						<%= task.task_name %>	
+					</td>	
+				</tr> 
+			<% } %>
+
+		</table>
+
+	<!-- <div id="my_dataviz"></div> -->
+	</div>
+
+
+</div>
+
 </body>
+<script src="../js/charts.js"></script>
+
 </html>

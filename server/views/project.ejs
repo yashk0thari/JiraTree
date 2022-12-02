@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/login.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+    </style>
+
+</head>
+
+<body>
+	<div class="navSectionContainer">
+		<div class="logoContainer"> 
+		<img src="../img/logo@2x.png">
+		<span> <a href = "/">JIRA-TREE</a> </span>
+		</div>
+
+	</div>
+
+	<div class="contentContainer"> 
+
+		<div class="mainContainer">
+			<p class="logIn">Got to your Project</p>
+            <p class="mainTextError"> <%= error %> </p>
+		</div>
+
+		<div class="fieldHolder">
+				<form method = "POST" class="form" action = '/getProject'>
+  					<input type="text" name="project_uid" placeholder="Type Project Key" class="fields"><br>
+  					<br><br>
+					<button class="submit"> Enter </button>
+				</form> 
+		</div>
+
+
+		<div class="addSettings">
+			<p class="forgotPassword">or</p>
+			<form action="/addProject/" method="POST" class="addProjectForm">
+                <button class="addProject"> Add Project </button>
+            </form>
+		</div>
+
+		<div class="backgroundImage">
+			
+			<img src="../img/backgroundImage@2x.png">
+
+
+		</div>
+
+
+	</div>
+
+
+
+
+
+</body>
+</html>

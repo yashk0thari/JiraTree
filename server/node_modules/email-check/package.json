@@ -1,0 +1,21 @@
+{
+  "name": "email-check",
+  "version": "1.1.0",
+  "description": "Async Node JS module to check if an email address exists",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pensierinmusica/email-check.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alessandro Zanardi",
+  "license": "MIT",
+  "dependencies": {
+    "js-promisify": "1.0.1"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  }
+}

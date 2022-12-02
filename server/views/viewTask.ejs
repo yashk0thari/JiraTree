@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+    <link rel="stylesheet" type="text/css" href="../css/viewtask.css">
+	<link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="navSectionContainer">
+	<div class="logoContainer"> 
+		<img src="../img/logo@2x.png">
+		<a href="/dashboard/<%=project_uid%>"><span>JIRA-TREE</span> </a>
+	</div>
+
+</div>	
+
+
+<div class="contentContainer">
+	<div class="existLedgerHolder"> 
+		<div class="mainContainer">
+			
+			<!-- <p class="existEntries">Task ID: <%= output[0].task_uid %></p> -->
+			<p class="mainText"> <span style = "color: #6C63FF"> Task ID: </span> <%= output[0].task_uid %></p>
+
+		</div>
+		<div class="hiddenDiv">
+			
+			<table class="mainTable">
+                    <% for (let task_info of output) { %>
+					<tr>
+                        <td class="entryInfo"> <%= "Task Name: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.task_name %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Sprint Assigned to ID: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= sprint_id %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Sprint Assigned Goal: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%=goal%></td>
+					</tr>
+					<tr>
+                        <td class="entryInfo"> <%= "User Name Assigned To: " %> </td>
+						<td class="taskInfo" style="text-align: left; text-transform: capitalize;"> <%= username %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Created on: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= date.format(task_info.datetime, 'MMM DD YYYY') %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Task Status: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.status %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Task Deadline: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.deadline %></td>
+					</tr>
+                    <tr>
+                        <td class="entryInfo"> <%= "Description: " %> </td>
+						<td class="taskInfo" style="text-align: left;"> <%= task_info.description %></td>
+					</tr>
+                    <% }%>
+			</table>
+		</div>
+		<a href ="/task/<%=output[0].task_uid%>?project_uid=<%=project_uid%>&update=True"> <button class="submit" id="submit"> Update </button> </a>
+	</div>
+
+<div class="vl"></div>
+
+<% 
+if (update == "True") {
+%>
+<div class="formApplication update_form">
+	
+	<div class="mainContainerOne">
+		<p class="addTask">Update Task</p>
+	</div>
+	<div class="formAppContainer">
+		
+		<!-- test this! -->
+		<form action="/updateTask/<%=output[0].task_uid%>?project_uid=<%=project_uid%>" method="POST" class = "form" id = "form">
+            <input type="text" name="task_name" placeholder="Change Task Name" class="select-dropdown" id="task_name"><br><br>
+			
+			<select name="sprint_uid" id="sprint_uid" class="select-dropdown">
+				<option value = "" selected>Select Sprint Id:</option>
+				<% for (let sprint of sprints) { %>
+    				<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+				<% }%>
+  			</select>
+			  <br><br>
+			<select name="user_uid" id="user_uid" class="select-dropdown">
+				<option  value = "" selected>Select User:</option>
+				<% for (let user of users) { %>
+    				<option value="<%=user.user_uid%>"><%=user.email%></option>
+				<% }%>
+  			</select>
+		
+			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
+				<br><br>
+			  <!-- <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br> -->
+            <input type="text" name="status" placeholder="Change Task Status" id="status"><br><br>
+            <input style = "text-decoration: none;" type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="select-dropdown" id="deadline"><br><br>
+            <input type="text" name="description" placeholder="Change Task Description"  id="description"><br><br>
+			<button class="submit" id="submit"> submit </button>
+		</form>
+        <form action="/deleteTask/<%=output[0].task_uid%>" method="POST" id = "form">
+            <button class="delete" id="delete"> delete </button>
+        </form>
+	</div>
+</div>
+<% } %>
+
+
+</body>
+</html>
