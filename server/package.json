@@ -11,6 +11,7 @@
   "author": "Arjun L, Arsh M, Aryan S, Utkarsh L, Yash K",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
     "bootstrap": "^3.4.1",
     "date-and-time": "^2.4.1",

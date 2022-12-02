@@ -1,6 +1,7 @@
 // Import Relavent Libraries + Modules:
 const dotenv = require("dotenv");
 const date = require('date-and-time');
+const axios = require('axios');
 
 // Database:
 const DB = require("./src/services/db/db")
@@ -27,6 +28,7 @@ const nodemailer = require("nodemailer");
 // EJS
 const path = require('path');
 const { stat } = require("fs");
+const { default: axios } = require("axios");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -649,6 +651,7 @@ app.post("/calendar/:project_uid", async (req, res) => {
         calData = {title: entries[i].task_name, start: entries[i].deadline};
         data.push(calData);
     }
+    const apiResponse = await axios.post(`http://localhost:8080/calendar/:project_uid`, data)
     res.json(data);
 })
 

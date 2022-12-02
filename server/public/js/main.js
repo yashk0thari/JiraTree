@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import axios from 'axios';
+import { response } from 'express';
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
@@ -14,7 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
         calData = {title: entries[i].task_name, start: entries[i].deadline};
         data.push(calData);
     }
-  
+    
+    const fetch = ()=>{
+        axios.get(`http://localhost:8080/calendar/:project_uid`)
+        .then(response)
+    }
     var calendar = new Calendar(calendarEl, {
       plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
       initialView: 'dayGridMonth',
