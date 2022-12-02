@@ -101,10 +101,13 @@
 
 						    <div class="item">
   						        <div class="itemText">
-  						            <input type="checkbox">
-  						            <label for="vehicle1"> 
-                                        <%=task.task_name%>
-                                    </label>
+
+									<p>
+										<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False">
+											<%=task.task_name%>
+										</a>
+
+									</p>
   						        </div>
   						    </div>
                             <% } %>
@@ -224,7 +227,7 @@
 					    <%=users[i]%>
 					</td>
 					
-					<td>
+					<td class="reference">
 						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
 					</td>
 
