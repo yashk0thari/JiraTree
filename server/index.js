@@ -510,6 +510,14 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         userTasks = output.rows
     }
 
+    // Get User Completed Tasks:
+    var completedTasks = []
+    if (req.user) {
+        const user_uid = req.user.rows[0].user_uid;
+        const completed_task_output = await db.getUserCompletedTasks(user_uid, req.params.project_uid)
+        completedTasks = completed_task_output.rows
+    }
+
     // Get all Tasks in Project:
     const all_project_tasks_output = await db.getTasksByProject(req.params.project_uid)
     const all_project_tasks = all_project_tasks_output.rows
@@ -529,7 +537,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
             }
         }
     }
-    
+
 
     //Get the Backlog Sprint:
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
@@ -621,7 +629,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         }
     
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names, completedTasks: completedTasks})
 })
 
 app.get("/calendar", async (req, res) => {

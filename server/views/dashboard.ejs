@@ -265,13 +265,14 @@
 				<% for (let task of userTasks) { %>
 					<tr class="contentHeader">
 						<td>
-							<%= task.task_name %>	
+							<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"><%= task.task_name %></a>	
 						</td>	
 					</tr> 
 				<% } %>
 	
 			</table>	
 		</div>
+		<div>
 			<table class="tableMain">
 
 				<tr class="mainHeader">
@@ -286,8 +287,22 @@
 					</tr>
 				<% } %>
 			</table>
+		</div>
 		<div>
+			<table class="tableMain">
 
+				<tr class="mainHeader">
+					<td>Your Completed Tasks: </td>
+				</tr>
+				
+				<%for (let task of completedTasks) {%>
+					<tr class="contentHeader">
+						<td>
+							<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"><%= task.task_name %></a>	
+						</td>
+					</tr>
+				<% } %>
+			</table>
 		</div>
 
 	<!-- <div id="my_dataviz"></div> -->
