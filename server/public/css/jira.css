@@ -10,7 +10,7 @@ body{
   display: flex;
   width: 100%;
   height: 40px;
-
+  z-index: 1000;
   
 
 }
@@ -42,6 +42,7 @@ body{
 
   width: 100%;
   transform: translateX(-30px);
+  z-index: 1000;
 
 }
 
@@ -270,12 +271,24 @@ transform: translateY(-50%);
 
 font-family: Poligon;
 font-size: 12px;
-opacity: 0.4;
+opacity: 1;
 margin-left: 15px;
 margin-top: 30px;
 text-transform: uppercase;
+color: #6C63FF;
 
 }
+
+.sprintHeadingOne{
+
+  font-family: Poligon;
+  font-size: 12px;
+  opacity: 0.4;
+  margin-left: 15px;
+  margin-top: -10px;
+  text-transform: uppercase;
+  
+  }
 
 
 .headingTitleOne{
@@ -528,7 +541,7 @@ left: -550px;
   font-size: 10px;
   position: absolute;
   top: 20px;
-  left: -80px;
+  left: -120px;
 
 }
 
@@ -539,7 +552,7 @@ left: -550px;
   font-size: 10px;
   position: absolute;
   top: 20px;
-  left: -140px;
+  left: -230px;
 
 }
 

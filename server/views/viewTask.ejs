@@ -4,6 +4,7 @@
 	
     <link rel="stylesheet" type="text/css" href="../css/viewtask.css">
 	<link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="stylesheet" type="text/css" href="../css/jira.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -104,14 +105,21 @@ if (update == "True") {
   			</select>
 		
 			  <!-- <input type="text" name="sprint_uid" placeholder="Change Assigned Sprint" class="fields" id="sprint_uid"> -->
-				<br><br>
 			  <!-- <input type="text" name="user_uid" placeholder="Change Assigned User" class="fields" id="user_uid"><br><br> -->
-            <input type="text" name="status" placeholder="Change Task Status" id="status"><br><br>
-            <input style = "text-decoration: none; color: #aaa;" type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="select-dropdown" id="deadline"><br><br>
+            <!-- <input type="text" name="status" placeholder="Change Task Status" id="status"> -->
+				<br><br> 
+			<select name="status" id="status" class="select-dropdown">
+				<option value = "<%=output[0].status%>" selected>Change Task Status</option>
+				<% for (let status_val of status) { %>
+    				<option value="<%=status_val%>"><%=status_val%></option>
+				<% }%>
+  			</select>
+			<br><br>
+            <input style = "text-decoration: none;" type="datetime-local" name="deadline" placeholder="Change Task Deadline" class="select-dropdown" id="deadline"><br><br>
             <input type="text" name="description" placeholder="Change Task Description"  id="description"><br><br>
 			<button class="submit" id="submit"> submit </button>
 		</form>
-        <form action="/deleteTask/<%=output[0].task_uid%>" method="POST" id = "form">
+        <form action="/deleteTask/<%=output[0].task_uid%>?project_uid=<%=project_uid%>" method="POST" id = "form">
             <button class="delete" id="delete"> delete </button>
         </form>
 	</div>
