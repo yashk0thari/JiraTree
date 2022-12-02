@@ -53,6 +53,11 @@ class DatabaseFunctions {
         return output;
     }
 
+    async getUserTasks(user_uid, project_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND user_uid = '${user_uid}';`)
+        return output;
+    }
+
     async getSprints(meta_field, value) {
         var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE ${meta_field} = '${value}';`);
         return output;

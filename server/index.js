@@ -481,6 +481,13 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 
 app.get("/dashboard/:project_uid", async (req, res) => {
 
+    var userTasks = []
+    if (req.user) {
+        const user_uid = req.user.rows[0].user_uid;
+        const output = await db.getUserTasks(user_uid, req.params.project_uid)
+        userTasks = output.rows
+    }
+
     //Get the Backlog Sprint:
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
     const backlogSprint = backlogSprintObj.rows[0];
@@ -530,7 +537,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks})
 })
 
 //TEMPORARY TEST
