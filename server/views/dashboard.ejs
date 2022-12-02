@@ -101,10 +101,13 @@
 
 						    <div class="item">
   						        <div class="itemText">
-  						            <input type="checkbox">
-  						            <label for="vehicle1"> 
-                                        <%=task.task_name%>
-                                    </label>
+
+									<p>
+										<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False">
+											<%=task.task_name%>
+										</a>
+
+									</p>
   						        </div>
   						    </div>
                             <% } %>
@@ -131,13 +134,32 @@
                     </span>
                 </a> 
 
+			
 				<div class = "search">
 				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
   					<input type="text" id = "search" placeholder="Filter Tasks.." name="search">
  					<button type="submit"><i class="fa fa-search"></i></button>
 				</form>
-				<a href="/dashboard/<%=project_uid%>">Reset_Filters</a>
+				<a href="/dashboard/<%=project_uid%>"><p>reset</p></a>
+				<div class="selectSearch">
+
+					<select class="dropdownOne">
+						<option value="taskName">status</option>
+
+					</select>
+
+					<select class="dropdownTwo">
+						<option value="taskName">user</option>
+					</select>
+					
+					
+					
+					</div>
 				</div>
+
+
+				
+
 
 
 				</div>
@@ -205,7 +227,7 @@
 					    <%=users[i]%>
 					</td>
 					
-					<td>
+					<td class="reference">
 						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
 					</td>
 
