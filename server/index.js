@@ -571,8 +571,16 @@ app.get("/dashboard1", async (req, res) => {
     res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 
-app.get("/calendar", async (req, res) => {
-    
+app.post("/calendar/:project_uid", async (req, res) => {
+    const user_uid = req.user.rows[0].user_uid;
+    const output = await db.getUserTasks(user_uid, req.params.project_uid)
+    const entries = output.rows;
+    const data = []
+    for (let i = 0; i < entries.length; i++){
+        calData = {title: entries[i].task_name, start: entries[i].deadline};
+        data.push(calData);
+    }
+    res.json(data);
 })
 
 
