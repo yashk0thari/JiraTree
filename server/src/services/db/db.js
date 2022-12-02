@@ -68,6 +68,11 @@ class DatabaseFunctions {
         return output;
     }
 
+    async getSprintsOfProjectIncludingBacklog(project_uid) {
+        var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}';`);
+        return output;
+    }
+
     async insertUser(name, email, password, role) {
         await this.query(`INSERT INTO jt_user.users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}');`);
     }

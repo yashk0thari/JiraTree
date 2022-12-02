@@ -389,6 +389,7 @@ app.get("/getSprints/", async (req, res) => {
 
 // - POST:
 app.post("/addSprint/:project_uid", async (req, res) => {
+    console.log(req.body)
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
@@ -408,9 +409,9 @@ app.post("/updateSprint/:sprint_uid", async (req, res) => {
         let {sprint_id, status, goal, prev_sprint} = req.body;
 
         await db.updateSprint(req.params.sprint_uid, sprint_id, status, goal, prev_sprint);
-        res.redirect(`/sprint/${req.params.sprint_uid}?update=False`);
+        res.redirect(`/sprint/${req.params.sprint_uid}?project_uid=${req.query.project_uid}&update=False`);
     } catch (error) {
-        res.redirect(`/sprint/${req.params.sprint_uid}?update=False`);
+        res.redirect(`/sprint/${req.params.sprint_uid}?project_uid=${req.query.project_uid}&update=False`);
         // res.send("Error with Update-Sprint: " + error);
     }
 })
@@ -434,8 +435,12 @@ app.get("/createSprint/:project_uid", async (req, res) => {
         const backlogSprint = backlogSprintObj.rows[0];
         const backlogSprintId = backlogSprint.sprint_uid;
 
+        //Get Sprints of that particular Project for assigning the previous sprint
+        const sprint_objs = await db.getSprintsOfProjectIncludingBacklog(req.params.project_uid);
+        const sprints = sprint_objs.rows;
+
         const in_progress = await db.getSprintsInProgress(req.params.project_uid);
-        res.render("addSprint", {in_progress: in_progress.rows, project_uid: req.params.project_uid})
+        res.render("addSprint", {sprints: sprints, in_progress: in_progress.rows, project_uid: req.params.project_uid})
     } catch (error) {
         res.send("Error Loading Add Task Web Page")
     }
@@ -449,7 +454,7 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
         // console.log(output.rows);
 
         //Get all sprints
-        const sprint_objs = await db.getAll("jt_sprint.sprints");
+        const sprint_objs = await db.getSprintsOfProjectIncludingBacklog(req.query.project_uid);
         const sprints = sprint_objs.rows;
 
         //Get Previous Sprint
@@ -460,6 +465,7 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
         } catch {
             prev_sprint = null;
         }
+        
         
         const update = req.query.update;
         res.render("viewSprint", {output: output.rows, update: update, sprints: sprints, prev_sprint: prev_sprint, project_uid:req.query.project_uid})
