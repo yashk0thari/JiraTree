@@ -21,6 +21,9 @@ const session = require("express-session");
 const { use } = require("passport/lib");
 const emailCheck = require("email-check");
 
+//SMTP server
+const nodemailer = require("nodemailer");
+
 // EJS
 const path = require('path');
 const { stat } = require("fs");
@@ -59,6 +62,28 @@ app.use(passport.session())
 app.listen(process.env.PORT, () => {
     console.log("Running on port: " + process.env.PORT + ".");
 });
+
+//SMTP-EMAIL-SERVER
+const smtpTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    pool: true,
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // use TLS
+    auth: {
+      user: "jira.tree1@gmail.com",
+      pass: "oluvdapolzctcgyc",
+    },
+  });
+
+async function sendMail(name, email, project_uid) {
+    await smtpTransport.sendMail({
+        from: "jira.tree1@gmail.com",
+        to: email.toString(),
+        subject: "Hello " + name.toUpperCase() + " here's your Project Id for JiraTree",
+        text: "You just created a new project with Project Id: " + project_uid + ". Happy Organizing!",
+    })
+}
 
 //send to dashboard
 app.get("/", (req, res) => {
@@ -198,8 +223,15 @@ app.post("/addProject/", async (req, res) => {
         const output = await db.getAll("jt_project.projects")
         const num_projects = (output.rows).length
         const current = output.rows[num_projects - 1]
-
         await db.insertBacklog(current.project_uid)
+
+        if (req.user) {
+            const name = req.user.rows[0].name;
+            const email = req.user.rows[0].email;
+            sendMail(name, email, current.project_uid).catch((e) => {
+                console.log(e);
+            })
+        }
 
         res.redirect(`/dashboard/${current.project_uid}`)
     } catch (error) {
