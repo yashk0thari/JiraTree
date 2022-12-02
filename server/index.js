@@ -27,6 +27,7 @@ const nodemailer = require("nodemailer");
 // EJS
 const path = require('path');
 const { stat } = require("fs");
+const { json } = require("express");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -640,14 +641,22 @@ app.get("/dashboard/:project_uid", async (req, res) => {
 
 app.get("/calendar/extract", async (req, res) => {
     const output = await db.getallDeadlines();
-    console.log(output);
+    //console.log(output);
     const entries = output.rows;
     const data = []
     for (let i = 0; i < entries.length; i++){
-        calData = {title: entries[i].task_name, start: entries[i].deadline};
+        taskTitle = entries[i].task_name;
+        deadlineParsed = entries[i].deadline;
+        taskTitle = JSON.stringify(taskTitle);
+        deadlineParsed = JSON.stringify(deadlineParsed).slice(1,20);
+        // console.log(JSON.stringify(deadlineParsed));
+        // console.log(JSON.stringify(taskTitle));
+
+        calData = {title: taskTitle, start: deadlineParsed};
         data.push(calData);
     }
     //const apiResponse = await axios.post(`http://localhost:8080/calendar`, data)
+    console.log(data);
     res.json(data);
     //res.render('calendar');
 })
