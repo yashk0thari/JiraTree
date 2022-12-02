@@ -22,7 +22,7 @@
 			<img src="../img/logo.png">
 			<span>JiraTree</span>
 		</div>
-	<div class="navigationBar">
+		<div class="navigationBar">
 		<div class="mainNav">
 			<p class="cool-link"> Your Project Id: <span id = "p-id"> <%= project_uid %> </span></p>
 		</div>
@@ -42,19 +42,24 @@
 				<button> <img src="../img/logout.png"> </button>
 			</form>
 		</div>
-
+		
+		<a href = "/">
 		<div class="iconOne">
-			
-			<img src="../img/active.png">
-
+			<img src="../img/settings.png">
 		</div>
-
-		<div class="iconOne">
-			
-			<img src="../img/profile-user.png">
-
+		</a>
+		
+		<div class="dropdown">
+			<div class="iconOne">
+				<img src="../img/profile-user.png">
+		
+				<div class="dropdown-content">
+					<p>User Name: <%=account_user_name%></p>
+					<p>User Email: <%=account_user_email%></p>
+				</div>
+			</div>
 		</div>
-
+		
 	</div>
 
 
@@ -87,8 +92,10 @@
                 %>
 
 				<div class="sprintOne">
+					<p class="sprintHeading"> <%=sprint.sprint_id%></p>
 
-					<p class="sprintHeading"> <%=sprint.goal%></p>
+					<p class="sprintHeadingOne"> <%=sprint.goal%></p>
+
 
 					<form action="/action_page.php">
 
@@ -120,7 +127,6 @@
 
 			</div>
 
-
 		</div>
 		
 		<div class="mainBodyHolderTwo">
@@ -133,27 +139,36 @@
                         add
                     </span>
                 </a> 
-
 			
 				<div class = "search">
 				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
-  					<input type="text" id = "search" placeholder="Filter Tasks.." name="search">
+  					<input type="text" id = "search" value = "<%=filterVal%>" placeholder="Filter Tasks.." name="search">
  					<button type="submit"><i class="fa fa-search"></i></button>
 				</form>
 				<a href="/dashboard/<%=project_uid%>"><p>reset</p></a>
 				<div class="selectSearch">
 
-					<select class="dropdownOne">
-						<option value="taskName">status</option>
-
+				<form method = "POST" action="/searchTasks/<%=project_uid%>">
+					<select name="statusFilter" class="dropdownOne" onchange="this.form.submit()">
+						<option selected value="<%=statusFilter%>"><%=statusFilter%></option>
+						<% for (let status_val of status) { %>
+							<% if (status_val != statusFilter) { %>
+    							<option value="<%=status_val%>"> <%=status_val%> </option>
+							<% } %>
+						<% }%>
 					</select>
+				</form>	
 
-					<select class="dropdownTwo">
-						<option value="taskName">user</option>
+				<form method = "POST" action="/searchTasks/<%=project_uid%>">
+					<select name="userFilter" class="dropdownTwo" onchange="this.form.submit()">
+						<option selected value="<%=userFilter%>"><%=userFilter%></option>
+						<% for (let user of allUsers) { %>
+							<% if (user.user_uid != userFilterUser) { %>
+    							<option value="<%=user.user_uid%>"> <%=user.name%> </option>
+							<% } %>
+						<% }%>
 					</select>
-					
-					
-					
+				</form>	
 					</div>
 				</div>
 
@@ -200,7 +215,7 @@
                         </div>
 
                     </td>
-                    <% } else if (task.status == "COMPLETE") {  %>
+                    <% } else if (task.status == "COMPLETED") {  %>
                         <td>
 
                             <div class="status t">
@@ -213,7 +228,7 @@
                     <% } else { %>
 
                         <td>
-                            <div class="status t">
+                            <div class="status s">
                                 <span><%=task.status%></span>
                             </div>
                         </td>
@@ -227,8 +242,8 @@
 					    <%=users[i]%>
 					</td>
 					
-					<td class="reference">
-						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
+					<td>
+						<a style = "text-decoration: none;" href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
 					</td>
 
                 </tr>
@@ -245,21 +260,55 @@
 
 	<div class="mainBodyTwo">
 		<!-- Create a div where the graph will take place, I say no -->
-		<table class="tableMain">
+		<div>
+			<table class="tableMain">
 				
-			<tr class="mainHeader">
-				<td>Tasks Assigned To You</td>
-			</tr>
+				<tr class="mainHeader">
+					<td>Tasks Assigned To You: </td>
+				</tr>
+	
+				<% for (let task of userTasks) { %>
+					<tr class="contentHeader">
+						<td>
+							<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"><%= task.task_name %></a>	
+						</td>	
+					</tr> 
+				<% } %>
+	
+			</table>	
+		</div>
+		<div>
+			<table class="tableMain">
 
-			<% for (let task of userTasks) { %>
-				<tr class="contentHeader">
-					<td>
-						<%= task.task_name %>	
-					</td>	
-				</tr> 
-			<% } %>
+				<tr class="mainHeader">
+					<td>Your Teammates: </td>
+				</tr>
+				
+				<%for (let user of project_users) {%>
+					<tr class="contentHeader">
+						<td>
+							<%= user %>	
+						</td>
+					</tr>
+				<% } %>
+			</table>
+		</div>
+		<div>
+			<table class="tableMain">
 
-		</table>
+				<tr class="mainHeader">
+					<td>Your Completed Tasks: </td>
+				</tr>
+				
+				<%for (let task of completedTasks) {%>
+					<tr class="contentHeader">
+						<td>
+							<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"><%= task.task_name %></a>	
+						</td>
+					</tr>
+				<% } %>
+			</table>
+		</div>
 
 	<!-- <div id="my_dataviz"></div> -->
 	</div>

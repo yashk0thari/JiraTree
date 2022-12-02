@@ -3,6 +3,8 @@
 <head>
 	
     <link rel="stylesheet" type="text/css" href="../css/addTask.css">
+	<link rel="stylesheet" type="text/css" href="../css/jira.css">
+
 	<!-- <link rel="stylesheet" type="text/css" href="../css/viewTask.css"> -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +17,11 @@
 <body>
 
 <div class="navSectionContainer">
-	<div class="logoContainer"> 
-		<img src="../img/logo@2x.png">
-		<a href="/dashboard/<%=project_uid%>"><span>JIRA-TREE</span> </a>
-	</div>
+	<a href="/dashboard/<%=project_uid%>">
+		<div class="logoHolder">
+			<img src="../img/logo.png">
+		</div>
+		</a>
 
 </div>	
 
