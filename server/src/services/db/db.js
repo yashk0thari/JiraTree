@@ -91,7 +91,24 @@ class DatabaseFunctions {
         await this.query(`DELETE FROM jt_task.tasks WHERE task_uid = '${task_uid}'`)
     }
 
-    async deleteSprint(sprint_uid) {
+    async deleteSprint(sprint_uid, project_uid) {
+        console.log(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
+        const output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
+        const allTasksInSprint = output.rows
+        console.log("XXXX")
+        console.log(allTasksInSprint)
+
+        console.log(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'TRUE'`)
+        const project_backlog_output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'TRUE'`)
+        const project_backlog = project_backlog_output.rows[0]
+
+        for (let task of allTasksInSprint) {
+            console.log(task)
+            console.log(`UPDATE jt_task.tasks SET sprint_uid = '${project_backlog.sprint_uid}' WHERE task_uid = '${task.task_uid}';`)
+            await this.query(`UPDATE jt_task.tasks SET sprint_uid = '${project_backlog.sprint_uid}' WHERE task_uid = '${task.task_uid}';`)
+        }
+
+        console.log(`DELETE FROM jt_sprint.sprints WHERE sprint_uid = '${sprint_uid}'`)
         await this.query(`DELETE FROM jt_sprint.sprints WHERE sprint_uid = '${sprint_uid}'`)
     }
 
