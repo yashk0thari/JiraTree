@@ -404,12 +404,10 @@ app.post("/updateSprint/:sprint_uid", async (req, res) => {
 // Delete Sprint:
 app.post("/deleteSprint/:sprint_uid", async (req, res) => {
     try {
-        console.log("Project UID: >> " + req.query.project_uid)
-        console.log("Sprint UID: >> " + req.params.sprint_uid)
         await db.deleteSprint(req.params.sprint_uid, req.query.project_uid);
-        res.redirect(`/project`);
+        res.redirect(`/dashboard/${req.query.project_uid}`);
     } catch (error) {
-        res.send("Error with Delete-Sprint: " + error);
+        res.render("test");
     }
 })
 
