@@ -73,7 +73,7 @@ if (update == "True") {
 
 	<div class="formAppContainer">
 		
-		<form action="/updateSprint/<%=output[0].sprint_uid%>" method="POST" class = "form" id = "form">
+		<form action="/updateSprint/<%=output[0].sprint_uid%>?project_uid=<%=project_uid%>" method="POST" class = "form" id = "form">
 			  <input type="text" name="sprint_id" placeholder="Change Sprint ID" class="fields" id="sprint_id"><br><br>
 			  <input type="text" name="status" placeholder="Change Sprint Status" class="fieldOne" id="status"><br><br>
 			  <input type="text" name="goal" placeholder="Change Sprint Goal" class="fieldOne" id="goal"><br><br>

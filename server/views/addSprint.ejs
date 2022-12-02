@@ -66,12 +66,16 @@
 
 
 		<div class="formAppContainer">
-			
             <form action="/addSprint/<%= project_uid %>" method="POST" class = "form" id = "form">
                 <input type="text" name="sprint_id" placeholder="Sprint Id" class="fieldOne" id="sprint_id"><br><br>
   				<input type="text" name="goal" placeholder="Sprint Goal" class="fields" id="goal"><br><br>
-  				<input type="text" name="prev_sprint" placeholder="Previous Sprint" class="fieldOne" id="prev_sprint"><br><br>
-                <button class="submit" id="submit"> submit </button>
+				  <select name="prev_sprint" id="sprint_uid" class="select-dropdown">
+					<% for (let sprint of sprints) { %>
+						<option value="<%=sprint.sprint_uid%>"><%=sprint.sprint_id%></option>
+					<% }%>
+				  </select>
+				  <br><br>
+					<button class="submit" id="submit"> submit </button>
 			</form>
 		</div>
 </div>
