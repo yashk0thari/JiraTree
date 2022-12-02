@@ -64,7 +64,6 @@ class DatabaseFunctions {
     }
 
     async getSprintsOfProject(project_uid) {
-        console.log(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'FALSE';`)
         var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE project_uid = '${project_uid}' AND is_backlog = 'FALSE';`);
         return output;
     }

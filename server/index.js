@@ -285,7 +285,6 @@ app.get("/task/:task_uid", async (req, res) => {
         
         //Get all sprints of that Project
         const sprint_objs = await db.getSprintsOfProject(project_uid);
-        console.log("XXXX >>>> " + project_uid);
         const sprints = sprint_objs.rows;
 
         //Get all Users
