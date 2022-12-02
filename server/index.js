@@ -256,6 +256,7 @@ app.post("/getProject", async (req, res) => {
     }
 })
 
+
 // --- TASK:
 // - GET:
 // Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
@@ -539,16 +540,6 @@ app.get("/dashboard/:project_uid", async (req, res) => {
     const tasksObj = await db.getTasks("sprint_uid", backlogSprintId);
     var backlogTasks = tasksObj.rows;
 
-    //Get Usernames by task
-    usernames_by_task = []
-    for (let task of backlogTasks) {
-        try {
-            user = await db.getUsers("user_uid", task.user_uid)
-            usernames_by_task.push(user.rows[0].name)
-        } catch {
-            usernames_by_task.push("UNASSIGNED");
-        }
-    }
     //Search Feature Query
     var filterVal = "";
     try {
@@ -613,9 +604,22 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
+
     //All Users
     const getUsers = await db.getAll("jt_user.users");
     const allUsers = getUsers.rows;
+
+        //Get Usernames by task
+        usernames_by_task = []
+        for (let task of backlogTasks) {
+            try {
+                user = await db.getUsers("user_uid", task.user_uid)
+                usernames_by_task.push(user.rows[0].name)
+            } catch {
+                usernames_by_task.push("UNASSIGNED");
+            }
+        }
+    
 
     res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names})
 })

@@ -22,7 +22,7 @@
 			<img src="../img/logo.png">
 			<span>JiraTree</span>
 		</div>
-	<div class="navigationBar">
+		<div class="navigationBar">
 		<div class="mainNav">
 			<p class="cool-link"> Your Project Id: <span id = "p-id"> <%= project_uid %> </span></p>
 		</div>
@@ -43,11 +43,11 @@
 			</form>
 		</div>
 
+		<a href = "/">
 		<div class="iconOne">
-			
-			<img src="../img/active.png">
-
+			<img src="../img/settings.png">
 		</div>
+		</a>
 
 		<div class="iconOne">
 			
@@ -121,7 +121,6 @@
                 <% } %>
 
 			</div>
-
 
 		</div>
 		
@@ -276,7 +275,7 @@
 			<table class="tableMain">
 
 				<tr class="mainHeader">
-					<td>Project Member List: </td>
+					<td>Your Teammates: </td>
 				</tr>
 				
 				<%for (let user of project_users) {%>
