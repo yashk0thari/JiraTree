@@ -277,6 +277,17 @@ text-transform: uppercase;
 
 }
 
+.sprintHeadingOne{
+
+  font-family: Poligon;
+  font-size: 12px;
+  opacity: 0.4;
+  margin-left: 15px;
+  margin-top: -10px;
+  text-transform: uppercase;
+  
+  }
+
 
 .headingTitleOne{
 
@@ -528,7 +539,7 @@ left: -550px;
   font-size: 12px;
   position: absolute;
   top: 20px;
-  left: -80px;
+  left: -120px;
 
 }
 
@@ -539,6 +550,6 @@ left: -550px;
   font-size: 12px;
   position: absolute;
   top: 20px;
-  left: -140px;
+  left: -230px;
 
 }

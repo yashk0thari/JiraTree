@@ -118,7 +118,7 @@ if (update == "True") {
             <input type="text" name="description" placeholder="Change Task Description"  id="description"><br><br>
 			<button class="submit" id="submit"> submit </button>
 		</form>
-        <form action="/deleteTask/<%=output[0].task_uid%>" method="POST" id = "form">
+        <form action="/deleteTask/<%=output[0].task_uid%>?project_uid=<%=project_uid%>" method="POST" id = "form">
             <button class="delete" id="delete"> delete </button>
         </form>
 	</div>

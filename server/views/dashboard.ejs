@@ -87,8 +87,10 @@
                 %>
 
 				<div class="sprintOne">
+					<p class="sprintHeading"> <%=sprint.sprint_id%></p>
 
-					<p class="sprintHeading"> <%=sprint.goal%></p>
+					<p class="sprintHeadingOne"> <%=sprint.goal%></p>
+
 
 					<form action="/action_page.php">
 
@@ -130,7 +132,6 @@
                         add
                     </span>
                 </a> 
-
 			
 				<div class = "search">
 				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
@@ -140,17 +141,27 @@
 				<a href="/dashboard/<%=project_uid%>"><p>reset</p></a>
 				<div class="selectSearch">
 
-					<select class="dropdownOne">
-						<option value="taskName">status</option>
-
+				<form method = "POST" action="/searchTasks/<%=project_uid%>">
+					<select name="statusFilter" class="dropdownOne" onchange="this.form.submit()">
+						<option selected value="<%=statusFilter%>"><%=statusFilter%></option>
+						<% for (let status_val of status) { %>
+							<% if (status_val != statusFilter) { %>
+    							<option value="<%=status_val%>"> <%=status_val%> </option>
+							<% } %>
+						<% }%>
 					</select>
+				</form>	
 
-					<select class="dropdownTwo">
-						<option value="taskName">user</option>
+				<form method = "POST" action="/searchTasks/<%=project_uid%>">
+					<select name="userFilter" class="dropdownTwo" onchange="this.form.submit()">
+						<option selected value="<%=userFilter%>"><%=userFilter%></option>
+						<% for (let user of allUsers) { %>
+							<% if (user.user_uid != userFilterUser) { %>
+    							<option value="<%=user.user_uid%>"> <%=user.name%> </option>
+							<% } %>
+						<% }%>
 					</select>
-					
-					
-					
+				</form>	
 					</div>
 				</div>
 
@@ -225,7 +236,7 @@
 					</td>
 					
 					<td>
-						<a href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
+						<a style = "text-decoration: none;" href="/task/<%=task.task_uid%>?&project_uid=<%=project_uid%>&update=False"> View </a>
 					</td>
 
                 </tr>
