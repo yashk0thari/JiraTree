@@ -91,6 +91,11 @@ class DatabaseFunctions {
         var output = await this.query(`SELECT * FROM jt_user.users WHERE ${meta_field} = '${value}'`)
         return output;
     }
+
+    async getUserCompletedTasks(user_uid, project_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND user_uid = '${user_uid}' AND status = 'COMPLETED'`)
+        return output;
+    }
     
     async getAll(table_name) {
         var output = await this.query(`SELECT * FROM ${table_name};`);
