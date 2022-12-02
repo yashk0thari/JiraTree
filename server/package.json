@@ -11,6 +11,10 @@
   "author": "Arjun L, Arsh M, Aryan S, Utkarsh L, Yash K",
   "license": "ISC",
   "dependencies": {
+    "@fullcalendar/core": "^5.11.3",
+    "@fullcalendar/daygrid": "^5.11.3",
+    "@fullcalendar/list": "^5.11.3",
+    "@fullcalendar/timegrid": "^5.11.3",
     "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
     "bootstrap": "^3.4.1",

@@ -58,6 +58,11 @@ class DatabaseFunctions {
         return output;
     }
 
+    async getallDeadlines() {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE deadline IS NOT NULL;`)
+        return output;
+    }
+
     async getSprints(meta_field, value) {
         var output = await this.query(`SELECT * FROM jt_sprint.sprints WHERE ${meta_field} = '${value}';`);
         return output;

@@ -1,7 +1,6 @@
 // Import Relavent Libraries + Modules:
 const dotenv = require("dotenv");
 const date = require('date-and-time');
-const axios = require('axios');
 
 // Database:
 const DB = require("./src/services/db/db")
@@ -28,7 +27,6 @@ const nodemailer = require("nodemailer");
 // EJS
 const path = require('path');
 const { stat } = require("fs");
-const { default: axios } = require("axios");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -573,19 +571,23 @@ app.get("/dashboard1", async (req, res) => {
     res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 
-app.post("/calendar/:project_uid", async (req, res) => {
-    const user_uid = req.user.rows[0].user_uid;
-    const output = await db.getUserTasks(user_uid, req.params.project_uid)
+app.get("/calendar/extract", async (req, res) => {
+    const output = await db.getallDeadlines();
+    console.log(output);
     const entries = output.rows;
     const data = []
     for (let i = 0; i < entries.length; i++){
         calData = {title: entries[i].task_name, start: entries[i].deadline};
         data.push(calData);
     }
-    const apiResponse = await axios.post(`http://localhost:8080/calendar/:project_uid`, data)
+    //const apiResponse = await axios.post(`http://localhost:8080/calendar`, data)
     res.json(data);
+    //res.render('calendar');
 })
 
+app.get("/calendar", async (req, res) => {
+    res.render('calendar');
+})
 
 app.get("/test", async (req, res) => {
     res.render("test")
