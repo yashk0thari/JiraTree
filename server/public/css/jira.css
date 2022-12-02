@@ -592,3 +592,25 @@ left: -550px;
 .itemText p{
   color: #146BEB;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 90000;
+  right: 0;
+  
+  
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

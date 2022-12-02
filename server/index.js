@@ -518,6 +518,14 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         completedTasks = completed_task_output.rows
     }
 
+    // Pass User-Name and User-Email:
+    var account_user_name = ""
+    var account_user_email = ""
+    if (req.user) {
+        account_user_name = req.user.rows[0].name;
+        account_user_email = req.user.rows[0].email;
+    }
+
     // Get all Tasks in Project:
     const all_project_tasks_output = await db.getTasksByProject(req.params.project_uid)
     const all_project_tasks = all_project_tasks_output.rows
@@ -629,7 +637,7 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         }
     
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names, completedTasks: completedTasks})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names, completedTasks: completedTasks, account_user_name:account_user_name, account_user_email:account_user_email})
 })
 
 app.get("/calendar", async (req, res) => {
