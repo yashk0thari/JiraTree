@@ -21,8 +21,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
-      initialDate: '2022-11-30',
-      events: data
+      //initialDate: '2022-11-30',
+      events: [
+        { title: '"Task 0001"', start: '2022-12-31T03:50:00' },
+        { title: '"SPRINT TEST"', start: '2022-12-22T03:48:00' },
+        { title: '"Task 0007"', start: '2022-12-11T04:12:00' },
+        { title: '"TASK 0009"', start: '2022-12-03T05:42:00' }
+      ]
 })
 
 calendar.render();

@@ -12,6 +12,55 @@
 </head>
 <body>
 
+    <div class="navBar">
+		<div class="logoHolder">
+			<img src="../img/logo.png">
+			<span>JiraTree</span>
+		</div>
+		<div class="navigationBar">
+			
+			<!-- <ul class="mainNav">
+			<li class="cool-link"><a href="Index.html">Home</a></li>
+			<li class="cool-link"><a href="Instructions.html">Projects</a></li>
+			<li class="cool-link"><a href="#">Chats</a></li>
+			<li class="cool-link"><a href="#">Calender</a></li>
+			<li class="cool-link"><a href="#">Reports</a></li>
+			</ul> -->
+	</div>
+
+	<div class="iconHolder">
+		<div class="iconOne">
+			<form method = "POST" class="form" action = '/logout'>
+				<button> <img src="../img/logout.png"> </button>
+			</form>
+		</div>
+		
+		<a href = "/">
+		<div class="iconOne">
+			<img src="../img/settings.png">
+		</div>
+		</a>
+
+		<a href = "/calendar">
+			<div class="iconOne">
+				<img src="../img/calendar.png">
+			</div>
+		</a>
+	
+
+		<div class="iconOne">
+			<img src="../img/profile-user.png">
+		</div>
+
+		<div>
+
+		</div>
+		
+	</div>
+
+
+	</div>
+
 
 <div class="mainBody">
 	
@@ -37,6 +86,20 @@
 
 
 <script type="module" src="../js/main.js"></script>
+
+<style>
+    body {
+      margin: 40px 10px;
+      padding: 0;
+      font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+      font-size: 14px;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 0 auto;
+      margin-top: 100px;
+    }
+</style>
 
 
 </html>
