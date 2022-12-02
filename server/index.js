@@ -271,18 +271,6 @@ app.get("/getTasks/", async (req, res) => {
     }
 })
 
-// Search Tasks: {"search_task": "<search_task, ex: 001>"}
-app.post("/searchTasks/:project_uid", async (req, res) => {
-    try {
-
-
-        // logic - get sprint that's the backlog sprint, only those ones are to be filtered and displayed really
-        const project_uid = req.params.project_uid;
-        return res.redirect(`/dashboard/${project_uid}?filter=${req.body.search}`)
-    } catch (error) {
-        res.send("Error with Search-Tasks: " + error);
-    }
-})
 
 // Create Task (Web Page):
 app.get("/createTask/:project_uid", async (req, res) => {
@@ -300,14 +288,11 @@ app.get("/createTask/:project_uid", async (req, res) => {
 
 //Get Task by specific Id
 app.get("/task/:task_uid", async (req, res) => {
-        
-
-
-    console.log(req.query)
-    const project_uid = req.query.project_uid;
-    const output = await db.getTasks("task_uid", req.params.task_uid);
+    
+        const status = ["NOT STARTED", "IN PROGRESS", "COMPLETED"]
+        const project_uid = req.query.project_uid;
+        const output = await db.getTasks("task_uid", req.params.task_uid);
         const update = req.query.update;
-
 
         //Get Sprint Object with Foreign Key
         const sprint_uid = output.rows[0].sprint_uid;
@@ -323,12 +308,13 @@ app.get("/task/:task_uid", async (req, res) => {
         const user_objs = await db.getAll("jt_user.users");
         const users = user_objs.rows;
 
+
         //Get User Object with Foreign Key
         const user_uid = output.rows[0].user_uid;
         const user = await db.getUsers("user_uid", user_uid);
         const username = user.rows[0].name;        
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date, project_uid: project_uid});
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date, project_uid: project_uid, status: status});
 });
 
 // - POST:
@@ -389,7 +375,6 @@ app.get("/getSprints/", async (req, res) => {
 
 // - POST:
 app.post("/addSprint/:project_uid", async (req, res) => {
-    console.log(req.body)
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
@@ -477,10 +462,31 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 });
 
 
-// - DASHBOARD:
+// - DASHBOARD and FILTERS:
+
+
+app.post("/filterStatus/:project_uid", async (req, res) => {
+    try {
+        const project_uid = req.params.project_uid;
+        return res.redirect(`/dashboard/${project_uid}?filterStatus=${req.body.statusFilter}`)
+    } catch {
+        res.redirect('/test');
+    }
+})
+
+// Search Tasks: {"search_task": "<search_task, ex: 001>"}
+app.post("/searchTasks/:project_uid", async (req, res) => {
+    try {
+        // logic - get sprint that's the backlog sprint, only those ones are to be filtered and displayed really
+        const project_uid = req.params.project_uid;
+        const route_string = `/dashboard/${project_uid}?`;
+        return res.redirect(route_string + `filter=${req.body.search}`)
+    } catch (error) {
+        res.send("Error with Search-Tasks: " + error);
+    }
+})
 
 app.get("/dashboard/:project_uid", async (req, res) => {
-
     //Get the Backlog Sprint:
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
     const backlogSprint = backlogSprintObj.rows[0];
@@ -501,16 +507,24 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         }
     }
     //Search Feature Query
+    var filterVal = "";
     try {
         if (req.query.filter) {
-            console.log(req.query);
             const search_task = req.query.filter;
+            filterVal = req.query.filter;
             const output = await db.searchTask(search_task, req.params.project_uid, backlogSprintId);
             backlogTasks = output.rows;
         }
     } catch (error) {
         console.log(error)
     }
+
+    const status = ["NOT STARTED", "IN PROGRESS", "COMPLETED"]
+    //filter By Category
+    var categoryFilter = "";
+
+    //filter by UserAssigned
+    var userFilter = "";
 
     //Get all Sprints of the current object
     const sprints_obj = await db.getSprintsOfProject(req.params.project_uid)
@@ -523,51 +537,18 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         name = req.user.rows[0].name;
     }
 
-
     //Get all Tasks associated with the Sprint
     for (let sprint of allSprints) {
         tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid})
-})
-
-//TEMPORARY TEST
-
-app.get("/dashboard1", async (req, res) => {
-    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
-    const backlogTasks = tasks_obj.rows
-
-    const sprints_obj = await db.getAll("jt_sprint.sprints")
-    const allSprints = sprints_obj.rows
-
-    var sprint_tasks = {}
-
-    let name = "Not Logged In"
-    if (req.user) {
-        name = req.user.rows[0].name;
-    }
-
-    usernames_by_task = []
-
-    for (let sprint of allSprints) {
-        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
-        sprint_tasks[sprint.sprint_uid] = tasks.rows
-    }
-
-    for (let task of backlogTasks) {
-        user = await db.getUsers("user_uid", task.user_uid)
-        usernames_by_task.push(user.rows[0].name)
-    }
-    
-    res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, filterVal: filterVal})
 })
 
 app.get("/calendar", async (req, res) => {
     
 })
-
 
 app.get("/test", async (req, res) => {
     res.render("test")

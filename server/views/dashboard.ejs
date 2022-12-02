@@ -133,7 +133,7 @@
 
 				<div class = "search">
 				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
-  					<input type="text" id = "search" placeholder="Filter Tasks.." name="search">
+  					<input type="text" id = "search" value = "<%=filterVal%>" placeholder="Filter Tasks.." name="search">
  					<button type="submit"><i class="fa fa-search"></i></button>
 				</form>
 				<a href="/dashboard/<%=project_uid%>">Reset_Filters</a>
@@ -178,7 +178,7 @@
                         </div>
 
                     </td>
-                    <% } else if (task.status == "COMPLETE") {  %>
+                    <% } else if (task.status == "COMPLETED") {  %>
                         <td>
 
                             <div class="status t">
@@ -191,7 +191,7 @@
                     <% } else { %>
 
                         <td>
-                            <div class="status t">
+                            <div class="status s">
                                 <span><%=task.status%></span>
                             </div>
                         </td>
