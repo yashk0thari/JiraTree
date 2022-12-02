@@ -640,8 +640,22 @@ app.get("/dashboard/:project_uid", async (req, res) => {
     res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names, completedTasks: completedTasks, account_user_name:account_user_name, account_user_email:account_user_email})
 })
 
+app.get("/calendar/extract", async (req, res) => {
+    const output = await db.getallDeadlines();
+    console.log(output);
+    const entries = output.rows;
+    const data = []
+    for (let i = 0; i < entries.length; i++){
+        calData = {title: entries[i].task_name, start: entries[i].deadline};
+        data.push(calData);
+    }
+    //const apiResponse = await axios.post(`http://localhost:8080/calendar`, data)
+    res.json(data);
+    //res.render('calendar');
+})
+
 app.get("/calendar", async (req, res) => {
-    
+    res.render('calendar');
 })
 
 app.get("/test", async (req, res) => {
