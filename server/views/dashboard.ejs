@@ -131,13 +131,32 @@
                     </span>
                 </a> 
 
+			
 				<div class = "search">
 				<form method = "POST" class="form example" action="/searchTasks/<%=project_uid%>">
   					<input type="text" id = "search" value = "<%=filterVal%>" placeholder="Filter Tasks.." name="search">
  					<button type="submit"><i class="fa fa-search"></i></button>
 				</form>
-				<a href="/dashboard/<%=project_uid%>">Reset_Filters</a>
+				<a href="/dashboard/<%=project_uid%>"><p>reset</p></a>
+				<div class="selectSearch">
+
+					<select class="dropdownOne">
+						<option value="taskName">status</option>
+
+					</select>
+
+					<select class="dropdownTwo">
+						<option value="taskName">user</option>
+					</select>
+					
+					
+					
+					</div>
 				</div>
+
+
+				
+
 
 
 				</div>
@@ -222,7 +241,23 @@
 
 
 	<div class="mainBodyTwo">
-		<!-- Create a div where the graph will take place -->
+		<!-- Create a div where the graph will take place, I say no -->
+		<table class="tableMain">
+				
+			<tr class="mainHeader">
+				<td>Tasks Assigned To You</td>
+			</tr>
+
+			<% for (let task of userTasks) { %>
+				<tr class="contentHeader">
+					<td>
+						<%= task.task_name %>	
+					</td>	
+				</tr> 
+			<% } %>
+
+		</table>
+
 	<!-- <div id="my_dataviz"></div> -->
 	</div>
 

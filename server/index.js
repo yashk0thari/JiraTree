@@ -487,6 +487,13 @@ app.post("/searchTasks/:project_uid", async (req, res) => {
 })
 
 app.get("/dashboard/:project_uid", async (req, res) => {
+    var userTasks = []
+    if (req.user) {
+        const user_uid = req.user.rows[0].user_uid;
+        const output = await db.getUserTasks(user_uid, req.params.project_uid)
+        userTasks = output.rows
+    }
+
     //Get the Backlog Sprint:
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
     const backlogSprint = backlogSprintObj.rows[0];
@@ -543,7 +550,38 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, filterVal: filterVal})
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks})
+})
+
+//TEMPORARY TEST
+
+app.get("/dashboard1", async (req, res) => {
+    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
+    const backlogTasks = tasks_obj.rows
+
+    const sprints_obj = await db.getAll("jt_sprint.sprints")
+    const allSprints = sprints_obj.rows
+
+    var sprint_tasks = {}
+
+    let name = "Not Logged In"
+    if (req.user) {
+        name = req.user.rows[0].name;
+    }
+
+    usernames_by_task = []
+
+    for (let sprint of allSprints) {
+        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
+        sprint_tasks[sprint.sprint_uid] = tasks.rows
+    }
+
+    for (let task of backlogTasks) {
+        user = await db.getUsers("user_uid", task.user_uid)
+        usernames_by_task.push(user.rows[0].name)
+    }
+    
+    res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
 })
 
 app.get("/calendar", async (req, res) => {
