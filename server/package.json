@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "bootstrap": "^3.4.1",
     "date-and-time": "^2.4.1",
     "ejs": "^3.1.8",
     "email-check": "^1.1.0",
