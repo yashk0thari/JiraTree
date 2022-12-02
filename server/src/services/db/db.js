@@ -40,6 +40,11 @@ class DatabaseFunctions {
        return output;
     }
 
+    async getTasksByProject(project_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}';`);
+        return output;
+    }
+
     async insertSprint(sprint_id, goal, prev_sprint, project_uid) {
         await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal, prev_sprint, project_uid) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}', '${prev_sprint}', '${project_uid}');`);
     }

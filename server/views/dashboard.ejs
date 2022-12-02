@@ -256,21 +256,40 @@
 
 	<div class="mainBodyTwo">
 		<!-- Create a div where the graph will take place, I say no -->
-		<table class="tableMain">
+		<div>
+			<table class="tableMain">
 				
-			<tr class="mainHeader">
-				<td>Tasks Assigned To You</td>
-			</tr>
+				<tr class="mainHeader">
+					<td>Tasks Assigned To You: </td>
+				</tr>
+	
+				<% for (let task of userTasks) { %>
+					<tr class="contentHeader">
+						<td>
+							<%= task.task_name %>	
+						</td>	
+					</tr> 
+				<% } %>
+	
+			</table>	
+		</div>
+			<table class="tableMain">
 
-			<% for (let task of userTasks) { %>
-				<tr class="contentHeader">
-					<td>
-						<%= task.task_name %>	
-					</td>	
-				</tr> 
-			<% } %>
+				<tr class="mainHeader">
+					<td>Project Member List: </td>
+				</tr>
+				
+				<%for (let user of project_users) {%>
+					<tr class="contentHeader">
+						<td>
+							<%= user %>	
+						</td>
+					</tr>
+				<% } %>
+			</table>
+		<div>
 
-		</table>
+		</div>
 
 	<!-- <div id="my_dataviz"></div> -->
 	</div>
