@@ -654,6 +654,10 @@ app.get("/calendar/extract", async (req, res) => {
     //res.render('calendar');
 })
 
+app.get('/calendar', async (req, res) => {
+    res.render('calendar');
+})
+
 app.get("/test", async (req, res) => {
     res.render("test")
 })
