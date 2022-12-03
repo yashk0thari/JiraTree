@@ -1,49 +1,43 @@
 # JiraTree
-<h2> State of the art Agile Management Environment. </h2>
+<h2> State of the art workspace management tool </h2>
 
-<h3> Installation </h3>
+<h3> CockroachDB Setup </h3>
 
-To install, first download the Cockroach DB through ccloud. 
+Our database service is CockroachDB. Since the web application is not hosted, you will have to setup CockroachDB manually. You can follow the steps from [here](https://www.cockroachlabs.com/docs/stable/build-a-nodejs-app-with-cockroachdb.html).
 
-<h3> Mac </h3>
+1. In the link provided above, select "Use node-postgres" and "Use CockroachDB serverless" as the Installation method. We already have a cluster set-up which you will need to get access to. This can be accomplished by sending us an email, requesting access to the Jira-Tree Cluster. We will respond with an invitation to join our cluster and also allocate a sql_user and password for you. 
 
-Install [ccloud](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html?filters=ccloud#install-ccloud) using Homebrew
+2. Connect to our Cluster named jira-tree using the purple "Connect" Button. Use the sql_user provided, leave Database as "defaultdb", Select option/language as "Javascript", tool as "node-postgres", and follow the steps to set up cockroachdb in your local system. Read the CockroachDB documentation for any help. You can also contact us if some persistant issue arises with setting up CockroachDB. 
 
-Once installed, on the same terminal session: 
+<h3> Git Clone and Running Locally </h3>
 
-```
-ccloud quickstart
-```
-
-This will prompt you to create an account in Cockroach labs. Once you have created the account, close the tab. 
-
-<h3> Windows </h3>
-
-Install [ccloud](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html?filters=ccloud&filters=windows&#install-ccloud) using the powershell command
-
-Once installed, on the same powerhell session:
-
-```
-ccloud quickstart
-```
-
-This will prompt you to create an account in Cockroach labs. Once you have created the account, close the tab. 
-
-Once logged into cockroachdb using any OS, please send an email to utkarshlal@gmail.com and we will add you to the project as soon as possible. Once you are added to the project, you will be able to use our database functions locally. Since we are not deploying our website, we need to follow this cumbersome step.
-
-<h3> Git clone and running locally </h3>
-
-On the directory where you wish to run the program: 
+Now that CockroachDB is set-up correctly, clone our project from github using the following command:
 ```
 git clone https://github.com/yashk0thari/JiraTree.git
-cd JiraTree
-code .
 ```
 
-This opens the code in Visual Studio Code. Now open a VSC terminal and type 
+Now change directory to the project using:
+```
+cd JiraTree
+```
+
+Open VSCode to this path and change the branch to origin/dev.
+
+Open a VSCode terminal and change directory to the server using:
+```
+cd server
+```
+
+You will need to install all the modules to successfully run the app. Therefore, execute the following command:
+```
+npm install
+```
+
+Now, you can run the application using:
 ```
 npm run run
 ```
+
 This would run the program on http://localhost:8080/
 
 Play around and have fun using JiraTree :)
