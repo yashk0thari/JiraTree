@@ -40,6 +40,11 @@ class DatabaseFunctions {
        return output;
     }
 
+    async getTasksByProject(project_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}';`);
+        return output;
+    }
+
     async insertSprint(sprint_id, goal, prev_sprint, project_uid) {
         await this.query(`INSERT INTO jt_sprint.sprints (sprint_id, status, goal, prev_sprint, project_uid) VALUES ('${sprint_id}', 'IN PROGRESS', '${goal}', '${prev_sprint}', '${project_uid}');`);
     }
@@ -55,6 +60,11 @@ class DatabaseFunctions {
 
     async getUserTasks(user_uid, project_uid) {
         var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND user_uid = '${user_uid}';`)
+        return output;
+    }
+
+    async getallDeadlines() {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE deadline IS NOT NULL;`)
         return output;
     }
 
@@ -84,6 +94,11 @@ class DatabaseFunctions {
 
     async getUsers(meta_field, value) {
         var output = await this.query(`SELECT * FROM jt_user.users WHERE ${meta_field} = '${value}'`)
+        return output;
+    }
+
+    async getUserCompletedTasks(user_uid, project_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE project_uid = '${project_uid}' AND user_uid = '${user_uid}' AND status = 'COMPLETED'`)
         return output;
     }
     
@@ -184,6 +199,18 @@ class DatabaseFunctions {
         var output = await this.query(`SELECT * FROM jt_task.tasks WHERE task_name LIKE '%${contain_string}%' AND project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
         return output;
     }
+
+    async statusFilter(contain_string, project_uid, sprint_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE status = '${contain_string}' AND project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
+        return output;
+    }
+
+    //Filter users in the Backlog
+    async userFilter(contain_string, project_uid, sprint_uid) {
+        var output = await this.query(`SELECT * FROM jt_task.tasks WHERE user_uid = '${contain_string}' AND project_uid = '${project_uid}' AND sprint_uid = '${sprint_uid}';`)
+        return output;
+    }
+
 }
 
 module.exports = DatabaseFunctions;

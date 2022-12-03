@@ -27,6 +27,7 @@ const nodemailer = require("nodemailer");
 // EJS
 const path = require('path');
 const { stat } = require("fs");
+const { json } = require("express");
 app.use(express.json())
 
 app.set('view engine', 'ejs');
@@ -256,6 +257,7 @@ app.post("/getProject", async (req, res) => {
     }
 })
 
+
 // --- TASK:
 // - GET:
 // Get Tasks: {"meta_field": "<meta_field, ex: in_backlog>", "value": "<value, ex: TRUE>"}
@@ -271,18 +273,6 @@ app.get("/getTasks/", async (req, res) => {
     }
 })
 
-// Search Tasks: {"search_task": "<search_task, ex: 001>"}
-app.post("/searchTasks/:project_uid", async (req, res) => {
-    try {
-
-
-        // logic - get sprint that's the backlog sprint, only those ones are to be filtered and displayed really
-        const project_uid = req.params.project_uid;
-        return res.redirect(`/dashboard/${project_uid}?filter=${req.body.search}`)
-    } catch (error) {
-        res.send("Error with Search-Tasks: " + error);
-    }
-})
 
 // Create Task (Web Page):
 app.get("/createTask/:project_uid", async (req, res) => {
@@ -300,14 +290,11 @@ app.get("/createTask/:project_uid", async (req, res) => {
 
 //Get Task by specific Id
 app.get("/task/:task_uid", async (req, res) => {
-        
-
-
-    console.log(req.query)
-    const project_uid = req.query.project_uid;
-    const output = await db.getTasks("task_uid", req.params.task_uid);
+    
+        const status = ["NOT STARTED", "IN PROGRESS", "COMPLETED"]
+        const project_uid = req.query.project_uid;
+        const output = await db.getTasks("task_uid", req.params.task_uid);
         const update = req.query.update;
-
 
         //Get Sprint Object with Foreign Key
         const sprint_uid = output.rows[0].sprint_uid;
@@ -328,7 +315,7 @@ app.get("/task/:task_uid", async (req, res) => {
         const user = await db.getUsers("user_uid", user_uid);
         const username = user.rows[0].name;        
 
-        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date, project_uid: project_uid});
+        res.render("viewTask", {output: output.rows, update: update, goal: goal, sprint_id: sprint_id, username: username, sprints: sprints, users: users, date: date, project_uid: project_uid, status: status});
 });
 
 // - POST:
@@ -366,7 +353,7 @@ app.post("/updateTask/:task_uid", async (req, res) => {
 app.post("/deleteTask/:task_uid", async (req, res) => {
     try {
         await db.deleteTask(req.params.task_uid);
-        res.redirect(`/project`);
+        res.redirect(`/dashboard/${req.query.project_uid}`);
     } catch (error) {
         res.send("Error with Delete-Task: " + error);
     }
@@ -389,7 +376,6 @@ app.get("/getSprints/", async (req, res) => {
 
 // - POST:
 app.post("/addSprint/:project_uid", async (req, res) => {
-    console.log(req.body)
     try {
         const sprint_id = (req.body).sprint_id;
         const goal = (req.body).goal;
@@ -419,12 +405,10 @@ app.post("/updateSprint/:sprint_uid", async (req, res) => {
 // Delete Sprint:
 app.post("/deleteSprint/:sprint_uid", async (req, res) => {
     try {
-        console.log("Project UID: >> " + req.query.project_uid)
-        console.log("Sprint UID: >> " + req.params.sprint_uid)
         await db.deleteSprint(req.params.sprint_uid, req.query.project_uid);
-        res.redirect(`/project`);
+        res.redirect(`/dashboard/${req.query.project_uid}`);
     } catch (error) {
-        res.send("Error with Delete-Sprint: " + error);
+        res.render("test");
     }
 })
 
@@ -477,16 +461,90 @@ app.get("/sprint/:sprint_uid/", async (req, res) => {
 });
 
 
-// - DASHBOARD:
+// - DASHBOARD and FILTERS:
+
+
+// app.post("/filterStatus/:project_uid", async (req, res) => {
+//     try {
+//         const project_uid = req.params.project_uid;
+//         return res.redirect(`/dashboard/${project_uid}?filterStatus=${req.body.statusFilter}`)
+//     } catch {
+//         res.redirect('/test');
+//     }
+// })
+
+// Search Tasks: {"search_task": "<search_task, ex: 001>"}
+app.post("/searchTasks/:project_uid", async (req, res) => {
+    try {
+        // logic - get sprint that's the backlog sprint, only those ones are to be filtered and displayed really
+        const project_uid = req.params.project_uid;
+        const route_string = `/dashboard/${project_uid}?`;
+        var filter_string = ``;
+
+        console.log(req.body)
+        if (req.body.search){
+            filter_string += `&filter=${req.body.search}`
+        }
+
+        if (req.body.statusFilter){
+            filter_string += `&statusFilter=${req.body.statusFilter}`
+        }
+
+        if (req.body.userFilter){
+            console.log(req.body.userFilter);
+            filter_string += `&userFilter=${req.body.userFilter}`
+        }
+
+        return res.redirect(route_string + filter_string)
+    } catch (error) {
+        res.send("Error with Search-Tasks: " + error);
+    }
+})
 
 app.get("/dashboard/:project_uid", async (req, res) => {
-
     var userTasks = []
     if (req.user) {
         const user_uid = req.user.rows[0].user_uid;
         const output = await db.getUserTasks(user_uid, req.params.project_uid)
         userTasks = output.rows
     }
+
+    // Get User Completed Tasks:
+    var completedTasks = []
+    if (req.user) {
+        const user_uid = req.user.rows[0].user_uid;
+        const completed_task_output = await db.getUserCompletedTasks(user_uid, req.params.project_uid)
+        completedTasks = completed_task_output.rows
+    }
+
+    // Pass User-Name and User-Email:
+    var account_user_name = ""
+    var account_user_email = ""
+    if (req.user) {
+        account_user_name = req.user.rows[0].name;
+        account_user_email = req.user.rows[0].email;
+    }
+
+    // Get all Tasks in Project:
+    const all_project_tasks_output = await db.getTasksByProject(req.params.project_uid)
+    const all_project_tasks = all_project_tasks_output.rows
+
+    // Get all Users in Project:
+    var user_uids = []
+    var user_names = []
+    for (let project_task of all_project_tasks) {
+        
+        if (project_task.user_uid != 0) {
+            if (!user_uids.includes(project_task.user_uid)) {
+                const project_user_output = await db.getUsers("user_uid", project_task.user_uid)
+                const project_user = project_user_output.rows[0]
+                
+                user_uids.push(project_task.user_uid)
+                user_names.push(project_user.name)
+            }
+        }
+    }
+
 
     //Get the Backlog Sprint:
     const backlogSprintObj = await db.getBacklog(req.params.project_uid);
@@ -497,24 +555,49 @@ app.get("/dashboard/:project_uid", async (req, res) => {
     const tasksObj = await db.getTasks("sprint_uid", backlogSprintId);
     var backlogTasks = tasksObj.rows;
 
-    //Get Usernames by task
-    usernames_by_task = []
-    for (let task of backlogTasks) {
-        try {
-            user = await db.getUsers("user_uid", task.user_uid)
-            usernames_by_task.push(user.rows[0].name)
-        } catch {
-            usernames_by_task.push("UNASSIGNED");
-        }
-    }
     //Search Feature Query
+    var filterVal = "";
     try {
         if (req.query.filter) {
-            console.log(req.query);
             const search_task = req.query.filter;
+            filterVal = req.query.filter;
             const output = await db.searchTask(search_task, req.params.project_uid, backlogSprintId);
             backlogTasks = output.rows;
         }
+    } catch (error) {
+        console.log(error)
+    }
+
+    const status = ["NOT STARTED", "IN PROGRESS", "COMPLETED"]
+
+    //filter By Category
+    var statusFilter = "status";
+    try {
+        if (req.query.statusFilter) {
+            statusFilter = req.query.statusFilter.toString();
+            const statusOutput = await db.statusFilter(statusFilter, req.params.project_uid, backlogSprintId);
+            backlogTasks = statusOutput.rows;
+
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+    //filter by UserAssigned
+    var userFilter = "user";
+    var userFilterUser = "";
+    try {
+
+        if (req.query.userFilter) {
+            userFilter = req.query.userFilter.toString();
+            const userFilterOutput = await db.userFilter(userFilter, req.params.project_uid, backlogSprintId);
+            backlogTasks = userFilterOutput.rows;
+
+            const getUser = await db.getUsers("user_uid", userFilter)
+            userFilterUser = getUser.rows[0].user_uid;
+            userFilter = getUser.rows[0].name;
+        }
+
     } catch (error) {
         console.log(error)
     }
@@ -530,51 +613,57 @@ app.get("/dashboard/:project_uid", async (req, res) => {
         name = req.user.rows[0].name;
     }
 
-
     //Get all Tasks associated with the Sprint
     for (let sprint of allSprints) {
         tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
         sprint_tasks[sprint.sprint_uid] = tasks.rows
     }
 
-    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks})
-})
 
-//TEMPORARY TEST
+    //All Users
+    const getUsers = await db.getAll("jt_user.users");
+    const allUsers = getUsers.rows;
 
-app.get("/dashboard1", async (req, res) => {
-    const tasks_obj = await db.getTasks("sprint_uid", "814754907646558210")
-    const backlogTasks = tasks_obj.rows
-
-    const sprints_obj = await db.getAll("jt_sprint.sprints")
-    const allSprints = sprints_obj.rows
-
-    var sprint_tasks = {}
-
-    let name = "Not Logged In"
-    if (req.user) {
-        name = req.user.rows[0].name;
-    }
-
-    usernames_by_task = []
-
-    for (let sprint of allSprints) {
-        tasks = await db.getTasks("sprint_uid", sprint.sprint_uid)
-        sprint_tasks[sprint.sprint_uid] = tasks.rows
-    }
-
-    for (let task of backlogTasks) {
-        user = await db.getUsers("user_uid", task.user_uid)
-        usernames_by_task.push(user.rows[0].name)
-    }
+        //Get Usernames by task
+        usernames_by_task = []
+        for (let task of backlogTasks) {
+            try {
+                user = await db.getUsers("user_uid", task.user_uid)
+                usernames_by_task.push(user.rows[0].name)
+            } catch {
+                usernames_by_task.push("UNASSIGNED");
+            }
+        }
     
-    res.render("dashboard1", {tasks:backlogTasks, users: usernames_by_task, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name})
+
+    res.render("dashboard", {tasks:backlogTasks, users: usernames_by_task, status: status, allUsers: allUsers, date:date, sprints:allSprints, sprint_tasks:sprint_tasks, username: name, project_uid: req.params.project_uid, userTasks: userTasks, filterVal: filterVal, statusFilter: statusFilter, userFilter: userFilter, userFilterUser:userFilterUser, project_users: user_names, completedTasks: completedTasks, account_user_name:account_user_name, account_user_email:account_user_email})
 })
 
-app.get("/calendar", async (req, res) => {
-    
+app.get("/calendar/extract", async (req, res) => {
+    const output = await db.getallDeadlines();
+    //console.log(output);
+    const entries = output.rows;
+    const data = []
+    for (let i = 0; i < entries.length; i++){
+        taskTitle = entries[i].task_name;
+        deadlineParsed = entries[i].deadline;
+        taskTitle = JSON.stringify(taskTitle);
+        deadlineParsed = JSON.stringify(deadlineParsed).slice(1,20);
+        // console.log(JSON.stringify(deadlineParsed));
+        // console.log(JSON.stringify(taskTitle));
+
+        calData = {title: taskTitle, start: deadlineParsed};
+        data.push(calData);
+    }
+    //const apiResponse = await axios.post(`http://localhost:8080/calendar`, data)
+    console.log(data);
+    res.json(data);
+    //res.render('calendar');
 })
 
+app.get('/calendar', async (req, res) => {
+    res.render('calendar');
+})
 
 app.get("/test", async (req, res) => {
     res.render("test")

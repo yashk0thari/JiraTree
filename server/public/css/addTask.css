@@ -192,7 +192,7 @@ input{
     height: 40px;
     width: 95%;
     background-color: #FFFFFF;
-    
+    color: #aaa;
     
     text-align: center;
     font-family: SF Pro Text;
@@ -415,3 +415,16 @@ justify-content: space-around;
 align-items: center;
 flex-direction: column;
 }
+
+select {
+    -webkit-appearance: menulist-button;
+    color: #aaa;
+    font-family: SF Pro Text;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  
+  select:invalid {
+    color: green;
+  }
